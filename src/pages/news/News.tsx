@@ -1,7 +1,7 @@
 import { useNewsList } from "@/hooks/news/NewsApi";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import CardItem from "@/components/card/CardItem";
+import NewsCard from "@/components/card/NewsCard";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const News = () => {
@@ -32,13 +32,10 @@ const News = () => {
   return (
     <>
       <div className="flex flex-col">
-        {displayedItems.length > 0 ? (
+        {displayedItems.length > 0 &&
           displayedItems.map((item, index) => (
-            <CardItem key={index} item={item} />
-          ))
-        ) : (
-          <p>No news items</p>
-        )}
+            <NewsCard key={index} item={item} />
+          ))}
       </div>
     </>
   );

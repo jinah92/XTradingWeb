@@ -6,8 +6,8 @@ interface CardItemProps {
   item: Item;
 }
 
-const CardItem: React.FC<CardItemProps> = ({ item }) => {
-  const fallbackImage = "https://via.placeholder.com/240";
+const NewsCard: React.FC<CardItemProps> = ({ item }) => {
+  const fallbackImage = "/images/no-image.png";
   const [description, setDescription] = useState("");
 
   const currentPath = location.pathname;
@@ -26,7 +26,7 @@ const CardItem: React.FC<CardItemProps> = ({ item }) => {
 
   return (
     <Card
-      className="mb-5 transition-transform duration-300 hover:scale-101 dark:border-slate-300"
+      className="mb-5 transition-transform duration-300 hover:scale-101 dark:border-slate-300 cursor-pointer"
       onClick={() => window.open(item.link)}
     >
       <div className="flex flex-col sm:flex-row dark:bg-darkMode dark:text-white rounded-xl">
@@ -53,4 +53,4 @@ const CardItem: React.FC<CardItemProps> = ({ item }) => {
   );
 };
 
-export default CardItem;
+export default NewsCard;
