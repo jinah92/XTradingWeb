@@ -71,6 +71,7 @@ export const useIdeaList = () => {
 export const useIdeaAdd = () => {
   const navigate = useNavigate();
   const { accessToken, isAuthenticated } = useAuth();
+  const { toast } = useToast();
   const ideaAddApi = async (param: boardAddReq) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
@@ -78,15 +79,35 @@ export const useIdeaAdd = () => {
         navigate("/login");
         return;
       }
-      const response = await axiosInstance.post(`/api/boards`, param, {
+      await axiosInstance.post(`/api/boards`, param, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      console.log(response.data.result.boardList);
+      toast({
+        description: '아이디어 등록되었습니다.',
+        duration: 2000,
+      });
+
+      return true;
     } catch (error) {
-      console.error("데이터 요청 오류:", error);
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "아이디어 등록 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
     }
   };
 

@@ -47,11 +47,12 @@ const Idea = () => {
 
         if(ideaKeyword != "") {
           param.keyword = ideaKeyword;
-          if(page === 1){
-            setIdeaList([]);
-          }
         }
 
+        if(page === 1){
+          setIdeaList([]);
+        }
+        
         newIdeaItems = await ideaListApi(param);
         setIdeaList(prevData => [...prevData, ...newIdeaItems]);
 
@@ -182,7 +183,14 @@ const Idea = () => {
   // issue 저장 변수
   const [subject, setSubject] = useState("");
   const [contents, setContents] = useState("");
-  const [tagList, setTagList] = useState<string[] | null>(null);
+  const [tagList, setTagList] = useState<string[] | null>(null);   
+  const tagInputRef = useRef<{ resetTags: () => void }>(null); // TagInput의 resetTags에 접근할 ref
+
+  const resetTagsInChild = () => {
+    if (tagInputRef.current) {
+      tagInputRef.current.resetTags(); // TagInput의 태그 리스트와 입력 필드 초기화
+    }
+  };  
 
   const { ideaAddApi } = useIdeaAdd();
 
@@ -194,9 +202,16 @@ const Idea = () => {
       tagList: tagList,
     };
 
-    await ideaAddApi(param);
+    const addResult = await ideaAddApi(param);
+    
+    if(addResult) {
+      loadMoreData(id);
+      setSubject('');
+      setContents('');
+      resetTagsInChild();
+      
+    }
   };
-
 
   // keyword Modal
   const [keywordModal, setKeywordModal] = useState<boolean>(false);
@@ -227,8 +242,9 @@ const Idea = () => {
                         placeholder="제목"
                         className="mb-5"
                         onChange={(e) => setSubject(e.target.value)}
+                        value={subject}
                       />
-                      <TagInput onChange={setTagList}/>
+                      <TagInput onChange={setTagList} ref={tagInputRef}/>
                       <AutoResizeTextarea value={contents} onChange={setContents}/>
                       <div className="flex justify-end mt-5">
                         <Button onClick={ideaAdd}>Post</Button>
