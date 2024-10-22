@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,13 +8,25 @@ interface ModalProps {
 }
 
 const CoinListModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'; // 또는 'auto'
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   // Handle clicks on the background to close the modal
   const handleBackgroundClick = (e: React.MouseEvent) => {
     // Prevent the modal from closing when clicking inside the modal content
     e.stopPropagation();
-    // onClose();
+    onClose();
   };
 
   // Handle clicks inside the modal content to prevent closing

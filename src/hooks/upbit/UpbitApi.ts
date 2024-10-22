@@ -1,7 +1,7 @@
 import axiosInstance from "@/configs/axios/axiosConfig";
 import { useEffect, useState } from "react";
 
-interface ItemData {
+export interface ItemData {
   market: string;
   korean_name: string;
   english_name: string;

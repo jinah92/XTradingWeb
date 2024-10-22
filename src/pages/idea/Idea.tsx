@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
 import TagInput from "@/components/ui/tagInput";
 import { useAuth } from "@/router/AuthContext";
+import Modal from "@/components/modal/Modal";
+import CodeList from "@/components/modal/CodeList";
 
 const Idea = () => {
 
@@ -235,7 +237,8 @@ const Idea = () => {
             </div>
             <div className="sm:w-6/12 w-screen border sm:rounded-2xl min-h-screen">
               <div className="pt-10">
-                {isAuthenticated ? (
+                {/* idea add */}
+                {id === undefined && ( isAuthenticated ? (
                   <div className="border-t border-b flex justify-center">
                     <div className="mt-8 mb-8 w-4/5">
                       <Input
@@ -251,8 +254,28 @@ const Idea = () => {
                       </div>
                     </div>
                   </div>
-                ) : null}
+                ) : null)}
                 
+                {/* feed add */}
+                {id === 'feed' && ( isAuthenticated ? (
+                  <div className="border-t border-b flex justify-center">
+                    <div className="mt-8 mb-8 w-4/5">
+                      <Input
+                        placeholder="제목"
+                        className="mb-5"
+                        onChange={(e) => setSubject(e.target.value)}
+                        value={subject}
+                      />
+                      <TagInput onChange={setTagList} ref={tagInputRef}/>
+                      <AutoResizeTextarea value={contents} onChange={setContents}/>
+                      <div className="flex justify-end mt-5">
+                        <Button onClick={ideaAdd}>Post</Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : null)}
+
+
                 {id === undefined && ideaList && (
                   ideaList.length > 0 ? (
                   ideaList.map((item, index) => (
@@ -303,6 +326,9 @@ const Idea = () => {
           </div>
         </div>
       </div>
+      <Modal isOpen={keywordModal} onClose={closeKeyword}>
+       <CodeList/>
+      </Modal>
       {/* 스크롤이 끝에 다다를 때 이 요소가 감지됨 */}
       <div id="scroll-trigger" style={{ height: '20px', backgroundColor: 'transparent' }} />
     </>
