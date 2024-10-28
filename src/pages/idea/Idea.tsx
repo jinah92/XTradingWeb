@@ -32,6 +32,9 @@ const Idea = () => {
   const [ideaKeyword, setIdeaKeyword] = useState<string>("");
   const [feedCode, setFeedCode] = useState<string>("");
 
+
+  // TODO : test로 조회 후 스크롤 내리고 다시 test 조회하면 무한스크롤이 안되는 현상
+
   // 데이터 요청 함수
   const loadMoreData = useCallback(async (id:string|undefined) => {
     try {
@@ -51,6 +54,7 @@ const Idea = () => {
           param.keyword = ideaKeyword;
         }
 
+        // 1Page에서 재조회 시
         if(page === 1){
           setIdeaList([]);
         }
@@ -58,23 +62,34 @@ const Idea = () => {
         newIdeaItems = await ideaListApi(param);
         setIdeaList(prevData => [...prevData, ...newIdeaItems]);
 
-        // 더 이상 데이터가 없으면 hasMore를 false로 설정
+        // 이후 데이터 유무 확인
         if (newIdeaItems.length < 10) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
       } 
       // feed 조회
       else if (id === "feed") {
         param.type = "COIN";
+
         if(feedCode != "") {
           param.code = feedCode;
         }
+
+        // 1Page에서 재조회 시
+        if(page === 1){
+          setFeedList([]);
+        }
+
         newFeedItems = await feedListApi(param);
         setFeedList(prevData => [...prevData, ...newFeedItems]);
 
-        // 더 이상 데이터가 없으면 hasMore를 false로 설정
+        // 이후 데이터 유무 확인
         if (newFeedItems.length < 10) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
       }
       
@@ -83,7 +98,7 @@ const Idea = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, ideaKeyword]);
+  }, [page, ideaKeyword, feedCode]);
 
   // IntersectionObserver로 트리거 감지
   const observerCallback = useCallback(
@@ -145,7 +160,7 @@ const Idea = () => {
   const scrollTop = () => {
     window.scrollTo({
       top: 0,    // 스크롤을 위로 설정
-      behavior: 'smooth'  // 부드럽게 스크롤
+      // behavior: 'smooth'  부드럽게 스크롤
     });
   }
 
@@ -158,19 +173,24 @@ const Idea = () => {
       setFeedList([]);
       setUrlId(id); // URL ID 업데이트
       setIdeaKeyword("");
+      setFeedCode("");
+
+      // Post 입력 값 초기화
+      setSubject('');
+      setContents('');
+      resetTagsInChild();
       
-      // 페이지가 1이 아니면 페이지를 1로 설정하고 로딩을 멈춤
       if (page !== 1) {
         setPage(1);
         return;  // 페이지를 1로 설정한 후 즉시 loadMoreData 호출을 막음
       }
     }
-    
+
     // 페이지가 1일 때만 데이터를 로드
     if (page === 1 && urlId === id) {
       loadMoreData(id);
     }
-  }, [id, urlId, page]); // id, urlId, page가 변경될 때 실행
+  }, [id, urlId, page, feedCode]);
 
   // 페이지가 변경될 때 실행
   useEffect(() => { 
@@ -178,7 +198,7 @@ const Idea = () => {
     if (page !== 1) {
       loadMoreData(id);
     }
-  }, [page]); // page만 의존성으로 설정
+  }, [page]);
 
   /* 저장 로직 */
 
@@ -187,6 +207,9 @@ const Idea = () => {
   const [contents, setContents] = useState("");
   const [tagList, setTagList] = useState<string[] | null>(null);   
   const tagInputRef = useRef<{ resetTags: () => void }>(null); // TagInput의 resetTags에 접근할 ref
+
+  // feed 저장 변수
+  const [addCode, setAddCode] = useState("");
 
   const resetTagsInChild = () => {
     if (tagInputRef.current) {
@@ -207,22 +230,44 @@ const Idea = () => {
     const addResult = await ideaAddApi(param);
     
     if(addResult) {
-      loadMoreData(id);
-      setSubject('');
+      setIdeaList([]);  // 기존 조회 내용 제거
+
+      if(page === 1) {
+        loadMoreData(id);
+      } else {
+        setPage(1);
+      }
+
+      /* 입력란 초기화 */
+      setSubject('');   
       setContents('');
       resetTagsInChild();
-      
     }
   };
 
-  // keyword Modal
+  // 검색 키워드 모달
   const [keywordModal, setKeywordModal] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<string>('');
 
-  const openKeyword = () => {
+  const openKeyword = (type:string) => {
+    setModalType(type);
     setKeywordModal(true);
   }
   const closeKeyword = () => {
     setKeywordModal(false);
+  }
+
+  const searchKeywordSelect = (codeValue:string) => {
+    scrollTop();
+    setFeedCode(codeValue);
+    setFeedList([]);
+    setPage(1);
+    closeKeyword();
+  }
+
+  const addKeywordSelect = (codeValue:string) => {
+    setAddCode(codeValue);
+    closeKeyword();
   }
 
   return (
@@ -266,6 +311,14 @@ const Idea = () => {
                         onChange={(e) => setSubject(e.target.value)}
                         value={subject}
                       />
+                      <div className="flex mt-8 mb-8">
+                        <Input 
+                          placeholder="종목을 선택해주세요." 
+                          value={addCode} 
+                          disabled={true}
+                        />
+                        <Button onClick={() => openKeyword('add')}>검색</Button>
+                      </div>
                       <TagInput onChange={setTagList} ref={tagInputRef}/>
                       <AutoResizeTextarea value={contents} onChange={setContents}/>
                       <div className="flex justify-end mt-5">
@@ -314,11 +367,9 @@ const Idea = () => {
                   <Input 
                     placeholder="종목을 선택해주세요." 
                     value={feedCode} 
-                    onChange={(e) => setFeedCode(e.target.value)}
                     disabled={true}
-                    
                   />
-                  <Button onClick={openKeyword}>검색</Button>
+                  <Button onClick={() => openKeyword('search')}>검색</Button>
                 </div>
               ) : (<div></div>)}
               </div>
@@ -327,7 +378,7 @@ const Idea = () => {
         </div>
       </div>
       <Modal isOpen={keywordModal} onClose={closeKeyword}>
-       <CodeList/>
+       <CodeList onSearchSelect={searchKeywordSelect} onAddSelect={addKeywordSelect} type={modalType}/>
       </Modal>
       {/* 스크롤이 끝에 다다를 때 이 요소가 감지됨 */}
       <div id="scroll-trigger" style={{ height: '20px', backgroundColor: 'transparent' }} />

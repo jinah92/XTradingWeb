@@ -46,7 +46,7 @@ const TagInput = forwardRef(({ placeholder = '태그', onChange }: TagInputProps
         placeholder={placeholder}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={addTag}
-        className="mb-3 h-9 outline-none flex-grow p-2 w-full rounded-md border border-input dark:border-slate-300 bg-transparent"
+        className="mb-3 h-9 outline-none flex-grow p-2 w-full rounded-md border border-input dark:border-slate-300 bg-transparent dark:text-white"
       />
       <div className="flex items-center flex-wrap p-2">
         {tags.map((tag, index) => (

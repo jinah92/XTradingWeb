@@ -36,7 +36,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 
   return (
     <textarea
-      className='dark:bg-darkMode'
+      className='dark:bg-darkMode dark:text-white'
       ref={textareaRef}
       value={value}
       onChange={handleChange}
