@@ -3,8 +3,9 @@ import { useAuth } from "@/router/AuthContext";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export interface boardData {
+export interface BoardData {
   boardId: string;
   heroImgUrl: string;
   subject: string;
@@ -22,7 +23,7 @@ export interface boardData {
   youAreFollowing: boolean;
 };
 
-export type listReq = {
+export type ListReq = {
   page: number;
   pageSize: number;
   keyword?: string;
@@ -30,17 +31,40 @@ export type listReq = {
   type?: string;
 };
 
-export type boardAddReq = {
+export type BoardAddReq = {
   subject: string;
   contents: string;
   tagList: string[] | null;
 };
 
+type BoardDetail = {
+  cretInfo: {
+    userId: string;
+    name: string;
+    profileImg: string;
+    userGrade: string;
+    youAreFollowing: boolean;
+  }
+  boardId: string;
+  heroImgUrl: string;
+  subject: string;
+  contents: string;
+  cretDateTime: string;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  tagList: string[]
+  youCreate: boolean;
+  youLike: boolean;
+  youBlock: boolean;
+}
+
+
 // 아이디어 조회 API
 export const useIdeaList = () => {
   const { accessToken, isAuthenticated } = useAuth();
 
-  const ideaListApi = async (param: listReq) => {
+  const ideaListApi = async (param: ListReq) => {
     try {
       if (isAuthenticated) {
         const response = await axiosInstance.get("/api/boards", {
@@ -72,13 +96,22 @@ export const useIdeaAdd = () => {
   const navigate = useNavigate();
   const { accessToken, isAuthenticated } = useAuth();
   const { toast } = useToast();
-  const ideaAddApi = async (param: boardAddReq) => {
+  const ideaAddApi = async (param: BoardAddReq) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
       if(!isAuthenticated) {
         navigate("/login");
         return;
       }
+
+      if(param.contents == '') {
+        toast({description: '내용을 입력해주세요.', duration: 2000});
+      }
+      if(param.subject == '') {
+        toast({description: '제목을 입력해주세요.', duration: 2000});
+      }
+      /* 태그는 validation 체크 안함 */
+
       await axiosInstance.post(`/api/boards`, param, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -160,5 +193,44 @@ export const useIdeaLikeToggle = () => {
 
   return {
     ideaLikeToggleApi,
+  };
+};
+
+
+// 아이디어 상세 조회 API
+export const useIdeaDetail = () => {
+  const { toast } = useToast();
+  const [detailData, setDetailData] = useState<BoardDetail>();
+  const ideaDetailApi = async (boardId: string) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/boards/`+boardId,
+      );
+
+      setDetailData(response.data.result);
+      console.log(response.data.result);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "상세 조회 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    ideaDetailApi,
+    detailData
   };
 };

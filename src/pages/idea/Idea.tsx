@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useIdeaList, boardData, listReq, useIdeaAdd, boardAddReq } from "@/hooks/idea/ideaApi";
-import { useFeedList, feedData } from "@/hooks/idea/feedApi";
+import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from "@/hooks/idea/ideaApi";
+import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from "@/hooks/idea/feedApi";
 import IdeaCard from "@/components/card/IdeaCard";
 import FeedCard from "@/components/card/FeedCard";
 import { Input } from "@/components/ui/input";
@@ -22,8 +22,8 @@ const Idea = () => {
   const { feedListApi } = useFeedList();
 
   const { id } = useParams<{ id: string }>();
-  const [ideaList, setIdeaList] = useState<boardData[]>([]); // 받아온 데이터 저장
-  const [feedList, setFeedList] = useState<feedData[]>([]); // 받아온 데이터 저장
+  const [ideaList, setIdeaList] = useState<BoardData[]>([]); // 받아온 데이터 저장
+  const [feedList, setFeedList] = useState<FeedData[]>([]); // 받아온 데이터 저장
   const [page, setPage] = useState<number>(1);  // 현재 페이지 상태
   const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
   const [hasMore, setHasMore] = useState<boolean>(true);  // 더 불러올 데이터가 있는지 확인
@@ -39,13 +39,13 @@ const Idea = () => {
   const loadMoreData = useCallback(async (id:string|undefined) => {
     try {
       setLoading(true);
-      const param: listReq = {
+      const param: ListReq = {
         page: page,
         pageSize: 10,
       };
 
-      let newIdeaItems: boardData[] = [];
-      let newFeedItems: feedData[] = [];
+      let newIdeaItems: BoardData[] = [];
+      let newFeedItems: FeedData[] = [];
       
       // idea 조회
       if (id === undefined) {
@@ -201,6 +201,8 @@ const Idea = () => {
   }, [page]);
 
   /* 저장 로직 */
+  const { ideaAddApi } = useIdeaAdd();
+  const { feedAddApi } = useFeedAdd();
 
   // issue 저장 변수
   const [subject, setSubject] = useState("");
@@ -217,11 +219,9 @@ const Idea = () => {
     }
   };  
 
-  const { ideaAddApi } = useIdeaAdd();
-
   // idea 게시글 생성
   const ideaAdd = async () => {
-    const param: boardAddReq = {
+    const param: BoardAddReq = {
       subject: subject,
       contents: contents,
       tagList: tagList,
@@ -242,6 +242,37 @@ const Idea = () => {
       setSubject('');   
       setContents('');
       resetTagsInChild();
+      setTagList([]);
+    }
+  };
+
+
+  // idea 게시글 생성
+  const feedAdd = async () => {
+    const param: FeedAddReq = {
+      code: addCode,
+      subject: subject,
+      contents: contents,
+      tagList: tagList,
+    };
+
+    const addResult = await feedAddApi(param);
+    
+    if(addResult) {
+      setFeedList([]);  // 기존 조회 내용 제거
+
+      if(page === 1) {
+        loadMoreData(id);
+      } else {
+        setPage(1);
+      }
+
+      /* 입력란 초기화 */
+      setAddCode('');
+      setSubject('');   
+      setContents('');
+      resetTagsInChild();
+      setTagList([]);
     }
   };
 
@@ -269,6 +300,9 @@ const Idea = () => {
     setAddCode(codeValue);
     closeKeyword();
   }
+
+
+
 
   return (
     <>
@@ -322,7 +356,7 @@ const Idea = () => {
                       <TagInput onChange={setTagList} ref={tagInputRef}/>
                       <AutoResizeTextarea value={contents} onChange={setContents}/>
                       <div className="flex justify-end mt-5">
-                        <Button onClick={ideaAdd}>Post</Button>
+                        <Button onClick={feedAdd}>Post</Button>
                       </div>
                     </div>
                   </div>
@@ -332,7 +366,7 @@ const Idea = () => {
                 {id === undefined && ideaList && (
                   ideaList.length > 0 ? (
                   ideaList.map((item, index) => (
-                    <IdeaCard key={index} item={item} />
+                    <IdeaCard key={index} item={item}/>
                   ))
                   ) : (
                     <p>데이터가 없습니다.</p>
@@ -380,6 +414,7 @@ const Idea = () => {
       <Modal isOpen={keywordModal} onClose={closeKeyword}>
        <CodeList onSearchSelect={searchKeywordSelect} onAddSelect={addKeywordSelect} type={modalType}/>
       </Modal>
+      
       {/* 스크롤이 끝에 다다를 때 이 요소가 감지됨 */}
       <div id="scroll-trigger" style={{ height: '20px', backgroundColor: 'transparent' }} />
     </>

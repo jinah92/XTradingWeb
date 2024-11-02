@@ -1,6 +1,9 @@
 import axiosInstance from "@/configs/axios/axiosConfig";
 import { useAuth } from "@/router/AuthContext";
-import { listReq } from "@/hooks/idea/ideaApi";
+import { ListReq } from "@/hooks/idea/ideaApi";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../use-toast";
+import axios from "axios";
 
 // type feedListRes = {
 //   totalElements: number;
@@ -14,7 +17,7 @@ import { listReq } from "@/hooks/idea/ideaApi";
 //   pageSize: number;
 // };
 
-export interface feedData {
+export interface FeedData {
   feedId: string;
   coinId: string;
   coinCode: string;
@@ -36,11 +39,18 @@ export interface feedData {
   youAreFollowing: boolean;
 };
 
-// 아이디어 조회 API
+export type FeedAddReq = {
+  code: string;
+  subject: string;
+  contents: string;
+  tagList: string[] | null;
+};
+
+// 피드 조회 API
 export const useFeedList = () => {
   const { accessToken, isAuthenticated } = useAuth();
 
-  const feedListApi = async (param: listReq) => {
+  const feedListApi = async (param: ListReq) => {
     try {
       if (isAuthenticated === true) {
         const response = await axiosInstance.get("/api/feeds", {
@@ -64,5 +74,68 @@ export const useFeedList = () => {
 
   return {
     feedListApi,
+  };
+};
+
+
+// 아이디어 추가 API
+export const useFeedAdd = () => {
+  const navigate = useNavigate();
+  const { accessToken, isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  const feedAddApi = async (param: FeedAddReq) => {
+    try {
+      // 로그인 안했을 경우 로그인 화면으로 이동
+      if(!isAuthenticated) {
+        navigate("/login");
+        return;
+      }
+
+      if(param.code == '') {
+        toast({description: '종목을 입력해주세요.', duration: 2000});
+        return;
+      }
+      if(param.contents == '') {
+        toast({description: '내용을 입력해주세요.', duration: 2000});
+      }
+      if(param.subject == '') {
+        toast({description: '제목을 입력해주세요.', duration: 2000});
+      }
+      /* 태그는 validation 체크 안함 */
+
+      await axiosInstance.post(`/api/feeds`, param, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      toast({
+        description: '피드 등록되었습니다.',
+        duration: 2000,
+      });
+
+      return true;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "피드 등록 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    feedAddApi,
   };
 };

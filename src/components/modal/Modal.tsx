@@ -7,7 +7,7 @@ interface ModalProps {
   searchBar?: boolean;
 }
 
-const CoinListModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const CoinListModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       onClick={handleBackgroundClick}
     >
       <div
-        className="bg-white pt-8 pb-8 pr-6 pl-6 rounded-lg shadow-lg max-w-2xl w-full relative"
+        className="bg-white pt-8 pb-8 pr-6 pl-6 rounded-lg shadow-lg max-w-2xl w-full relative max-h-screen overflow-auto"
         onClick={handleContentClick}
       >
         <button
@@ -55,4 +55,4 @@ const CoinListModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default CoinListModal;
+export default Modal;
