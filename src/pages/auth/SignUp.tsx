@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PasswordInput from "@/components/ui/passwordInput";
-import { SignUpData, useSignUp } from "@/hooks/auth/authApi";
+import { SignUpData, useSignUp } from "@/hooks/auth/AuthApi";
 import CryptoJS from "crypto-js";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";

@@ -3,6 +3,7 @@ import { useAuth } from "@/router/AuthContext";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type FollowReq = {
   targetId: string;
@@ -17,10 +18,16 @@ export type FollowingRes = {
 
 // 팔로우하기 API
 export const useFollow = () => {
-  const { accessToken } = useAuth();
+  const { accessToken, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const followApi = async (param: FollowReq) => {
     try {
+      // 로그인 안했을 경우 로그인 화면으로 이동
+      if(!isAuthenticated) {
+        navigate("/login");
+        return;
+      }
       await axiosInstance.post(`/api/my-page/follow`, param, {
         headers: {
           Authorization: `Bearer ${accessToken}`,

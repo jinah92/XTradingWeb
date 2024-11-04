@@ -1,6 +1,6 @@
 import axiosInstance from "@/configs/axios/axiosConfig";
 import { useAuth } from "@/router/AuthContext";
-import { ListReq } from "@/hooks/idea/ideaApi";
+import { ListReq } from "@/hooks/idea/IdeaApi";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../use-toast";
 import axios from "axios";

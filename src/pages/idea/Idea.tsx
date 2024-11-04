@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from "@/hooks/idea/ideaApi";
-import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from "@/hooks/idea/feedApi";
+import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from "@/hooks/idea/IdeaApi";
+import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from "@/hooks/idea/FeedApi";
 import IdeaCard from "@/components/card/IdeaCard";
 import FeedCard from "@/components/card/FeedCard";
 import { Input } from "@/components/ui/input";

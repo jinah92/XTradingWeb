@@ -1,47 +1,32 @@
-import React, { useEffect } from "react";
-import { useIdeaDetail, useIdeaLikeToggle, useIdeaDelete } from "@/hooks/idea/IdeaApi";
+import React, { useEffect, useState } from "react";
+import { useIdeaDetail, useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
 import ProfileImage from "../ui/profileImg";
 import LoadingSpinner from "../LoadingSpinner";
 import DateDisplay from "../ui/dateDisplay";
-import { FollowReq, useFollow } from "@/hooks/mypage/MypageApi";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { FollowReq, useFollow } from "../../hooks/mypage/MypageApi";
 
 interface ParentComponentProps {
-  boardId : string;
-  onClose: () => void;
-  onViewTF: () => void;
+  boardId : string
 }
 
-const IdeaDetail = ({boardId, onClose, onViewTF}: ParentComponentProps) => {
+const IdeaDetail = ({boardId}: ParentComponentProps) => {
 
   const { detailData, ideaDetailApi } = useIdeaDetail();
   const { ideaLikeToggleApi } = useIdeaLikeToggle();
-  const { ideaDeleteApi } = useIdeaDelete();
   const { followApi } = useFollow();
 
   const likeToggle = async () => {
     const result = await ideaLikeToggleApi(boardId);
+
   };
 
   const followAction = () => {
-    if(detailData) {
-      const param: FollowReq = {
-        targetId: detailData.cretInfo.userId,
-      };
-      followApi(param);
-    }
+    const param: FollowReq = {
+      // targetId: item.cretId,
+    };
+    followApi(param);
   };
 
-  // 이슈 삭제
-  const issueDelete = async() => {
-    if(detailData) {
-      await ideaDeleteApi(detailData?.boardId);
-      onClose();
-      onViewTF();
-    }
-  }
-
-  // 상세 조회
   useEffect(() => {
     ideaDetailApi(boardId);
   }, [])
@@ -64,35 +49,15 @@ const IdeaDetail = ({boardId, onClose, onViewTF}: ParentComponentProps) => {
                   {detailData.cretInfo.userGrade}
                 </span>
                 <span className="text-xs ml-1 text-slate-400 font-medium">
-                  <DateDisplay isoString={detailData.cretDatetime}></DateDisplay>
+                  <DateDisplay isoString={detailData.cretDateTime}></DateDisplay>
                 </span>
               </div>
-              <div>
-                <button
-                  className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black mr-5"
-                  onClick={followAction}
-                >
-                  follow
-                </button>
-                {detailData.youCreate ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4">
-                      <path 
-                        d="M3.625 7.5C3.625 8.12132 3.12132 8.625 2.5 8.625C1.87868 8.625 1.375 8.12132 1.375 7.5C1.375 6.87868 1.87868 6.375 2.5 6.375C3.12132 6.375 3.625 6.87868 3.625 7.5ZM8.625 7.5C8.625 8.12132 8.12132 8.625 7.5 8.625C6.87868 8.625 6.375 8.12132 6.375 7.5C6.375 6.87868 6.87868 6.375 7.5 6.375C8.12132 6.375 8.625 6.87868 8.625 7.5ZM12.5 8.625C13.1213 8.625 13.625 8.12132 13.625 7.5C13.625 6.87868 13.1213 6.375 12.5 6.375C11.8787 6.375 11.375 6.87868 11.375 7.5C11.375 8.12132 11.8787 8.625 12.5 8.625Z" 
-                        fill="currentColor" 
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>수정하기</DropdownMenuItem>
-                      <DropdownMenuItem onClick={issueDelete}>삭제하기</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : null}
-              </div>
+              <button
+                className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black"
+                onClick={followAction}
+              >
+                follow
+              </button>
             </div>
             <div className="sm:mr-10 sm:ml-10">
               <div className="font-semibold mb-7 tracking-wide">
@@ -102,7 +67,7 @@ const IdeaDetail = ({boardId, onClose, onViewTF}: ParentComponentProps) => {
                 {detailData.contents}
               </div>
             </div>
-            <div className="text-yellow-500 font-semibold flex flex-wrap">
+            <div className="text-yellow-500 font-semibold flex">
               {detailData.tagList.length > 0 &&
                 detailData.tagList.map((tag, index) => (
                   <div className="rounded-lg p-1 mr-3 text-sm" key={index}>

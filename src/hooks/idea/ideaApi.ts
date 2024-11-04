@@ -49,7 +49,7 @@ type BoardDetail = {
   heroImgUrl: string;
   subject: string;
   contents: string;
-  cretDateTime: string;
+  cretDatetime: string;
   viewCount: number;
   likeCount: number;
   commentCount: number;
@@ -201,14 +201,25 @@ export const useIdeaLikeToggle = () => {
 export const useIdeaDetail = () => {
   const { toast } = useToast();
   const [detailData, setDetailData] = useState<BoardDetail>();
+  const { accessToken, isAuthenticated } = useAuth();
   const ideaDetailApi = async (boardId: string) => {
     try {
+      if (isAuthenticated) {
+        const response = await axiosInstance.get(
+          `/api/boards/`+boardId,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          }
+        );
+        setDetailData(response.data.result);
+      } else {
       const response = await axiosInstance.get(
         `/api/boards/`+boardId,
       );
-
       setDetailData(response.data.result);
-      console.log(response.data.result);
+    }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
@@ -232,5 +243,50 @@ export const useIdeaDetail = () => {
   return {
     ideaDetailApi,
     detailData
+  };
+};
+
+// 아이디어 삭제 API
+export const useIdeaDelete = () => {
+  const { toast } = useToast();
+  const { accessToken, isAuthenticated } = useAuth();
+  const ideaDeleteApi = async (boardId: string) => {
+    try {
+      if (isAuthenticated) {
+        await axiosInstance.delete(
+          `/api/boards/`+boardId,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          }
+        );
+        toast({
+          description: "삭제되었습니다.",
+          duration: 2000,
+        });
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "이슈 삭제 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    ideaDeleteApi
   };
 };

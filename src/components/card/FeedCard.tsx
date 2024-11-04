@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { feedData } from "@/hooks/idea/feedApi";
+import { FeedData } from "@/hooks/idea/FeedApi";
 import { Card } from "@/components/ui/card";
 import ProfileImage from "@/components/ui/profileImg";
 import EllipsisText from "../ui/ellipsisText";
 import DateDisplay from "../ui/dateDisplay";
-import { useIdeaLikeToggle } from "@/hooks/idea/ideaApi";
+import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
 // import { useFollow, FollowReq } from "@/hooks/mypage/mypageApi";
 
 interface CardItemProps {
-  item: feedData;
+  item: FeedData;
 }
 
 const IdeaCard: React.FC<CardItemProps> = ({ item }) => {

@@ -10,7 +10,7 @@ import {
   useMailSend,
   useMailAuth,
   MailAuthData,
-} from "@/hooks/auth/authApi";
+} from "@/hooks/auth/AuthApi";
 import { useToast } from "@/hooks/use-toast";
 import PasswordInput from "@/components/ui/passwordInput";
 import CryptoJS from "crypto-js";

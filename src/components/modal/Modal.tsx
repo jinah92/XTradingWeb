@@ -36,19 +36,19 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50"
       onClick={handleBackgroundClick}
     >
       <div
         className="bg-white pt-8 pb-8 pr-6 pl-6 rounded-lg shadow-lg max-w-2xl w-full relative max-h-screen overflow-auto"
         onClick={handleContentClick}
       >
-        <button
+        {/* <button
           onClick={onClose}
           className="absolute top-0 right-2 text-gray-500 hover:text-gray-700 text-2xl"
         >
           &times;
-        </button>
+        </button> */}
         {children}
       </div>
     </div>
