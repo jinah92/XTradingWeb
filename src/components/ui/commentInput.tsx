@@ -1,6 +1,6 @@
 import React from "react";
 
-const comment = () => {
+const commentInput = () => {
 
 
   return (
@@ -11,4 +11,4 @@ const comment = () => {
     </>
   );
 }
-export default comment;
+export default commentInput;

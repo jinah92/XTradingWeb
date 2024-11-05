@@ -20,7 +20,8 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
 
-  const likeToggle = async () => {
+  const likeToggle = async (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
     const result = await ideaLikeToggleApi(item.boardId);
 
     if (result) {
@@ -122,14 +123,14 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
                       src="/images/icons8-like-on.png"
                       alt="like"
                       className="w-5 mr-1 cursor-pointer"
-                      onClick={() => likeToggle()}
+                      onClick={likeToggle}
                     />
                   ) : (
                     <img
                       src="/images/icons8-like-off.png"
                       alt="like"
                       className="w-5 mr-1 cursor-pointer"
-                      onClick={() => likeToggle()}
+                      onClick={likeToggle}
                     />
                   )}
                   <span>{likeCount}</span>

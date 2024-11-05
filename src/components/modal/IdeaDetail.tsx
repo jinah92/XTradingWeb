@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+/* hook */
 import { useIdeaDetail, useIdeaLikeToggle, useIdeaDelete } from "@/hooks/idea/IdeaApi";
-import ProfileImage from "../ui/profileImg";
-import LoadingSpinner from "../LoadingSpinner";
-import DateDisplay from "../ui/dateDisplay";
-import { FollowReq, useFollow } from "@/hooks/mypage/MypageApi";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { FollowReq, useFollow, useUnfollow } from "@/hooks/mypage/MypageApi";
+/* component */
+import ProfileImage from "@/components/ui/profileImg";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import DateDisplay from "@/components/ui/dateDisplay";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface ParentComponentProps {
   boardId : string;
@@ -18,27 +20,55 @@ const IdeaDetail = ({boardId, onClose, onViewTF}: ParentComponentProps) => {
   const { ideaLikeToggleApi } = useIdeaLikeToggle();
   const { ideaDeleteApi } = useIdeaDelete();
   const { followApi } = useFollow();
+  const { unfollowApi } = useUnfollow();
 
+  /* 상태 관리 */
+  const [followTF, setFollowTF] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  /* 좋아요 토글 */
   const likeToggle = async () => {
     const result = await ideaLikeToggleApi(boardId);
+    if (result) {
+      setLiked((prevLiked:boolean) => {
+        // liked 상태에 따라 likeCount를 조정
+        const newLiked = !prevLiked;
+        setLikeCount(() => (newLiked ? likeCount + 1 : likeCount - 1));
+        return newLiked;
+      });
+    }
   };
 
-  const followAction = () => {
+  const followAction = async () => {
     if(detailData) {
       const param: FollowReq = {
         targetId: detailData.cretInfo.userId,
       };
-      followApi(param);
+      const result = await followApi(param);
+      if(result) {
+        setFollowTF(true);
+      }
+    }
+  };
+
+  const unfollowAction = async () => {
+    if(detailData) {
+      const param: FollowReq = {
+        targetId: detailData.cretInfo.userId,
+      };
+      const result = await unfollowApi(param);
+      if(result) {
+        setFollowTF(false);
+      }
     }
   };
 
   // 이슈 삭제
   const issueDelete = async() => {
-    if(detailData) {
-      await ideaDeleteApi(detailData?.boardId);
-      onClose();
-      onViewTF();
-    }
+    await ideaDeleteApi(boardId);
+    onClose();
+    onViewTF();
   }
 
   // 상세 조회
@@ -46,34 +76,52 @@ const IdeaDetail = ({boardId, onClose, onViewTF}: ParentComponentProps) => {
     ideaDetailApi(boardId);
   }, [])
 
+   // 상태 관리를 위해 조회 값 넣기
+   useEffect(() => {
+    if(detailData) {
+      setFollowTF(detailData?.cretInfo.youAreFollowing);
+      setLikeCount(detailData.likeCount);
+      setLiked(detailData.youLike);
+    }
+  }, [detailData])
+
   if (detailData === undefined) {
     return <LoadingSpinner />;
   }
 
   return (
-    <div className="flex w-full flex-col justify-center space-y-6">
+    <div className="flex w-full flex-col sm:justify-center justify-normal space-y-6 h-screen sm:h-auto">
         <div className="flex flex-col dark:bg-darkMode dark:text-white">
           <div className="p-4 flex flex-col justify-between text-left">
             <div className="mb-5 font-semibold flex items-center justify-between">
               <div className="flex items-center">
-                <div className="cursor-pointer flex items-center">
-                  <ProfileImage />
+                <ProfileImage />
+                <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
                   <span className="ml-3">{detailData.cretInfo.name}</span>
+                  <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
+                    {detailData.cretInfo.userGrade}
+                  </span>
                 </div>
-                <span className="p-1 ml-1 text-sm text-blue-500">
-                  {detailData.cretInfo.userGrade}
-                </span>
                 <span className="text-xs ml-1 text-slate-400 font-medium">
                   <DateDisplay isoString={detailData.cretDatetime}></DateDisplay>
                 </span>
               </div>
               <div>
-                <button
-                  className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black mr-5"
-                  onClick={followAction}
-                >
-                  follow
-                </button>
+                { followTF ? 
+                  (<button
+                    className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black mr-5"
+                    onClick={unfollowAction}
+                    >
+                    &#10004; follow
+                  </button>) 
+                  : 
+                  (<button
+                    className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black mr-5"
+                    onClick={followAction}
+                  >
+                    follow
+                  </button>) }
+                
                 {detailData.youCreate ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -128,22 +176,22 @@ const IdeaDetail = ({boardId, onClose, onViewTF}: ParentComponentProps) => {
                 <span>{detailData.commentCount}</span>
               </div>
               <div className="flex items-center">
-                {detailData.youLike ? (
+                {liked ? (
                   <img
                     src="/images/icons8-like-on.png"
                     alt="like"
                     className="w-5 mr-1 cursor-pointer"
-                    onClick={() => likeToggle()}
+                    onClick={likeToggle}
                   />
                 ) : (
                   <img
                     src="/images/icons8-like-off.png"
                     alt="like"
                     className="w-5 mr-1 cursor-pointer"
-                    onClick={() => likeToggle()}
+                    onClick={likeToggle}
                   />
                 )}
-                <span>{detailData.likeCount}</span> 
+                <span>{likeCount}</span> 
               </div>
             </div>
           </div>

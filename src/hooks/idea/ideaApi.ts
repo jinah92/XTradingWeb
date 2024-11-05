@@ -154,7 +154,7 @@ export const useIdeaLikeToggle = () => {
   const navigate = useNavigate();
   const { accessToken, isAuthenticated } = useAuth();
   const { toast } = useToast();
-  const ideaLikeToggleApi = async (param: string) => {
+  const ideaLikeToggleApi = async (boardId: string) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
       if(!isAuthenticated) {
@@ -163,7 +163,7 @@ export const useIdeaLikeToggle = () => {
       }
       await axiosInstance.post(
         `/api/boards/toggle-like`,
-        { boardId: param },
+        { boardId: boardId },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

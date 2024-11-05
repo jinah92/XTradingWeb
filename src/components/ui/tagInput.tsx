@@ -1,4 +1,5 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react';
+import { useToast } from "@/hooks/use-toast";
 
 interface TagInputProps {
   placeholder?: string;
@@ -8,6 +9,7 @@ interface TagInputProps {
 const TagInput = forwardRef(({ placeholder = '태그', onChange }: TagInputProps, ref) => {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
+  const { toast } = useToast();
 
   useImperativeHandle(ref, () => ({
     resetTags: () => {
@@ -20,13 +22,20 @@ const TagInput = forwardRef(({ placeholder = '태그', onChange }: TagInputProps
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       e.preventDefault();
       const trimmedValue = inputValue.trim();
+
+      if(trimmedValue.length > 10) {
+        toast({description: '10자 이내로 입력하세요.', duration: 2000});
+        setInputValue('');
+        return;
+      }
+
       if (!tags.includes(trimmedValue)) {
         const newTags = [...tags, trimmedValue];
         setTags(newTags);
         setInputValue('');
         onChange(newTags);
       } else {
-        alert(`"${trimmedValue}"는 이미 존재하는 태그입니다.`);
+        toast({description: `"${trimmedValue}"는 이미 존재하는 태그입니다.`, duration: 2000});
         setInputValue('');
       }
     }

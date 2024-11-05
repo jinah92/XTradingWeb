@@ -4,18 +4,7 @@ import { ListReq } from "@/hooks/idea/IdeaApi";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../use-toast";
 import axios from "axios";
-
-// type feedListRes = {
-//   totalElements: number;
-//   pageable: pageable;
-//   last: boolean;
-//   feedList: feedData[];
-// };
-
-// type pageable = {
-//   pageNumber: number;
-//   pageSize: number;
-// };
+import { useState } from "react";
 
 export interface FeedData {
   feedId: string;
@@ -45,6 +34,33 @@ export type FeedAddReq = {
   contents: string;
   tagList: string[] | null;
 };
+
+type FeedDetail = {
+  cretInfo: {
+    userId: string;
+    name: string;
+    profileImg: string;
+    userGrade: string;
+    youAreFollowing: boolean;
+  };
+  coinInfo: {
+    coinId: string;
+    code: string;
+    name: string;
+    imgUrl: string | null;
+  };
+  feedId: string;
+  subject: string;
+  contents: string;
+  createdDatetime: string;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  tagList: string[];
+  youCreate: boolean;
+  youLike: boolean;
+  youBlock: boolean;
+}
 
 // 피드 조회 API
 export const useFeedList = () => {
@@ -78,7 +94,7 @@ export const useFeedList = () => {
 };
 
 
-// 아이디어 추가 API
+// 피드 추가 API
 export const useFeedAdd = () => {
   const navigate = useNavigate();
   const { accessToken, isAuthenticated } = useAuth();
@@ -137,5 +153,99 @@ export const useFeedAdd = () => {
 
   return {
     feedAddApi,
+  };
+};
+
+// 피드 상세 조회 API
+export const useFeedDetail = () => {
+  const { toast } = useToast();
+  const [detailData, setDetailData] = useState<FeedDetail>();
+  const { accessToken, isAuthenticated } = useAuth();
+  const feedDetailApi = async (feedId: string) => {
+    try {
+      if (isAuthenticated) {
+        const response = await axiosInstance.get(
+          `/api/feeds/`+feedId,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          }
+        );
+        setDetailData(response.data.result);
+      } else {
+      const response = await axiosInstance.get(
+        `/api/feeds/`+feedId,
+      );
+      setDetailData(response.data.result);
+    }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "상세 조회 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    feedDetailApi,
+    detailData
+  };
+};
+
+// 피드 삭제 API
+export const useFeedDelete = () => {
+  const { toast } = useToast();
+  const { accessToken, isAuthenticated } = useAuth();
+  const feedDeleteApi = async (feedId: string) => {
+    try {
+      if (isAuthenticated) {
+        await axiosInstance.delete(
+          `/api/feeds/`+feedId,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          }
+        );
+        toast({
+          description: "삭제되었습니다.",
+          duration: 2000,
+        });
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "피드 삭제 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    feedDeleteApi
   };
 };

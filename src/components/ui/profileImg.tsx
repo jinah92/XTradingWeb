@@ -9,8 +9,7 @@ interface ProfileImageProps {
 
 const ProfileImage: React.FC<ProfileImageProps> = ({
   src,
-  alt = "Profile Image",
-  size = 40,
+  alt = "Profile Image"
 }) => {
   const { darkMode } = useTheme();
   const [imgSrc, setImgSrc] = useState<string>();
@@ -35,8 +34,6 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
       src={imgSrc} // src가 없을 경우 기본 이미지 사용
       alt={alt}
       style={{
-        width: `${size}px`,
-        height: `${size}px`,
         borderRadius: "50%", // 동그라미 형태로 만들기
         objectFit: "cover", // 이미지 비율 유지
       }}
