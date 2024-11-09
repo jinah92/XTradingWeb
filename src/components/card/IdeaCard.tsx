@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { BoardData } from "@/hooks/idea/IdeaApi";
+/* hook */
+import { BoardData, BoardDetail } from "@/hooks/idea/IdeaApi";
+import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
+/* components */
 import { Card } from "@/components/ui/card";
 import ProfileImage from "@/components/ui/profileImg";
-import EllipsisText from "../ui/ellipsisText";
-import DateDisplay from "../ui/dateDisplay";
-import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
+import EllipsisText from "@/components/ui/ellipsisText";
+import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
-import IdeaDetail from "../modal/IdeaDetail";
-// import { useFollow, FollowReq } from "@/hooks/mypage/mypageApi";
+import IdeaDetail from "@/components/modal/IdeaDetail";
+/* common */
+import { openModal, closeModal } from "@/common/Utils";
 
 interface CardItemProps {
   item: BoardData;
@@ -15,7 +18,10 @@ interface CardItemProps {
 
 const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const { ideaLikeToggleApi } = useIdeaLikeToggle();
-  // const { followApi } = useFollow();
+  const [subject, setSubject] = useState(item.subject);
+  const [contents, setContents] = useState(item.contents);
+  const [tagList, setTagList] = useState(item.tagList);
+  const [youBlock, setYouBlock] = useState(item.youBlock);
   const [liked, setLiked] = useState(item.youLike);
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
@@ -38,25 +44,32 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const [detailModal, setDetailModal] = useState<boolean>(false);
 
   const openDetail = () => {
+    openModal();
     setDetailModal(true);
   }
   const closeDetail = () => {
+    closeModal();
     setDetailModal(false);
   }
+
+  /* 상세 모달에서 변경사항 업데이트 (like) */
+  const detailLikeToggle = (likedData: boolean, likeCountData: number) => {
+    setLiked(likedData);
+    setLikeCount(likeCountData);
+  }
+
+  /* 상세 모달에서 변경사항 업데이트 (이슈 정보) */
+  const detailIssueData = (issueData:BoardDetail) => {
+    setSubject(issueData.subject);
+    setContents(issueData.contents);
+    setTagList(issueData.tagList);
+  }
+
 
   // 아이디어 게시글 삭제
   const ideaContentDel = () => {
     setViewTF(false);
   }
-
-  // const followAction = () => {
-  //   const param: FollowReq = {
-  //     targetId: item.cretId,
-  //   };
-  //   followApi(param);
-  // };
-
-  // TODO: 팔로우 기능 추가 확인 (만약 추가 시, 목록 조회 API에서 팔로우 여부 가져와야함)
 
   return (
     <>
@@ -77,24 +90,18 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
                     <DateDisplay isoString={item.cretDatetime}></DateDisplay>
                   </span>
                 </div>
-                {/* <button
-                  className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black"
-                  onClick={followAction}
-                >
-                  follow
-                </button> */}
               </div>
               <div className="cursor-pointer sm:mr-10 sm:ml-10">
                 <div className="font-semibold mb-7 tracking-wide">
-                  {item.subject}
+                  {subject}
                 </div>
                 <div className="mb-7 text-slate-500 dark:text-slate-300">
-                  <EllipsisText text={item.contents} maxLines={10}></EllipsisText>
+                  <EllipsisText text={contents} maxLines={10}></EllipsisText>
                 </div>
               </div>
               <div className="text-yellow-500 font-semibold flex flex-wrap">
-                {item.tagList.length > 0 &&
-                  item.tagList.map((tag, index) => (
+                {tagList.length > 0 &&
+                  tagList.map((tag, index) => (
                     <div className="rounded-lg p-1 mr-3 text-sm" key={index}>
                       #{tag}
                     </div>
@@ -143,7 +150,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
       
 
       <Modal isOpen={detailModal} onClose={closeDetail}>
-        <IdeaDetail boardId={item.boardId} onClose={closeDetail} onViewTF={ideaContentDel}/>
+        <IdeaDetail boardId={item.boardId} onClose={closeDetail} onViewTF={ideaContentDel} onLikeToggle={detailLikeToggle} onIssueData={detailIssueData}/>
       </Modal>
     </>
   );

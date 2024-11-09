@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       onClick={handleBackgroundClick}
     >
       <div
-        className="bg-white pt-8 pb-8 sm:pr-6 sm:pl-6 pl-2 rounded-lg shadow-lg max-w-2xl w-full relative max-h-screen overflow-auto"
+        className="bg-white sm:pr-6 sm:pl-6 pl-2 rounded-lg shadow-lg max-w-2xl w-full relative max-h-screen overflow-auto"
         onClick={handleContentClick}
       >
         {/* <button

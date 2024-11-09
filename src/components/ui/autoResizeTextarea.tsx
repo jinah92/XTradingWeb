@@ -36,7 +36,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 
   return (
     <textarea
-      className='dark:bg-darkMode dark:text-white'
+      className='dark:bg-darkMode text-sm dark:text-white'
       ref={textareaRef}
       value={value}
       onChange={handleChange}
@@ -48,7 +48,6 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
         border: '1px solid #ccc',
         borderRadius: '8px',
         padding: '12px',
-        fontSize: '16px',
         lineHeight: '1.5',
         resize: 'none',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',

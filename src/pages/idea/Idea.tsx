@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
+/* hook */
 import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from "@/hooks/idea/IdeaApi";
 import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from "@/hooks/feed/FeedApi";
+/* component */
 import IdeaCard from "@/components/card/IdeaCard";
 import FeedCard from "@/components/card/FeedCard";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,10 @@ import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
 import TagInput from "@/components/ui/tagInput";
 import { useAuth } from "@/router/AuthContext";
 import Modal from "@/components/modal/Modal";
+import { Button } from "@/components/ui/button";
 import CodeList from "@/components/modal/CodeList";
+/* common */
+import { openModal, closeModal } from "@/common/Utils";
 
 const Idea = () => {
 
@@ -281,10 +285,12 @@ const Idea = () => {
   const [modalType, setModalType] = useState<string>('');
 
   const openKeyword = (type:string) => {
+    openModal();
     setModalType(type);
     setKeywordModal(true);
   }
   const closeKeyword = () => {
+    closeModal();
     setKeywordModal(false);
   }
 
@@ -301,12 +307,9 @@ const Idea = () => {
     closeKeyword();
   }
 
-
-
-
   return (
     <>
-      <div className="flex flex-col items-center mt-10">
+      <div className="flex flex-col items-center sm:mt-10">
         <div className="sm:w-[1300px] min-w-80 rounded-lg">
           <div className="flex flex-col sm:flex-row">
             <div className="sm:w-3/12 sm:flex sm:block sm:mr-3 flex-row-reverse">

@@ -35,7 +35,16 @@ export type FeedAddReq = {
   tagList: string[] | null;
 };
 
-type FeedDetail = {
+export type FeedModifyReq = {
+  feedId: string;
+  code: string;
+  subject: string;
+  contents: string;
+  tagList: string[] | null;
+};
+
+
+export type FeedDetail = {
   cretInfo: {
     userId: string;
     name: string;
@@ -156,6 +165,53 @@ export const useFeedAdd = () => {
   };
 };
 
+// 좋아요 토글 API
+export const useFeedLikeToggle = () => {
+  const navigate = useNavigate();
+  const { accessToken, isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  const feedLikeToggleApi = async (feedId: string) => {
+    try {
+      // 로그인 안했을 경우 로그인 화면으로 이동
+      if(!isAuthenticated) {
+        navigate("/login");
+        return;
+      }
+      await axiosInstance.post(
+        `/api/feeds/toggle-like`,
+        { feedId: feedId },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      return true;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "좋아요 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    feedLikeToggleApi,
+  };
+};
+
 // 피드 상세 조회 API
 export const useFeedDetail = () => {
   const { toast } = useToast();
@@ -247,5 +303,57 @@ export const useFeedDelete = () => {
 
   return {
     feedDeleteApi
+  };
+};
+
+
+// 피드 수정 API
+export const useFeedModify = () => {
+  const { accessToken } = useAuth();
+  const { toast } = useToast();
+  const feedModifyApi = async (param: FeedModifyReq) => {
+    try {
+      if(param.contents == '') {
+        toast({description: '내용을 입력해주세요.', duration: 2000});
+      }
+      if(param.subject == '') {
+        toast({description: '제목을 입력해주세요.', duration: 2000});
+      }
+      /* 태그는 validation 체크 안함 */
+
+      await axiosInstance.put(`/api/feeds`, param, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      toast({
+        description: '피드 수정되었습니다.',
+        duration: 2000,
+      });
+
+      return true;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "피드 수정 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    feedModifyApi,
   };
 };

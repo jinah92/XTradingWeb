@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 /* hook */
 import { FeedData } from "@/hooks/feed/FeedApi";
-import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
-// import { useFollow, FollowReq } from "@/hooks/mypage/mypageApi";
+import { useFeedLikeToggle } from "@/hooks/feed/FeedApi";
 /* component */
 import { Card } from "@/components/ui/card";
 import ProfileImage from "@/components/ui/profileImg";
@@ -10,23 +9,25 @@ import EllipsisText from "@/components/ui/ellipsisText";
 import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
 import FeedDetail from "@/components/modal/FeedDetail";
+/* common */
+import { openModal, closeModal } from "@/common/Utils";
 
 interface CardItemProps {
   item: FeedData;
 }
 
 const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
-  const { ideaLikeToggleApi } = useIdeaLikeToggle();
+  const { feedLikeToggleApi } = useFeedLikeToggle();
   // const { followApi } = useFollow();
   const [liked, setLiked] = useState(item.youLike);
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
 
-  const likeToggle = async () => {
-    const result = await ideaLikeToggleApi(item.feedId);
+  const likeToggle = async (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    const result = await feedLikeToggleApi(item.feedId);
 
     if (result) {
-      console.log(likeCount);
       setLiked((prevLiked) => {
         // liked 상태에 따라 likeCount를 조정
         const newLiked = !prevLiked;
@@ -40,25 +41,24 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const [detailModal, setDetailModal] = useState<boolean>(false);
 
   const openDetail = () => {
+    openModal();
     setDetailModal(true);
   }
   const closeDetail = () => {
+    closeModal();
     setDetailModal(false);
   }
 
+  /* 상세 모달에서 좋아요 변경사항 업데이트 */
+  const detailLikeToggle = (likedData: boolean, likeCountData: number) => {
+    setLiked(likedData);
+    setLikeCount(likeCountData);
+  }
   
   // 피드 게시글 삭제
   const feedContentDel = () => {
     setViewTF(false);
   }
-  // const followAction = () => {
-  //   const param: FollowReq = {
-  //     targetId: item.cretId,
-  //   };
-  //   followApi(param);
-  // };
-
-  // TODO: 팔로우 기능 추가 확인 (만약 추가 시, 목록 조회 API에서 팔로우 여부 가져와야함)
 
   return (
     <>
@@ -69,7 +69,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
             <div className="mb-5 font-semibold flex items-center justify-between">
               <div className="flex items-center">
                 <div className="cursor-pointer flex items-center">
-                  <ProfileImage />
+                  <ProfileImage src={item.createdByProfilePicUrl}/>
                   <span className="ml-3">{item.createdByName}</span>
                 </div>
                 <span className="p-1 ml-1 text-sm text-blue-500">
@@ -79,12 +79,6 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
                   <DateDisplay isoString={item.createdDatetime}></DateDisplay>
                 </span>
               </div>
-              {/* <button
-                className="bg-yellow-400 rounded-lg font-semibold p-1.5 text-xs text-black"
-                onClick={followAction}
-              >
-                follow
-              </button> */}
             </div>
             <div className="cursor-pointer sm:mr-10 sm:ml-10">
               <div className="font-semibold mb-7 tracking-wide">
@@ -96,8 +90,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
             </div>
             <div className="mb-7">
               <div className="cursor-pointer flex items-center">
-                {/* <ProfileImage /> */}
-                <span className="ml-3 font-semibold text-sm border rounded-lg p-1 border-slate-900">{item.coinCode}</span>
+                <span className="sm:ml-10 font-semibold text-sm border rounded-lg p-1 border-slate-900">{item.coinCode}</span>
               </div>
             </div>
             <div className="text-yellow-500 font-semibold flex">
@@ -131,14 +124,14 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
                     src="/images/icons8-like-on.png"
                     alt="like"
                     className="w-5 mr-1 cursor-pointer"
-                    onClick={() => likeToggle()}
+                    onClick={likeToggle}
                   />
                 ) : (
                   <img
                     src="/images/icons8-like-off.png"
                     alt="like"
                     className="w-5 mr-1 cursor-pointer"
-                    onClick={() => likeToggle()}
+                    onClick={likeToggle}
                   />
                 )}
                 <span>{likeCount}</span>
@@ -150,7 +143,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
       ) : null}
 
       <Modal isOpen={detailModal} onClose={closeDetail}>
-        <FeedDetail feedId={item.feedId} onClose={closeDetail} onViewTF={feedContentDel}/>
+        <FeedDetail feedId={item.feedId} onClose={closeDetail} onViewTF={feedContentDel} onLikeToggle={detailLikeToggle}/>
       </Modal>
     </>
   );

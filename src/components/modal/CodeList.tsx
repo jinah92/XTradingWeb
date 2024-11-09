@@ -37,7 +37,7 @@ const { upbitMarketApi, dataList } = useUpbitMarket();
   }, [codeType])
 
   return (
-    <div className="flex w-full flex-col justify-center space-y-6">
+    <div className="flex w-full flex-col justify-center space-y-6 pt-3 pb-3">
         <div className="flex w-full justify-around">
           <Button className="w-3/12" onClick={()=>setCodeType("KRW")}>KRW</Button>
           <Button className="w-3/12" onClick={()=>setCodeType("BTC")}>BTC</Button>
