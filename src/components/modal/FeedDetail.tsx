@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 /* hook */
 import { useFeedDetail, useFeedDelete, useFeedLikeToggle } from "@/hooks/feed/FeedApi";
-import { useCommentList } from "@/hooks/comment/CommentApi";
+import { useFeedCommentList } from "@/hooks/comment/CommentApi";
 import { FollowReq, useFollow, useUnfollow } from "@/hooks/mypage/MypageApi";
 /* component */
 import ProfileImage from "@/components/ui/profileImg";
@@ -26,7 +26,7 @@ const IdeaDetail = ({feedId, onClose, onViewTF, onLikeToggle}: ParentComponentPr
   const { feedDeleteApi } = useFeedDelete();
   const { followApi } = useFollow();
   const { unfollowApi } = useUnfollow();
-  const { commentList, commentListApi } = useCommentList();
+  const { commentList, commentListApi } = useFeedCommentList();
 
   /* 상태 관리 */
   const [followTF, setFollowTF] = useState(false);
@@ -73,15 +73,15 @@ const IdeaDetail = ({feedId, onClose, onViewTF, onLikeToggle}: ParentComponentPr
   };
 
   
-  // 이슈 수정 화면 호출
+  // 피드 수정 화면 호출
   const feedModify = () => {
     setViewType('modify');
   }
 
-  // 이슈 조회 화면 호출
+  // 피드 조회 화면 호출
   const feedSearch = async () => {
     await feedDetailApi(feedId);
-    commentListApi(feedId);
+    await commentListApi(feedId);
     setViewType('search');
   }
   
@@ -223,11 +223,11 @@ const IdeaDetail = ({feedId, onClose, onViewTF, onLikeToggle}: ParentComponentPr
                 </div>
               </div>
               <div className="mt-5">
-                  <CommentInput targetId={detailData.feedId} targetType="BOARD" refresh={feedSearch}></CommentInput>
+                  <CommentInput targetId={detailData.feedId} targetType="FEED" refresh={feedSearch}></CommentInput>
 
                   <div>
                     {commentList.map((comment) => (
-                      <Comment comment={comment}></Comment>
+                      <Comment key={comment.commentId} comment={comment} refresh={feedSearch}></Comment>
                     ))}
                   </div>
                 </div>

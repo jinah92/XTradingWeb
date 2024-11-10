@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 /* hook */
 import { useIdeaDetail, useIdeaLikeToggle, useIdeaDelete, BoardDetail } from "@/hooks/idea/IdeaApi";
-import { useCommentList } from "@/hooks/comment/CommentApi";
+import { useBoardCommentList } from "@/hooks/comment/CommentApi";
 import { FollowReq, useFollow, useUnfollow } from "@/hooks/mypage/MypageApi";
 /* component */
 import ProfileImage from "@/components/ui/profileImg";
@@ -27,7 +27,7 @@ const IdeaDetail = ({boardId, onClose, onViewTF, onLikeToggle, onIssueData}: Par
   const { ideaDeleteApi } = useIdeaDelete();
   const { followApi } = useFollow();
   const { unfollowApi } = useUnfollow();
-  const { commentList, commentListApi } = useCommentList();
+  const { commentList, commentListApi } = useBoardCommentList();
 
   /* 상태 관리 */
   const [followTF, setFollowTF] = useState(false);
@@ -81,9 +81,9 @@ const IdeaDetail = ({boardId, onClose, onViewTF, onLikeToggle, onIssueData}: Par
   }
 
   // 아이디어 조회 화면 호출
-  const ideaSearch = () => {
-    ideaDetailApi(boardId);
-    commentListApi(boardId);
+  const ideaSearch = async () => {
+    await ideaDetailApi(boardId);
+    await commentListApi(boardId);
     setViewType('search');
   }
 
@@ -202,6 +202,14 @@ const IdeaDetail = ({boardId, onClose, onViewTF, onLikeToggle, onIssueData}: Par
                   />
                   <span>{detailData.viewCount}</span>
                 </div>
+                <div className="mr-3 flex items-center">
+                  <img
+                    src="/images/icons8-comment.png"
+                    alt="commentCount"
+                    className="w-5 mr-1"
+                  />
+                  <span>{detailData.commentCount}</span>
+                </div>
                 <div className="flex items-center">
                   {liked ? (
                     <img
@@ -226,7 +234,7 @@ const IdeaDetail = ({boardId, onClose, onViewTF, onLikeToggle, onIssueData}: Par
 
                 <div>
                   {commentList.map((comment) => (
-                    <Comment comment={comment}></Comment>
+                    <Comment key={comment.commentId} comment={comment} refresh={ideaSearch}></Comment>
                   ))}
                 </div>
               </div>

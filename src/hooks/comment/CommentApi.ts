@@ -5,13 +5,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export type commentAddReq = {
+export type CommentAddReq = {
   targetType: string;
   targetId: string;
   contents: string;
 }
 
-export type commentListRes = {
+export type CommentListRes = {
   commentId: string;
   targetId: string;
   targetType: string;
@@ -22,13 +22,13 @@ export type commentListRes = {
   createdByUserGrade: string;
   createdByProfilePicUrl: string;
   likeCount: number;
-  replyList: reply[];
+  replyList: Reply[];
   youCreate: boolean;
   youLiked: boolean;
   youBlock: boolean;
 }
 
-export type reply = {
+export type Reply = {
   commentId: string;
   targetId: string;
   targetType: string;
@@ -39,19 +39,23 @@ export type reply = {
   createdByUserGrade: string;
   createdByProfilePicUrl: string;
   likeCount: number;
-  replyList: reply[];
+  replyList: Reply[];
   youCreate: boolean;
   youLiked: boolean;
   youBlock: boolean;
 }
 
+export type CommentModifyReq = {
+  commentId: string;
+  contents: string;
+}
 
 
 // 댓글 등록 API
 export const useCommentAdd = () => {
   const { accessToken, isAuthenticated } = useAuth();
   const { toast } = useToast();
-  const commentAddApi = async (param: commentAddReq) => {
+  const commentAddApi = async (param: CommentAddReq) => {
     try {
       if(!isAuthenticated) {
         toast({
@@ -103,11 +107,10 @@ export const useCommentAdd = () => {
   };
 };
 
-
-// 댓글 조회 API
-export const useCommentList = () => {
+// 아이디어 댓글 조회 API
+export const useBoardCommentList = () => {
   const { accessToken, isAuthenticated } = useAuth();
-  const [commentList, setCommentList] = useState<commentListRes[]>([]);
+  const [commentList, setCommentList] = useState<CommentListRes[]>([]);
 
   const commentListApi = async (boardId:string) => {
     try {
@@ -133,6 +136,129 @@ export const useCommentList = () => {
     commentList
   };
 };
+
+// 피드 댓글 조회 API
+export const useFeedCommentList = () => {
+  const { accessToken, isAuthenticated } = useAuth();
+  const [commentList, setCommentList] = useState<CommentListRes[]>([]);
+
+  const commentListApi = async (boardId:string) => {
+    try {
+      if (isAuthenticated) {
+        const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setCommentList(response.data.result.commentList);
+      } else {
+        const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`);
+        setCommentList(response.data.result.commentList);
+      }
+    } catch (error) {
+      console.error("데이터 요청 오류:", error);
+      throw error;
+    }
+  };
+
+  return {
+    commentListApi,
+    commentList
+  };
+};
+
+
+// 댓글 수정 API
+export const useCommentModify = () => {
+  const { accessToken } = useAuth();
+  const { toast } = useToast();
+  const commentModifyApi = async (param: CommentModifyReq) => {
+    try {
+      if(param.contents == '') {
+        toast({description: '내용을 입력해주세요.', duration: 2000});
+        return;
+      }
+
+      await axiosInstance.put(`/api/comments`, param, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      toast({
+        description: '댓글 수정되었습니다.',
+        duration: 2000,
+      });
+
+      return true;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "댓글 수정 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    commentModifyApi,
+  };
+};
+
+// 댓글 삭제 API
+export const useCommentDelete = () => {
+  const { accessToken } = useAuth();
+  const { toast } = useToast();
+  const commentDeleteApi = async (commentId: string) => {
+    try {
+      await axiosInstance.delete(`/api/comments/`+commentId+`?sortType=NEWEST`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      toast({
+        description: '댓글 삭제되었습니다.',
+        duration: 2000,
+      });
+
+      return true;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "댓글 삭제 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    commentDeleteApi,
+  };
+};
+
 
 // 좋아요 토글 API
 export const useCommentLikeToggle = () => {
