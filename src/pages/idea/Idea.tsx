@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useIdeaList, boardData, listReq, useIdeaAdd, boardAddReq } from "@/hooks/idea/ideaApi";
-import { useFeedList, feedData } from "@/hooks/idea/feedApi";
+/* hook */
+import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from "@/hooks/idea/IdeaApi";
+import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from "@/hooks/feed/FeedApi";
+/* component */
 import IdeaCard from "@/components/card/IdeaCard";
 import FeedCard from "@/components/card/FeedCard";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,11 @@ import { useParams } from "react-router-dom";
 import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
 import TagInput from "@/components/ui/tagInput";
 import { useAuth } from "@/router/AuthContext";
+import Modal from "@/components/modal/Modal";
+import { Button } from "@/components/ui/button";
+import CodeList from "@/components/modal/CodeList";
+/* common */
+import { openModal, closeModal } from "@/common/Utils";
 
 const Idea = () => {
 
@@ -20,8 +26,8 @@ const Idea = () => {
   const { feedListApi } = useFeedList();
 
   const { id } = useParams<{ id: string }>();
-  const [ideaList, setIdeaList] = useState<boardData[]>([]); // 받아온 데이터 저장
-  const [feedList, setFeedList] = useState<feedData[]>([]); // 받아온 데이터 저장
+  const [ideaList, setIdeaList] = useState<BoardData[]>([]); // 받아온 데이터 저장
+  const [feedList, setFeedList] = useState<FeedData[]>([]); // 받아온 데이터 저장
   const [page, setPage] = useState<number>(1);  // 현재 페이지 상태
   const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
   const [hasMore, setHasMore] = useState<boolean>(true);  // 더 불러올 데이터가 있는지 확인
@@ -30,48 +36,64 @@ const Idea = () => {
   const [ideaKeyword, setIdeaKeyword] = useState<string>("");
   const [feedCode, setFeedCode] = useState<string>("");
 
+
+  // TODO : test로 조회 후 스크롤 내리고 다시 test 조회하면 무한스크롤이 안되는 현상
+
   // 데이터 요청 함수
   const loadMoreData = useCallback(async (id:string|undefined) => {
     try {
       setLoading(true);
-      const param: listReq = {
+      const param: ListReq = {
         page: page,
         pageSize: 10,
       };
 
-      let newIdeaItems: boardData[] = [];
-      let newFeedItems: feedData[] = [];
+      let newIdeaItems: BoardData[] = [];
+      let newFeedItems: FeedData[] = [];
       
       // idea 조회
       if (id === undefined) {
 
         if(ideaKeyword != "") {
           param.keyword = ideaKeyword;
-          if(page === 1){
-            setIdeaList([]);
-          }
         }
 
+        // 1Page에서 재조회 시
+        if(page === 1){
+          setIdeaList([]);
+        }
+        
         newIdeaItems = await ideaListApi(param);
         setIdeaList(prevData => [...prevData, ...newIdeaItems]);
 
-        // 더 이상 데이터가 없으면 hasMore를 false로 설정
+        // 이후 데이터 유무 확인
         if (newIdeaItems.length < 10) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
       } 
       // feed 조회
       else if (id === "feed") {
         param.type = "COIN";
+
         if(feedCode != "") {
           param.code = feedCode;
         }
+
+        // 1Page에서 재조회 시
+        if(page === 1){
+          setFeedList([]);
+        }
+
         newFeedItems = await feedListApi(param);
         setFeedList(prevData => [...prevData, ...newFeedItems]);
 
-        // 더 이상 데이터가 없으면 hasMore를 false로 설정
+        // 이후 데이터 유무 확인
         if (newFeedItems.length < 10) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
       }
       
@@ -80,7 +102,7 @@ const Idea = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, ideaKeyword]);
+  }, [page, ideaKeyword, feedCode]);
 
   // IntersectionObserver로 트리거 감지
   const observerCallback = useCallback(
@@ -142,7 +164,7 @@ const Idea = () => {
   const scrollTop = () => {
     window.scrollTo({
       top: 0,    // 스크롤을 위로 설정
-      behavior: 'smooth'  // 부드럽게 스크롤
+      // behavior: 'smooth'  부드럽게 스크롤
     });
   }
 
@@ -155,19 +177,24 @@ const Idea = () => {
       setFeedList([]);
       setUrlId(id); // URL ID 업데이트
       setIdeaKeyword("");
+      setFeedCode("");
+
+      // Post 입력 값 초기화
+      setSubject('');
+      setContents('');
+      resetTagsInChild();
       
-      // 페이지가 1이 아니면 페이지를 1로 설정하고 로딩을 멈춤
       if (page !== 1) {
         setPage(1);
         return;  // 페이지를 1로 설정한 후 즉시 loadMoreData 호출을 막음
       }
     }
-    
+
     // 페이지가 1일 때만 데이터를 로드
     if (page === 1 && urlId === id) {
       loadMoreData(id);
     }
-  }, [id, urlId, page]); // id, urlId, page가 변경될 때 실행
+  }, [id, urlId, page, feedCode]);
 
   // 페이지가 변경될 때 실행
   useEffect(() => { 
@@ -175,42 +202,114 @@ const Idea = () => {
     if (page !== 1) {
       loadMoreData(id);
     }
-  }, [page]); // page만 의존성으로 설정
+  }, [page]);
 
   /* 저장 로직 */
+  const { ideaAddApi } = useIdeaAdd();
+  const { feedAddApi } = useFeedAdd();
 
   // issue 저장 변수
   const [subject, setSubject] = useState("");
   const [contents, setContents] = useState("");
-  const [tagList, setTagList] = useState<string[] | null>(null);
+  const [tagList, setTagList] = useState<string[] | null>(null);   
+  const tagInputRef = useRef<{ resetTags: () => void }>(null); // TagInput의 resetTags에 접근할 ref
 
-  const { ideaAddApi } = useIdeaAdd();
+  // feed 저장 변수
+  const [addCode, setAddCode] = useState("");
+
+  const resetTagsInChild = () => {
+    if (tagInputRef.current) {
+      tagInputRef.current.resetTags(); // TagInput의 태그 리스트와 입력 필드 초기화
+    }
+  };  
 
   // idea 게시글 생성
   const ideaAdd = async () => {
-    const param: boardAddReq = {
+    const param: BoardAddReq = {
       subject: subject,
       contents: contents,
       tagList: tagList,
     };
 
-    await ideaAddApi(param);
+    const addResult = await ideaAddApi(param);
+    
+    if(addResult) {
+      setIdeaList([]);  // 기존 조회 내용 제거
+
+      if(page === 1) {
+        loadMoreData(id);
+      } else {
+        setPage(1);
+      }
+
+      /* 입력란 초기화 */
+      setSubject('');   
+      setContents('');
+      resetTagsInChild();
+      setTagList([]);
+    }
   };
 
 
-  // keyword Modal
-  const [keywordModal, setKeywordModal] = useState<boolean>(false);
+  // idea 게시글 생성
+  const feedAdd = async () => {
+    const param: FeedAddReq = {
+      code: addCode,
+      subject: subject,
+      contents: contents,
+      tagList: tagList,
+    };
 
-  const openKeyword = () => {
+    const addResult = await feedAddApi(param);
+    
+    if(addResult) {
+      setFeedList([]);  // 기존 조회 내용 제거
+
+      if(page === 1) {
+        loadMoreData(id);
+      } else {
+        setPage(1);
+      }
+
+      /* 입력란 초기화 */
+      setAddCode('');
+      setSubject('');   
+      setContents('');
+      resetTagsInChild();
+      setTagList([]);
+    }
+  };
+
+  // 검색 키워드 모달
+  const [keywordModal, setKeywordModal] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<string>('');
+
+  const openKeyword = (type:string) => {
+    openModal();
+    setModalType(type);
     setKeywordModal(true);
   }
   const closeKeyword = () => {
+    closeModal();
     setKeywordModal(false);
+  }
+
+  const searchKeywordSelect = (codeValue:string) => {
+    scrollTop();
+    setFeedCode(codeValue);
+    setFeedList([]);
+    setPage(1);
+    closeKeyword();
+  }
+
+  const addKeywordSelect = (codeValue:string) => {
+    setAddCode(codeValue);
+    closeKeyword();
   }
 
   return (
     <>
-      <div className="flex flex-col items-center mt-10">
+      <div className="flex flex-col items-center sm:mt-10">
         <div className="sm:w-[1300px] min-w-80 rounded-lg">
           <div className="flex flex-col sm:flex-row">
             <div className="sm:w-3/12 sm:flex sm:block sm:mr-3 flex-row-reverse">
@@ -220,27 +319,57 @@ const Idea = () => {
             </div>
             <div className="sm:w-6/12 w-screen border sm:rounded-2xl min-h-screen">
               <div className="pt-10">
-                {isAuthenticated ? (
+                {/* idea add */}
+                {id === undefined && ( isAuthenticated ? (
                   <div className="border-t border-b flex justify-center">
                     <div className="mt-8 mb-8 w-4/5">
                       <Input
                         placeholder="제목"
                         className="mb-5"
                         onChange={(e) => setSubject(e.target.value)}
+                        value={subject}
                       />
-                      <TagInput onChange={setTagList}/>
+                      <TagInput onChange={setTagList} ref={tagInputRef}/>
                       <AutoResizeTextarea value={contents} onChange={setContents}/>
                       <div className="flex justify-end mt-5">
                         <Button onClick={ideaAdd}>Post</Button>
                       </div>
                     </div>
                   </div>
-                ) : null}
+                ) : null)}
                 
+                {/* feed add */}
+                {id === 'feed' && ( isAuthenticated ? (
+                  <div className="border-t border-b flex justify-center">
+                    <div className="mt-8 mb-8 w-4/5">
+                      <Input
+                        placeholder="제목"
+                        className="mb-5"
+                        onChange={(e) => setSubject(e.target.value)}
+                        value={subject}
+                      />
+                      <div className="flex mt-8 mb-8">
+                        <Input 
+                          placeholder="종목을 선택해주세요." 
+                          value={addCode} 
+                          disabled={true}
+                        />
+                        <Button onClick={() => openKeyword('add')}>검색</Button>
+                      </div>
+                      <TagInput onChange={setTagList} ref={tagInputRef}/>
+                      <AutoResizeTextarea value={contents} onChange={setContents}/>
+                      <div className="flex justify-end mt-5">
+                        <Button onClick={feedAdd}>Post</Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : null)}
+
+
                 {id === undefined && ideaList && (
                   ideaList.length > 0 ? (
                   ideaList.map((item, index) => (
-                    <IdeaCard key={index} item={item} />
+                    <IdeaCard key={index} item={item}/>
                   ))
                   ) : (
                     <p>데이터가 없습니다.</p>
@@ -275,11 +404,9 @@ const Idea = () => {
                   <Input 
                     placeholder="종목을 선택해주세요." 
                     value={feedCode} 
-                    onChange={(e) => setFeedCode(e.target.value)}
                     disabled={true}
-                    
                   />
-                  <Button onClick={openKeyword}>검색</Button>
+                  <Button onClick={() => openKeyword('search')}>검색</Button>
                 </div>
               ) : (<div></div>)}
               </div>
@@ -287,6 +414,10 @@ const Idea = () => {
           </div>
         </div>
       </div>
+      <Modal isOpen={keywordModal} onClose={closeKeyword}>
+       <CodeList onSearchSelect={searchKeywordSelect} onAddSelect={addKeywordSelect} type={modalType}/>
+      </Modal>
+      
       {/* 스크롤이 끝에 다다를 때 이 요소가 감지됨 */}
       <div id="scroll-trigger" style={{ height: '20px', backgroundColor: 'transparent' }} />
     </>

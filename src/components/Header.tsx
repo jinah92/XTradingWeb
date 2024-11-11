@@ -12,10 +12,10 @@ const Header = () => {
     <header className="px-8 py-4 dark:bg-darkMode">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-8">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          <h1 className="text-lg sm:text-2xl font-semibold text-gray-900 dark:text-white">
             <Link to="/">XTrading</Link>
           </h1>
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8 text-sm sm:text-base">
             <Link
               to="/interest"
               className="font-semibold text-slate-900 dark:text-white"
@@ -36,7 +36,7 @@ const Header = () => {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center space-x-8">
+        <div className="hidden sm:flex items-center space-x-8 text-sm sm:text-base">
           {isAuthenticated ? (
             <span
               onClick={logout}
@@ -57,9 +57,9 @@ const Header = () => {
             className="p-2 text-black dark:bg-darkMode dark:text-white"
           >
             {darkMode ? (
-              <SunIcon className="h-6 w-6" />
+              <SunIcon className="h-5 sm:h-6 w-5 sm:w-6" />
             ) : (
-              <MoonIcon className="h-6 w-6" />
+              <MoonIcon className="h-5 sm:h-6 w-5 sm:w-6" />
             )}
           </button>
         </div>

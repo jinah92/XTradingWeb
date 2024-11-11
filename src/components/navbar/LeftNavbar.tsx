@@ -70,7 +70,7 @@ const LeftNavbar: React.FC = () => {
           {currentMenu.map((item) => (
             <a
               key={item.value}
-              className={`font-semibold text-left items-center px-6 py-3 rounded-lg mb-3 flex cursor-pointer ${
+              className={`font-semibold text-left items-center px-6 py-3 rounded-lg mb-3 flex cursor-pointer text-sm sm:text-base ${
                 isActive(item.value)
                   ? "text-slate-900 dark:text-white"
                   : "text-slate-500"
@@ -81,7 +81,7 @@ const LeftNavbar: React.FC = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="w-6 h-6"
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill={isActive(item.value) ? (darkMode ? "#ffffff" : "") : "#64748b"} 
                 >
                   {item.svg}

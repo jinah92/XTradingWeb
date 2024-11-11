@@ -100,8 +100,6 @@ export const useLoginGoogle = () => {
         `/api/auth/google/verify`,
         token
       );
-
-      console.log(response);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =

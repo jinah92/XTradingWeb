@@ -1,19 +1,24 @@
 import axiosInstance from "@/configs/axios/axiosConfig";
 import { useAuth } from "@/router/AuthContext";
-import axios from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { ListReq } from "@/hooks/idea/IdeaApi";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../use-toast";
+import axios from "axios";
 import { useState } from "react";
 
-export interface BoardData {
-  boardId: string;
-  heroImgUrl: string;
+export interface FeedData {
+  feedId: string;
+  coinId: string;
+  coinCode: string;
+  coinName: string;
+  coinImgUrl: string | null;
   subject: string;
   contents: string;
-  cretName: string;
-  cretUserGrade: string;
-  cretDatetime: string;
   cretId: string;
+  createdByName: string;
+  createdByProfilePicUrl: string;
+  createdDatetime: string;
+  createdByUserGrade: string;
   viewCount: number;
   likeCount: number;
   commentCount: number;
@@ -23,70 +28,68 @@ export interface BoardData {
   youAreFollowing: boolean;
 };
 
-export type ListReq = {
-  page: number;
-  pageSize: number;
-  keyword?: string;
-  code?: string;
-  type?: string;
-};
-
-export type BoardAddReq = {
+export type FeedAddReq = {
+  code: string;
   subject: string;
   contents: string;
   tagList: string[] | null;
 };
 
-export type BoardModifyReq = {
-  boardId: string;
+export type FeedModifyReq = {
+  feedId: string;
+  code: string;
   subject: string;
   contents: string;
   tagList: string[] | null;
 };
 
 
-export type BoardDetail = {
+export type FeedDetail = {
   cretInfo: {
     userId: string;
     name: string;
     profileImg: string;
     userGrade: string;
     youAreFollowing: boolean;
-  }
-  boardId: string;
-  heroImgUrl: string;
+  };
+  coinInfo: {
+    coinId: string;
+    code: string;
+    name: string;
+    imgUrl: string | null;
+  };
+  feedId: string;
   subject: string;
   contents: string;
-  cretDatetime: string;
+  createdDatetime: string;
   viewCount: number;
   likeCount: number;
   commentCount: number;
-  tagList: string[]
+  tagList: string[];
   youCreate: boolean;
   youLike: boolean;
   youBlock: boolean;
 }
 
-
-// 아이디어 조회 API
-export const useIdeaList = () => {
+// 피드 조회 API
+export const useFeedList = () => {
   const { accessToken, isAuthenticated } = useAuth();
 
-  const ideaListApi = async (param: ListReq) => {
+  const feedListApi = async (param: ListReq) => {
     try {
-      if (isAuthenticated) {
-        const response = await axiosInstance.get("/api/boards", {
+      if (isAuthenticated === true) {
+        const response = await axiosInstance.get("/api/feeds", {
           params: param,
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        return response.data.result.boardList;
+        return response.data.result.feedList;
       } else {
-        const response = await axiosInstance.get(`/api/boards`, {
+        const response = await axiosInstance.get(`/api/feeds`, {
           params: param,
         });
-        return response.data.result.boardList;
+        return response.data.result.feedList;
       }
     } catch (error) {
       console.error("데이터 요청 오류:", error);
@@ -95,16 +98,17 @@ export const useIdeaList = () => {
   };
 
   return {
-    ideaListApi
+    feedListApi,
   };
 };
 
-// 아이디어 추가 API
-export const useIdeaAdd = () => {
+
+// 피드 추가 API
+export const useFeedAdd = () => {
   const navigate = useNavigate();
   const { accessToken, isAuthenticated } = useAuth();
   const { toast } = useToast();
-  const ideaAddApi = async (param: BoardAddReq) => {
+  const feedAddApi = async (param: FeedAddReq) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
       if(!isAuthenticated) {
@@ -112,6 +116,10 @@ export const useIdeaAdd = () => {
         return;
       }
 
+      if(param.code == '') {
+        toast({description: '종목을 입력해주세요.', duration: 2000});
+        return;
+      }
       if(param.contents == '') {
         toast({description: '내용을 입력해주세요.', duration: 2000});
       }
@@ -120,14 +128,14 @@ export const useIdeaAdd = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.post(`/api/boards`, param, {
+      await axiosInstance.post(`/api/feeds`, param, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
       toast({
-        description: '아이디어 등록되었습니다.',
+        description: '피드 등록되었습니다.',
         duration: 2000,
       });
 
@@ -136,7 +144,7 @@ export const useIdeaAdd = () => {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
         error.response.data?.result?.message ||
-        "아이디어 등록 중 오류가 발생했습니다.";
+        "피드 등록 중 오류가 발생했습니다.";
         toast({
           description: errorMessage,
           duration: 2000,
@@ -153,16 +161,16 @@ export const useIdeaAdd = () => {
   };
 
   return {
-    ideaAddApi,
+    feedAddApi,
   };
 };
 
 // 좋아요 토글 API
-export const useIdeaLikeToggle = () => {
+export const useFeedLikeToggle = () => {
   const navigate = useNavigate();
   const { accessToken, isAuthenticated } = useAuth();
   const { toast } = useToast();
-  const ideaLikeToggleApi = async (boardId: string) => {
+  const feedLikeToggleApi = async (feedId: string) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
       if(!isAuthenticated) {
@@ -170,8 +178,8 @@ export const useIdeaLikeToggle = () => {
         return;
       }
       await axiosInstance.post(
-        `/api/boards/toggle-like`,
-        { boardId: boardId },
+        `/api/feeds/toggle-like`,
+        { feedId: feedId },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -200,21 +208,20 @@ export const useIdeaLikeToggle = () => {
   };
 
   return {
-    ideaLikeToggleApi,
+    feedLikeToggleApi,
   };
 };
 
-
-// 아이디어 상세 조회 API
-export const useIdeaDetail = () => {
+// 피드 상세 조회 API
+export const useFeedDetail = () => {
   const { toast } = useToast();
-  const [detailData, setDetailData] = useState<BoardDetail>();
+  const [detailData, setDetailData] = useState<FeedDetail>();
   const { accessToken, isAuthenticated } = useAuth();
-  const ideaDetailApi = async (boardId: string) => {
+  const feedDetailApi = async (feedId: string) => {
     try {
       if (isAuthenticated) {
         const response = await axiosInstance.get(
-          `/api/boards/`+boardId,
+          `/api/feeds/`+feedId,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -224,7 +231,7 @@ export const useIdeaDetail = () => {
         setDetailData(response.data.result);
       } else {
       const response = await axiosInstance.get(
-        `/api/boards/`+boardId,
+        `/api/feeds/`+feedId,
       );
       setDetailData(response.data.result);
     }
@@ -249,20 +256,20 @@ export const useIdeaDetail = () => {
   };
 
   return {
-    ideaDetailApi,
+    feedDetailApi,
     detailData
   };
 };
 
-// 아이디어 삭제 API
-export const useIdeaDelete = () => {
+// 피드 삭제 API
+export const useFeedDelete = () => {
   const { toast } = useToast();
   const { accessToken, isAuthenticated } = useAuth();
-  const ideaDeleteApi = async (boardId: string) => {
+  const feedDeleteApi = async (feedId: string) => {
     try {
       if (isAuthenticated) {
         await axiosInstance.delete(
-          `/api/boards/`+boardId,
+          `/api/feeds/`+feedId,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -278,7 +285,7 @@ export const useIdeaDelete = () => {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
         error.response.data?.result?.message ||
-        "이슈 삭제 중 오류가 발생했습니다.";
+        "피드 삭제 중 오류가 발생했습니다.";
         toast({
           description: errorMessage,
           duration: 2000,
@@ -295,15 +302,16 @@ export const useIdeaDelete = () => {
   };
 
   return {
-    ideaDeleteApi
+    feedDeleteApi
   };
 };
 
-// 아이디어 수정 API
-export const useIdeaModify = () => {
+
+// 피드 수정 API
+export const useFeedModify = () => {
   const { accessToken } = useAuth();
   const { toast } = useToast();
-  const ideaModifyApi = async (param: BoardModifyReq) => {
+  const feedModifyApi = async (param: FeedModifyReq) => {
     try {
       if(param.contents == '') {
         toast({description: '내용을 입력해주세요.', duration: 2000});
@@ -313,14 +321,14 @@ export const useIdeaModify = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.put(`/api/boards`, param, {
+      await axiosInstance.put(`/api/feeds`, param, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
       toast({
-        description: '아이디어 수정되었습니다.',
+        description: '피드 수정되었습니다.',
         duration: 2000,
       });
 
@@ -329,7 +337,7 @@ export const useIdeaModify = () => {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
         error.response.data?.result?.message ||
-        "아이디어 수정 중 오류가 발생했습니다.";
+        "피드 수정 중 오류가 발생했습니다.";
         toast({
           description: errorMessage,
           duration: 2000,
@@ -346,6 +354,6 @@ export const useIdeaModify = () => {
   };
 
   return {
-    ideaModifyApi,
+    feedModifyApi,
   };
 };
