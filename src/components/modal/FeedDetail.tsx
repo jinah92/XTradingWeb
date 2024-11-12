@@ -130,7 +130,7 @@ const IdeaDetail = ({feedId, onClose, onViewTF, onLikeToggle}: ParentComponentPr
                   <ProfileImage src={detailData.cretInfo.profileImg}/>
                   <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
                     <span className="ml-3">{detailData.cretInfo.name}</span>
-                    <span className="p-1 ml-1 text-sm text-blue-500">
+                    <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
                       {detailData.cretInfo.userGrade}
                     </span>
                   </div>

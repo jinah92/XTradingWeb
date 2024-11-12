@@ -53,7 +53,7 @@ export type CommentModifyReq = {
 
 // 댓글 등록 API
 export const useCommentAdd = () => {
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const commentAddApi = async (param: CommentAddReq) => {
     try {
@@ -70,11 +70,7 @@ export const useCommentAdd = () => {
         return;
       }
 
-      await axiosInstance.post(`/api/comments`, param, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.post(`/api/comments`, param);
 
       toast({
         description: '댓글 등록되었습니다.',
@@ -109,22 +105,12 @@ export const useCommentAdd = () => {
 
 // 아이디어 댓글 조회 API
 export const useBoardCommentList = () => {
-  const { accessToken, isAuthenticated } = useAuth();
   const [commentList, setCommentList] = useState<CommentListRes[]>([]);
 
   const commentListApi = async (boardId:string) => {
     try {
-      if (isAuthenticated) {
-        const response = await axiosInstance.get(`/api/boards/${boardId}/comments`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setCommentList(response.data.result.commentList);
-      } else {
-        const response = await axiosInstance.get(`/api/boards/${boardId}/comments`);
-        setCommentList(response.data.result.commentList);
-      }
+      const response = await axiosInstance.get(`/api/boards/${boardId}/comments`);
+      setCommentList(response.data.result.commentList);
     } catch (error) {
       console.error("데이터 요청 오류:", error);
       throw error;
@@ -139,22 +125,12 @@ export const useBoardCommentList = () => {
 
 // 피드 댓글 조회 API
 export const useFeedCommentList = () => {
-  const { accessToken, isAuthenticated } = useAuth();
   const [commentList, setCommentList] = useState<CommentListRes[]>([]);
 
   const commentListApi = async (boardId:string) => {
     try {
-      if (isAuthenticated) {
-        const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setCommentList(response.data.result.commentList);
-      } else {
-        const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`);
-        setCommentList(response.data.result.commentList);
-      }
+      const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`);
+      setCommentList(response.data.result.commentList);
     } catch (error) {
       console.error("데이터 요청 오류:", error);
       throw error;
@@ -170,7 +146,6 @@ export const useFeedCommentList = () => {
 
 // 댓글 수정 API
 export const useCommentModify = () => {
-  const { accessToken } = useAuth();
   const { toast } = useToast();
   const commentModifyApi = async (param: CommentModifyReq) => {
     try {
@@ -179,11 +154,7 @@ export const useCommentModify = () => {
         return;
       }
 
-      await axiosInstance.put(`/api/comments`, param, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.put(`/api/comments`, param);
 
       toast({
         description: '댓글 수정되었습니다.',
@@ -218,15 +189,10 @@ export const useCommentModify = () => {
 
 // 댓글 삭제 API
 export const useCommentDelete = () => {
-  const { accessToken } = useAuth();
   const { toast } = useToast();
   const commentDeleteApi = async (commentId: string) => {
     try {
-      await axiosInstance.delete(`/api/comments/`+commentId+`?sortType=NEWEST`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.delete(`/api/comments/`+commentId+`?sortType=NEWEST`);
 
       toast({
         description: '댓글 삭제되었습니다.',
@@ -263,7 +229,7 @@ export const useCommentDelete = () => {
 // 좋아요 토글 API
 export const useCommentLikeToggle = () => {
   const navigate = useNavigate();
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const commentLikeToggleApi = async (commentId: string) => {
     try {
@@ -272,15 +238,7 @@ export const useCommentLikeToggle = () => {
         navigate("/login");
         return;
       }
-      await axiosInstance.post(
-        `/api/comments/toggle-like`,
-        { commentId: commentId },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      await axiosInstance.post(`/api/comments/toggle-like`,{ commentId: commentId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
