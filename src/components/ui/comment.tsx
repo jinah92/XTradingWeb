@@ -6,6 +6,7 @@ import ProfileImage from "@/components/ui/profileImg";
 import DateDisplay from "@/components/ui/dateDisplay";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import CommentInput from "@/components/ui/commentInput";
+import Avatar from "@/components/ui/avartar";
 
 interface ParentComponentProps {
   comment: CommentListRes;
@@ -64,7 +65,11 @@ const Comment = ({ comment, refresh = () => {} }:ParentComponentProps) => {
         <div key={comment.commentId}>
           <div className="flex justify-between">
             <div className="flex items-start sm:items-center">
-              <ProfileImage src={comment.createdByProfilePicUrl}/>
+              {comment.createdByProfilePicUrl ? 
+                (<ProfileImage src={comment.createdByProfilePicUrl}/>) 
+                  : 
+                  (<Avatar id={comment.createdBy}/>)
+                }
               <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs font-semibold">
                 <span className="ml-3">{comment.createdByName}</span>
                 <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
@@ -150,7 +155,11 @@ const Comment = ({ comment, refresh = () => {} }:ParentComponentProps) => {
                   <div key={index} className="mt-5">
                     <div className="flex justify-between">
                       <div className="flex items-start sm:items-center">
-                        <ProfileImage src={reply.createdByProfilePicUrl}/>
+                        {reply.createdByProfilePicUrl ? 
+                          (<ProfileImage src={reply.createdByProfilePicUrl}/>) 
+                          : 
+                          (<Avatar id={reply.createdBy}/>)
+                        }
                         <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs font-semibold">
                           <span className="ml-3">{reply.createdByName}</span>
                           <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">

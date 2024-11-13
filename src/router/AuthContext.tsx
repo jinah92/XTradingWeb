@@ -7,16 +7,22 @@ import React, {
   useEffect,
 } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { getCookie, setCookie } from "../common/Cookie";
 
 interface AuthContextType {
   isAuthenticated: boolean | null;
   accessToken: string | null;
   refreshToken: string | null;
+  email: string | null;
+  userId: string | null;
   login: (
     email: string,
     userId: string,
     accessToken: string,
-    refreshTokenKey: string
+    refreshToken: string
+  ) => void;
+  loginRefresh: (
+    accessToken: string,
   ) => void;
   logout: () => void;
 }
@@ -27,20 +33,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   useEffect(() => {
     // 비동기 함수로 로그인 상태를 체크
     const checkAuth = async () => {
-      const loginEmail = localStorage.getItem("email");
-      if (loginEmail) {
+      const userId = getCookie("userId");
+      if (userId) {
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
       }
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
+      const userAccessToken = getCookie("accessToken");
+      if (userAccessToken) {
         setAccessToken(accessToken);
       } else {
         setAccessToken(null);
@@ -53,22 +61,43 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     email: string,
     userId: string,
     accessToken: string,
-    refreshTokenKey: string
+    refreshToken: string
   ) => {
-    localStorage.setItem("email", email);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshTokenKey", refreshTokenKey);
+    setEmail(email);
+    setUserId(userId);
     setAccessToken(accessToken);
-    setRefreshToken(refreshTokenKey);
+    setRefreshToken(refreshToken);
     setIsAuthenticated(true);
+    setCookie('email', email, {
+      path: '/',
+      secure: '/',
+    });
+    setCookie('userId', userId, {
+      path: '/',
+      secure: '/',
+    });
+    setCookie('accessToken', accessToken, {
+      path: '/',
+      secure: '/',
+    });
+    setCookie('refreshToken', refreshToken, {
+      path: '/',
+      secure: '/',
+    });
   };
 
+  const loginRefresh = (newAccessToken: string) => {
+    setAccessToken(newAccessToken);
+    setCookie('accessToken', newAccessToken, {
+      path: '/',
+      secure: '/',
+    });
+  };
+
+
+
   const logout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshTokenKey");
+    localStorage.clear();
     setIsAuthenticated(false);
   };
 
@@ -78,7 +107,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, accessToken, refreshToken, login, logout }}
+      value={{ isAuthenticated, accessToken, refreshToken, userId, email, login, loginRefresh, logout }}
     >
       {children}
     </AuthContext.Provider>

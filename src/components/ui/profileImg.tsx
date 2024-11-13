@@ -14,18 +14,10 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
   const { darkMode } = useTheme();
   const [imgSrc, setImgSrc] = useState<string>();
 
-  const defaultBlackImage = "/images/icons8-user-black.png";
-  const defaultWhiteImage = "/images/icons8-user-white.png";
-
   useEffect(() => {
     if (src != null && src != "") {
       setImgSrc(src);
       return;
-    }
-    if (darkMode === true) {
-      setImgSrc(defaultWhiteImage);
-    } else {
-      setImgSrc(defaultBlackImage);
     }
   }, [darkMode, src]);
 

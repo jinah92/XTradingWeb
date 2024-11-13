@@ -21,6 +21,61 @@ export type nickNameReq = {
   nickName: string;
 }
 
+type memberInfoRes = {
+  email: string;
+  nickName: string;
+  profilePicUrl: string;
+  userGrade: string;
+  reputationScore: number;
+  boardCount: number;
+  followerCount: number;
+  followingCount: number;
+  youAreFollowing: boolean;
+  youBlock: boolean;
+}
+
+// 개인정보 조회 API
+export const useMemberInfo = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [memberInfo, setMemberInfo] = useState<memberInfoRes>();
+  const memberInfoApi = async (userId: string) => {
+    try {
+      // 로그인 안했을 경우 로그인 화면으로 이동
+      if(!isAuthenticated) {
+        navigate("/login");
+        return;
+      }
+      const response = await axiosInstance.get(`/api/members/${userId}/base-info`);
+      setMemberInfo(response.data.result);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+          error.response.data?.result?.message ||
+          "개인정보 조회 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    memberInfoApi,
+    memberInfo
+  };
+};
+
+
 // 팔로우하기 API
 export const useFollow = () => {
   const { isAuthenticated } = useAuth();

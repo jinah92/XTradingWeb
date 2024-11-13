@@ -80,7 +80,6 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
               <div className="mb-5 font-semibold flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="cursor-pointer flex items-center">
-                    <ProfileImage />
                     <span className="ml-3">{item.cretName}</span>
                   </div>
                   <span className="p-1 ml-1 text-sm text-blue-500">

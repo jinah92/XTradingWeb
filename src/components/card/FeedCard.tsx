@@ -9,6 +9,7 @@ import EllipsisText from "@/components/ui/ellipsisText";
 import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
 import FeedDetail from "@/components/modal/FeedDetail";
+import Avatar from "@/components/ui/avartar";
 /* common */
 import { openModal, closeModal } from "@/common/Utils";
 
@@ -69,7 +70,11 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
             <div className="mb-5 font-semibold flex items-center justify-between">
               <div className="flex items-center">
                 <div className="cursor-pointer flex items-center">
-                  <ProfileImage src={item.createdByProfilePicUrl}/>
+                  {item.createdByProfilePicUrl ? 
+                    (<ProfileImage src={item.createdByProfilePicUrl}/>) 
+                    : 
+                    (<Avatar id={item.cretId}/>)
+                  }
                   <span className="ml-3">{item.createdByName}</span>
                 </div>
                 <span className="p-1 ml-1 text-sm text-blue-500">

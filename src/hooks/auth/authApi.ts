@@ -62,7 +62,8 @@ export const useLogin = () => {
         login(
           response.data.result.userRes.email,
           response.data.result.userRes.userId,
-          response.data.result.accessToken,
+          // response.data.result.accessToken,
+          'eyJhbGciOiJIUzI1NiJ9.eyJhdXRvbG9naW4iOiJZRVMiLCJwcm9maWxlUGljVXJsIjoiIiwibmlja05hbWUiOiLthYzsiqTtirgiLCJhdXRoVHlwZSI6IkVNQUlMIiwidHlwZSI6IkFDQ0VTUyIsInVzZXJJZCI6IjViZTdjZTQyLWUwYzktNDc1My1iODQ1LTYxMDliMGQ5MDA5MSIsImVtYWlsIjoicml2ZW4zMDY5QGdtYWlsLmNvbSIsImlhdCI6MTczMTM4NTE5MiwiZXhwIjoxNzMxMzkyMzkyfQ.vaSkUyrDeSoF-XFhdcg_uwBftomYUYG76Mk4fxX2i5M',
           response.data.result.refreshTokenKey
         );
         navigate("/");
