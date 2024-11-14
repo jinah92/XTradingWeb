@@ -128,12 +128,12 @@ const IdeaDetail = ({feedId, onClose, onViewTF, onLikeToggle}: ParentComponentPr
             <div className="p-4 flex flex-col justify-between text-left">
               <div className="mb-5 font-semibold flex items-start sm:items-center justify-between">
                 <div className="cursor-pointer flex items-center">
-                  {detailData.cretInfo.profileImg ? 
-                    (<ProfileImage src={detailData.cretInfo.profileImg}/>) 
-                    : 
-                    (<Avatar id={detailData.cretInfo.userId}/>)
-                  }
                   <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
+                    {detailData.cretInfo.profileImg ? 
+                      (<ProfileImage src={detailData.cretInfo.profileImg}/>) 
+                      : 
+                      (<Avatar id={detailData.cretInfo.userId}/>)
+                    }
                     <span className="ml-3">{detailData.cretInfo.name}</span>
                     <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
                       {detailData.cretInfo.userGrade}

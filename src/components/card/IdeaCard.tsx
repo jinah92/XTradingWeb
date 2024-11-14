@@ -4,13 +4,13 @@ import { BoardData, BoardDetail } from "@/hooks/idea/IdeaApi";
 import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
 /* components */
 import { Card } from "@/components/ui/card";
-import ProfileImage from "@/components/ui/profileImg";
 import EllipsisText from "@/components/ui/ellipsisText";
 import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
 import IdeaDetail from "@/components/modal/IdeaDetail";
 /* common */
 import { openModal, closeModal } from "@/common/Utils";
+import { useNavigate } from "react-router-dom";
 
 interface CardItemProps {
   item: BoardData;
@@ -25,6 +25,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const [liked, setLiked] = useState(item.youLike);
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
+  const navigate = useNavigate();
 
   const likeToggle = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -65,6 +66,13 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
     setTagList(issueData.tagList);
   }
 
+  // 개인정보로 이동
+  const moveMyPage = (createId: string, event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
+    navigate("/mypage", { state: { id: createId } });
+  }
+  
 
   // 아이디어 게시글 삭제
   const ideaContentDel = () => {
@@ -78,7 +86,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
               <div className="mb-5 font-semibold flex items-center justify-between">
-                <div className="flex items-center">
+                <div className="flex items-center" onClick={(event) => moveMyPage(item.cretId, event)}>
                   <div className="cursor-pointer flex items-center">
                     <span className="ml-3">{item.cretName}</span>
                   </div>

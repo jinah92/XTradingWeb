@@ -51,7 +51,9 @@ axiosInstance.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig & { _retry?: boolean };
     // 401 에러 처리
-    if (error.response && error.response.status === 401) {
+
+    // 로그인은 토큰 재발급 로직 X
+    if (error.response && error.response.status === 401 && originalRequest.url != '/api/auth/login') {
       if (originalRequest && !originalRequest._retry) {
         if (isRefreshing) {
           // 이미 갱신 요청 중이면 대기
@@ -66,7 +68,6 @@ axiosInstance.interceptors.response.use(
         // 새로운 토큰 갱신 요청 처리
         originalRequest._retry = true;
         isRefreshing = true;
-
         try {
           // Refresh Token을 사용하여 새로운 Access Token 요청
           const response = await axiosInstance.post<apiResponse<Tokens>>(
@@ -76,8 +77,6 @@ axiosInstance.interceptors.response.use(
               refreshTokenKey: getCookie("refreshToken"),
             }
           );
-          console.log('토큰 리프래시');
-          console.log(response);
 
           // 새 토큰 저장
           const tokens = response.data.result;
@@ -119,7 +118,6 @@ axiosInstance.interceptors.response.use(
 // 요청 인터셉터 추가
 axiosInstance.interceptors.request.use((config) => {
   const accessToken = getCookie("accessToken");
-  console.log(config.url);
   // accessToken 재발급 & 로그인 API 제외
   if (config.url && !config.url.includes("/api/auth/reissue-access-token") && !config.url.includes("/api/auth/login")) {
 

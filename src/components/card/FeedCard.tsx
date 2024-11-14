@@ -12,6 +12,7 @@ import FeedDetail from "@/components/modal/FeedDetail";
 import Avatar from "@/components/ui/avartar";
 /* common */
 import { openModal, closeModal } from "@/common/Utils";
+import { useNavigate } from "react-router-dom";
 
 interface CardItemProps {
   item: FeedData;
@@ -19,10 +20,10 @@ interface CardItemProps {
 
 const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const { feedLikeToggleApi } = useFeedLikeToggle();
-  // const { followApi } = useFollow();
   const [liked, setLiked] = useState(item.youLike);
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
+  const navigate = useNavigate();
 
   const likeToggle = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -37,6 +38,13 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
       });
     }
   };
+
+  // 개인정보로 이동
+  const moveMyPage = (createId: string, event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
+    navigate("/mypage", { state: { id: createId } });
+  }
 
   // 게시글 상세 모달
   const [detailModal, setDetailModal] = useState<boolean>(false);
@@ -69,7 +77,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
           <div className="p-4 flex flex-col justify-between text-left">
             <div className="mb-5 font-semibold flex items-center justify-between">
               <div className="flex items-center">
-                <div className="cursor-pointer flex items-center">
+                <div className="cursor-pointer flex items-center" onClick={(event) => moveMyPage(item.cretId, event)}>
                   {item.createdByProfilePicUrl ? 
                     (<ProfileImage src={item.createdByProfilePicUrl}/>) 
                     : 

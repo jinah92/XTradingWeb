@@ -36,17 +36,11 @@ type memberInfoRes = {
 
 // 개인정보 조회 API
 export const useMemberInfo = () => {
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [memberInfo, setMemberInfo] = useState<memberInfoRes>();
   const memberInfoApi = async (userId: string) => {
     try {
-      // 로그인 안했을 경우 로그인 화면으로 이동
-      if(!isAuthenticated) {
-        navigate("/login");
-        return;
-      }
+
       const response = await axiosInstance.get(`/api/members/${userId}/base-info`);
       setMemberInfo(response.data.result);
     } catch (error) {

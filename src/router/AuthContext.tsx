@@ -41,17 +41,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     // 비동기 함수로 로그인 상태를 체크
     const checkAuth = async () => {
-      const userId = getCookie("userId");
-      if (userId) {
+      const loginUserId = getCookie("userId");
+      if (loginUserId) {
         setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-      const userAccessToken = getCookie("accessToken");
-      if (userAccessToken) {
-        setAccessToken(accessToken);
-      } else {
-        setAccessToken(null);
+        setUserId(loginUserId);
+        setEmail(getCookie("email"));
+        setAccessToken(getCookie("accessToken"));
+        setRefreshToken(getCookie("refreshToken"));
       }
     };
     checkAuth();
@@ -94,10 +90,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
+  // 쿠키 삭제
+  const deleteCookie = (name:string) => {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
 
 
   const logout = () => {
-    localStorage.clear();
+    deleteCookie("accessToken");
+    deleteCookie("refreshToken");
+    deleteCookie("userId");
+    deleteCookie("email");
+    setEmail(null);
+    setUserId(null);
+    setAccessToken(null);
+    setRefreshToken(null);
     setIsAuthenticated(false);
   };
 
