@@ -5,7 +5,7 @@ import {
   nickNameReq,
   useNickNameChk,
   useNickNameModify,
-} from "../../hooks/mypage/MypageApi";
+} from "../../hooks/mypage/MyPageApi";
 import { useAuth } from "../../router/AuthContext";
 
 interface ParentComponentProps {

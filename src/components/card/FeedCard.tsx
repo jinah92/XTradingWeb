@@ -55,14 +55,14 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
     setLikeCount(likeCountData);
   };
 
-  // 피드 게시글 삭제
-  const feedContentDel = () => {
+  // 피드 게시글 차단, 삭제하여 리스트 제외해야할 때
+  const feedViewTF = () => {
     setViewTF(false);
   };
 
   return (
     <>
-      {viewTF ? (
+      {viewTF && !item.youBlock ? (
         <Card
           className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
           onClick={openDetail}
@@ -158,7 +158,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
         <FeedDetail
           feedId={item.feedId}
           onClose={closeDetail}
-          onViewTF={feedContentDel}
+          onViewTF={feedViewTF}
           onLikeToggle={detailLikeToggle}
         />
       </Modal>
