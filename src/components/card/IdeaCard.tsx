@@ -20,7 +20,6 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const [subject, setSubject] = useState(item.subject);
   const [contents, setContents] = useState(item.contents);
   const [tagList, setTagList] = useState(item.tagList);
-  const [youBlock, setYouBlock] = useState(item.youBlock);
   const [liked, setLiked] = useState(item.youLike);
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
@@ -64,14 +63,14 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
     setTagList(issueData.tagList);
   };
 
-  // 아이디어 게시글 삭제
-  const ideaContentDel = () => {
+  // 아이디어 게시글 차단, 삭제하여 리스트 제외해야할 때
+  const ideaViewTF = () => {
     setViewTF(false);
   };
 
   return (
     <>
-      {viewTF ? (
+      {viewTF && !item.youBlock ? (
         <Card
           className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
           onClick={openDetail}
@@ -152,7 +151,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
         <IdeaDetail
           boardId={item.boardId}
           onClose={closeDetail}
-          onViewTF={ideaContentDel}
+          onViewTF={ideaViewTF}
           onLikeToggle={detailLikeToggle}
           onIssueData={detailIssueData}
         />

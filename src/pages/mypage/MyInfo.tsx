@@ -6,7 +6,7 @@ import {
   useFollowerList,
   useFollowingList,
   useMemberInfo,
-} from "@/hooks/mypage/MypageApi";
+} from "@/hooks/mypage/MyPageApi";
 /* component */
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/router/AuthContext";

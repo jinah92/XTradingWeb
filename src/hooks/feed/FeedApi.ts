@@ -300,3 +300,73 @@ export const useFeedModify = () => {
     feedModifyApi,
   };
 };
+
+
+// 게시물 차단 토글 API
+export const useIdeaBlockToggle = () => {
+  const { toast } = useToast();
+  const ideaBlockToggleApi = async (boardId: string) => {
+    try {
+      await axiosInstance.post(`/api/boards/toggle-block`, {boardId: boardId} );
+
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "차단 작업 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    ideaBlockToggleApi,
+  };
+};
+
+// 게시물 차단 토글 API
+export const useFeedBlockToggle = () => {
+  const { toast } = useToast();
+  const feedBlockToggleApi = async (feedId: string) => {
+    try {
+      await axiosInstance.post(`/api/feeds/toggle-block`, {feedId: feedId} );
+
+      toast({
+        description: '게시글 차단 되었습니다.',
+        duration: 2000,
+      });
+
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+        error.response.data?.result?.message ||
+        "차단 작업 중 오류가 발생했습니다.";
+        toast({
+          description: errorMessage,
+          duration: 2000,
+        });
+      } else {
+        toast({
+          description: "예기치 못한 오류가 발생했습니다.",
+          duration: 2000,
+        });
+      }
+      console.error("오류:", error);
+      return false;
+    }
+  };
+
+  return {
+    feedBlockToggleApi,
+  };
+};
