@@ -4,12 +4,13 @@ import { useTheme } from "@/ThemeProvider";
 interface ProfileImageProps {
   src?: string; // 이미지 URL
   alt?: string; // 대체 텍스트
-  size?: number; // 이미지 크기
+  size?: string; // 이미지 크기
 }
 
 const ProfileImage: React.FC<ProfileImageProps> = ({
   src,
-  alt = "Profile Image"
+  alt = "Profile Image",
+  size = "2.5rem",
 }) => {
   const { darkMode } = useTheme();
   const [imgSrc, setImgSrc] = useState<string>();
@@ -28,8 +29,10 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
       style={{
         borderRadius: "50%", // 동그라미 형태로 만들기
         objectFit: "cover", // 이미지 비율 유지
+        width: size,
+        height: size,
       }}
-      className="border dark:border-0 dark:bg-white w-10 h-10"
+      className="border dark:border-0 dark:bg-white"
     />
   );
 };

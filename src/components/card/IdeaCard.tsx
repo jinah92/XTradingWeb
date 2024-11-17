@@ -10,7 +10,6 @@ import Modal from "@/components/modal/Modal";
 import IdeaDetail from "@/components/modal/IdeaDetail";
 /* common */
 import { openModal, closeModal } from "@/common/Utils";
-import { useNavigate } from "react-router-dom";
 
 interface CardItemProps {
   item: BoardData;
@@ -25,14 +24,13 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const [liked, setLiked] = useState(item.youLike);
   const [likeCount, setLikeCount] = useState(item.likeCount);
   const [viewTF, setViewTF] = useState(true);
-  const navigate = useNavigate();
 
   const likeToggle = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     const result = await ideaLikeToggleApi(item.boardId);
 
     if (result) {
-      setLiked((prevLiked:boolean) => {
+      setLiked((prevLiked: boolean) => {
         // liked 상태에 따라 likeCount를 조정
         const newLiked = !prevLiked;
         setLikeCount(() => (newLiked ? likeCount + 1 : likeCount - 1));
@@ -47,46 +45,41 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const openDetail = () => {
     openModal();
     setDetailModal(true);
-  }
+  };
   const closeDetail = () => {
     closeModal();
     setDetailModal(false);
-  }
+  };
 
   /* 상세 모달에서 변경사항 업데이트 (like) */
   const detailLikeToggle = (likedData: boolean, likeCountData: number) => {
     setLiked(likedData);
     setLikeCount(likeCountData);
-  }
+  };
 
   /* 상세 모달에서 변경사항 업데이트 (이슈 정보) */
-  const detailIssueData = (issueData:BoardDetail) => {
+  const detailIssueData = (issueData: BoardDetail) => {
     setSubject(issueData.subject);
     setContents(issueData.contents);
     setTagList(issueData.tagList);
-  }
-
-  // 개인정보로 이동
-  const moveMyPage = (createId: string, event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-
-    navigate("/mypage", { state: { id: createId } });
-  }
-  
+  };
 
   // 아이디어 게시글 삭제
   const ideaContentDel = () => {
     setViewTF(false);
-  }
+  };
 
   return (
     <>
       {viewTF ? (
-        <Card className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent" onClick={openDetail}>
+        <Card
+          className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
+          onClick={openDetail}
+        >
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
               <div className="mb-5 font-semibold flex items-center justify-between">
-                <div className="flex items-center" onClick={(event) => moveMyPage(item.cretId, event)}>
+                <div className="flex items-center">
                   <div className="cursor-pointer flex items-center">
                     <span className="ml-3">{item.cretName}</span>
                   </div>
@@ -154,10 +147,15 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
           </div>
         </Card>
       ) : null}
-      
 
       <Modal isOpen={detailModal} onClose={closeDetail}>
-        <IdeaDetail boardId={item.boardId} onClose={closeDetail} onViewTF={ideaContentDel} onLikeToggle={detailLikeToggle} onIssueData={detailIssueData}/>
+        <IdeaDetail
+          boardId={item.boardId}
+          onClose={closeDetail}
+          onViewTF={ideaContentDel}
+          onLikeToggle={detailLikeToggle}
+          onIssueData={detailIssueData}
+        />
       </Modal>
     </>
   );

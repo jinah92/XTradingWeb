@@ -19,7 +19,7 @@ export type FollowingRes = {
 export type nickNameReq = {
   userId: string;
   nickName: string;
-}
+};
 
 type memberInfoRes = {
   email: string;
@@ -32,7 +32,7 @@ type memberInfoRes = {
   followingCount: number;
   youAreFollowing: boolean;
   youBlock: boolean;
-}
+};
 
 // 개인정보 조회 API
 export const useMemberInfo = () => {
@@ -40,8 +40,9 @@ export const useMemberInfo = () => {
   const [memberInfo, setMemberInfo] = useState<memberInfoRes>();
   const memberInfoApi = async (userId: string) => {
     try {
-
-      const response = await axiosInstance.get(`/api/members/${userId}/base-info`);
+      const response = await axiosInstance.get(
+        `/api/members/${userId}/base-info`
+      );
       setMemberInfo(response.data.result);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -65,10 +66,9 @@ export const useMemberInfo = () => {
 
   return {
     memberInfoApi,
-    memberInfo
+    memberInfo,
   };
 };
-
 
 // 팔로우하기 API
 export const useFollow = () => {
@@ -78,7 +78,7 @@ export const useFollow = () => {
   const followApi = async (param: FollowReq) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
-      if(!isAuthenticated) {
+      if (!isAuthenticated) {
         navigate("/login");
         return;
       }
@@ -215,20 +215,20 @@ export const useFollowerList = () => {
   };
 };
 
-
 // 닉네임 중복여부 API
 export const useNickNameChk = () => {
   const { toast } = useToast();
-  const nickNameChkApi = async (param:string) => {
+  const nickNameChkApi = async (param: string) => {
     try {
-      const response = await axiosInstance.get(`/api/my-page/nick-name/exist?nickName=`+param);
-      if(!response.data.result.isExist) {
+      const response = await axiosInstance.get(
+        `/api/my-page/nick-name/exist?nickName=` + param
+      );
+      if (!response.data.result.isExist) {
         return true;
-      }
-      else {
+      } else {
         toast({
           description: response.data.result.message,
-          duration: 2000
+          duration: 2000,
         });
         return false;
       }
@@ -256,25 +256,27 @@ export const useNickNameChk = () => {
   };
 };
 
-
-
 // 닉네임 변경 API
 export const useNickNameModify = () => {
   const { toast } = useToast();
-  const nickNameModifyApi = async (param:nickNameReq) => {
+  const nickNameModifyApi = async (param: nickNameReq) => {
     try {
-      const response = await axiosInstance.post(`/api/my-page/nick-name?nickName`, param);
-      if(response.data.result === 'updated') {
+      const response = await axiosInstance.post(
+        `/api/my-page/nick-name?nickName`,
+        param
+      );
+      if (response.data.result === "updated") {
         toast({
-          description: '변경되었습니다.',
-          duration: 2000
+          description: "변경되었습니다.",
+          duration: 2000,
         });
-      }
-      else {
+        return true;
+      } else {
         toast({
           description: response.data.result.message,
-          duration: 2000
+          duration: 2000,
         });
+        return false;
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -292,6 +294,7 @@ export const useNickNameModify = () => {
         });
       }
       console.error("오류:", error);
+      return false;
     }
   };
 
@@ -299,4 +302,3 @@ export const useNickNameModify = () => {
     nickNameModifyApi,
   };
 };
-

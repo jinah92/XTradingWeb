@@ -9,7 +9,6 @@ import Interest from "@/pages/interest/Interest";
 import Market from "@/pages/market/Market";
 import ChartView from "@/pages/market/ChartView";
 import MyPage from "@/pages/mypage/MyPage";
-import Test from "@/pages/test";
 /* layout */
 import MainLayout from "@/layout/MainLayout";
 import NewsLayout from "@/layout/NewsLayout";
@@ -30,10 +29,9 @@ function CommonRouter() {
           <Route path="/idea" element={<Idea />}></Route>
           <Route path="/idea/:id" element={<Idea />}></Route>
           <Route path="/idea/:id/:item" element={<Idea />}></Route>
-          <Route path="/mypage" element={<MyPage />}></Route>
           <Route
-            path="/test"
-            element={<PrivateRoute element={<Test />} />}
+            path="/mypage"
+            element={<PrivateRoute element={<MyPage />} />}
           ></Route>
         </Route>
         <Route element={<NewsLayout />}>
@@ -43,11 +41,7 @@ function CommonRouter() {
 
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
-        {/* <Route element={<SubLayout />}>
-        <Route path="/detail/:id" element={<Detail />}></Route>
-        <Route path="/character/:id" element={<CharacterInfo />}></Route>
-      </Route> 
-      // TODO: 404 처리 필요*/}
+        {/*// TODO: 404 처리 필요*/}
         {/*<Route component={NotFound} />*/}
       </Routes>
     </AuthProvider>

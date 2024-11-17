@@ -6,8 +6,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { getCookie, setCookie } from "../common/Cookie";
+import { getCookie, setCookie } from "@/common/Cookie";
 
 interface AuthContextType {
   isAuthenticated: boolean | null;
@@ -21,9 +20,7 @@ interface AuthContextType {
     accessToken: string,
     refreshToken: string
   ) => void;
-  loginRefresh: (
-    accessToken: string,
-  ) => void;
+  loginRefresh: (accessToken: string) => void;
   logout: () => void;
 }
 
@@ -48,6 +45,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         setEmail(getCookie("email"));
         setAccessToken(getCookie("accessToken"));
         setRefreshToken(getCookie("refreshToken"));
+      } else {
+        setIsAuthenticated(false);
       }
     };
     checkAuth();
@@ -64,37 +63,37 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setIsAuthenticated(true);
-    setCookie('email', email, {
-      path: '/',
-      secure: '/',
+    setCookie("email", email, {
+      path: "/",
+      secure: "/",
     });
-    setCookie('userId', userId, {
-      path: '/',
-      secure: '/',
+    setCookie("userId", userId, {
+      path: "/",
+      secure: "/",
     });
-    setCookie('accessToken', accessToken, {
-      path: '/',
-      secure: '/',
+    setCookie("accessToken", accessToken, {
+      path: "/",
+      secure: "/",
     });
-    setCookie('refreshToken', refreshToken, {
-      path: '/',
-      secure: '/',
+    setCookie("refreshToken", refreshToken, {
+      path: "/",
+      secure: "/",
     });
   };
 
   const loginRefresh = (newAccessToken: string) => {
     setAccessToken(newAccessToken);
-    setCookie('accessToken', newAccessToken, {
-      path: '/',
-      secure: '/',
+    setCookie("accessToken", newAccessToken, {
+      path: "/",
+      secure: "/",
     });
   };
 
   // 쿠키 삭제
-  const deleteCookie = (name:string) => {
-    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  }
-
+  const deleteCookie = (name: string) => {
+    document.cookie =
+      name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  };
 
   const logout = () => {
     deleteCookie("accessToken");
@@ -108,13 +107,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setIsAuthenticated(false);
   };
 
-  if (isAuthenticated === null) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, accessToken, refreshToken, userId, email, login, loginRefresh, logout }}
+      value={{
+        isAuthenticated,
+        accessToken,
+        refreshToken,
+        userId,
+        email,
+        login,
+        loginRefresh,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

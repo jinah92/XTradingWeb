@@ -8,15 +8,13 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  
-
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.body.style.overflow = 'unset'; // 또는 'auto'
+      document.body.style.overflow = "unset"; // 또는 'auto'
     };
   }, [isOpen]);
 
