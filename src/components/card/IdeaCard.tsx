@@ -4,7 +4,6 @@ import { BoardData, BoardDetail } from "@/hooks/idea/IdeaApi";
 import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
 /* components */
 import { Card } from "@/components/ui/card";
-import ProfileImage from "@/components/ui/profileImg";
 import EllipsisText from "@/components/ui/ellipsisText";
 import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
@@ -31,7 +30,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
     const result = await ideaLikeToggleApi(item.boardId);
 
     if (result) {
-      setLiked((prevLiked:boolean) => {
+      setLiked((prevLiked: boolean) => {
         // liked 상태에 따라 likeCount를 조정
         const newLiked = !prevLiked;
         setLikeCount(() => (newLiked ? likeCount + 1 : likeCount - 1));
@@ -46,41 +45,42 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
   const openDetail = () => {
     openModal();
     setDetailModal(true);
-  }
+  };
   const closeDetail = () => {
     closeModal();
     setDetailModal(false);
-  }
+  };
 
   /* 상세 모달에서 변경사항 업데이트 (like) */
   const detailLikeToggle = (likedData: boolean, likeCountData: number) => {
     setLiked(likedData);
     setLikeCount(likeCountData);
-  }
+  };
 
   /* 상세 모달에서 변경사항 업데이트 (이슈 정보) */
-  const detailIssueData = (issueData:BoardDetail) => {
+  const detailIssueData = (issueData: BoardDetail) => {
     setSubject(issueData.subject);
     setContents(issueData.contents);
     setTagList(issueData.tagList);
-  }
-
+  };
 
   // 아이디어 게시글 삭제
   const ideaContentDel = () => {
     setViewTF(false);
-  }
+  };
 
   return (
     <>
       {viewTF ? (
-        <Card className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent" onClick={openDetail}>
+        <Card
+          className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
+          onClick={openDetail}
+        >
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
               <div className="mb-5 font-semibold flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="cursor-pointer flex items-center">
-                    <ProfileImage />
                     <span className="ml-3">{item.cretName}</span>
                   </div>
                   <span className="p-1 ml-1 text-sm text-blue-500">
@@ -147,10 +147,15 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
           </div>
         </Card>
       ) : null}
-      
 
       <Modal isOpen={detailModal} onClose={closeDetail}>
-        <IdeaDetail boardId={item.boardId} onClose={closeDetail} onViewTF={ideaContentDel} onLikeToggle={detailLikeToggle} onIssueData={detailIssueData}/>
+        <IdeaDetail
+          boardId={item.boardId}
+          onClose={closeDetail}
+          onViewTF={ideaContentDel}
+          onLikeToggle={detailLikeToggle}
+          onIssueData={detailIssueData}
+        />
       </Modal>
     </>
   );

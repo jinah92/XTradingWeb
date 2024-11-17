@@ -73,30 +73,15 @@ export type FeedDetail = {
 
 // 피드 조회 API
 export const useFeedList = () => {
-  const { accessToken, isAuthenticated } = useAuth();
-
   const feedListApi = async (param: ListReq) => {
     try {
-      if (isAuthenticated === true) {
-        const response = await axiosInstance.get("/api/feeds", {
-          params: param,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        return response.data.result.feedList;
-      } else {
-        const response = await axiosInstance.get(`/api/feeds`, {
-          params: param,
-        });
-        return response.data.result.feedList;
-      }
+      const response = await axiosInstance.get("/api/feeds", {params: param});
+      return response.data.result.feedList;
     } catch (error) {
       console.error("데이터 요청 오류:", error);
       throw error;
     }
   };
-
   return {
     feedListApi,
   };
@@ -106,7 +91,7 @@ export const useFeedList = () => {
 // 피드 추가 API
 export const useFeedAdd = () => {
   const navigate = useNavigate();
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const feedAddApi = async (param: FeedAddReq) => {
     try {
@@ -128,11 +113,7 @@ export const useFeedAdd = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.post(`/api/feeds`, param, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.post(`/api/feeds`, param);
 
       toast({
         description: '피드 등록되었습니다.',
@@ -168,7 +149,7 @@ export const useFeedAdd = () => {
 // 좋아요 토글 API
 export const useFeedLikeToggle = () => {
   const navigate = useNavigate();
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const feedLikeToggleApi = async (feedId: string) => {
     try {
@@ -177,15 +158,7 @@ export const useFeedLikeToggle = () => {
         navigate("/login");
         return;
       }
-      await axiosInstance.post(
-        `/api/feeds/toggle-like`,
-        { feedId: feedId },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      await axiosInstance.post(`/api/feeds/toggle-like`,{ feedId: feedId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -216,25 +189,10 @@ export const useFeedLikeToggle = () => {
 export const useFeedDetail = () => {
   const { toast } = useToast();
   const [detailData, setDetailData] = useState<FeedDetail>();
-  const { accessToken, isAuthenticated } = useAuth();
   const feedDetailApi = async (feedId: string) => {
     try {
-      if (isAuthenticated) {
-        const response = await axiosInstance.get(
-          `/api/feeds/`+feedId,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          }
-        );
-        setDetailData(response.data.result);
-      } else {
-      const response = await axiosInstance.get(
-        `/api/feeds/`+feedId,
-      );
+      const response = await axiosInstance.get(`/api/feeds/`+feedId);
       setDetailData(response.data.result);
-    }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
@@ -264,23 +222,13 @@ export const useFeedDetail = () => {
 // 피드 삭제 API
 export const useFeedDelete = () => {
   const { toast } = useToast();
-  const { accessToken, isAuthenticated } = useAuth();
   const feedDeleteApi = async (feedId: string) => {
     try {
-      if (isAuthenticated) {
-        await axiosInstance.delete(
-          `/api/feeds/`+feedId,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          }
-        );
-        toast({
-          description: "삭제되었습니다.",
-          duration: 2000,
-        });
-      }
+      await axiosInstance.delete(`/api/feeds/`+feedId);
+      toast({
+        description: "삭제되었습니다.",
+        duration: 2000,
+      });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
@@ -309,7 +257,6 @@ export const useFeedDelete = () => {
 
 // 피드 수정 API
 export const useFeedModify = () => {
-  const { accessToken } = useAuth();
   const { toast } = useToast();
   const feedModifyApi = async (param: FeedModifyReq) => {
     try {
@@ -321,11 +268,7 @@ export const useFeedModify = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.put(`/api/feeds`, param, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.put(`/api/feeds`, param);
 
       toast({
         description: '피드 수정되었습니다.',

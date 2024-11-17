@@ -11,6 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import IdeaModify from "@/components/ui/ideaModify";
 import CommentInput from "@/components/ui/commentInput";
 import Comment from "@/components/ui/comment";
+import Avatar from "@/components/ui/avartar";
 
 interface ParentComponentProps {
   boardId : string;
@@ -130,7 +131,12 @@ const IdeaDetail = ({boardId, onClose, onViewTF, onLikeToggle, onIssueData}: Par
             <div className="p-4 flex flex-col justify-between text-left">
               <div className="mb-5 font-semibold flex items-start sm:items-center justify-between">
                 <div className="cursor-pointer flex items-center">
-                  <ProfileImage src={detailData.cretInfo.profileImg}/>
+                  {detailData.cretInfo.profileImg ? 
+                    (<ProfileImage src={detailData.cretInfo.profileImg}/>) 
+                    : 
+                    (<Avatar id={detailData.cretInfo.userId}/>)
+                  }
+                  
                   <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
                     <span className="ml-3">{detailData.cretInfo.name}</span>
                     <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">

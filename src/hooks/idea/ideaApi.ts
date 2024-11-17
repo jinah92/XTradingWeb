@@ -70,24 +70,12 @@ export type BoardDetail = {
 
 // 아이디어 조회 API
 export const useIdeaList = () => {
-  const { accessToken, isAuthenticated } = useAuth();
-
   const ideaListApi = async (param: ListReq) => {
     try {
-      if (isAuthenticated) {
-        const response = await axiosInstance.get("/api/boards", {
-          params: param,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        return response.data.result.boardList;
-      } else {
-        const response = await axiosInstance.get(`/api/boards`, {
-          params: param,
-        });
-        return response.data.result.boardList;
-      }
+      const response = await axiosInstance.get(`/api/boards`, {
+        params: param,
+      });
+      return response.data.result.boardList;
     } catch (error) {
       console.error("데이터 요청 오류:", error);
       throw error;
@@ -102,7 +90,7 @@ export const useIdeaList = () => {
 // 아이디어 추가 API
 export const useIdeaAdd = () => {
   const navigate = useNavigate();
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const ideaAddApi = async (param: BoardAddReq) => {
     try {
@@ -120,11 +108,7 @@ export const useIdeaAdd = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.post(`/api/boards`, param, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.post(`/api/boards`, param);
 
       toast({
         description: '아이디어 등록되었습니다.',
@@ -160,7 +144,7 @@ export const useIdeaAdd = () => {
 // 좋아요 토글 API
 export const useIdeaLikeToggle = () => {
   const navigate = useNavigate();
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const ideaLikeToggleApi = async (boardId: string) => {
     try {
@@ -169,15 +153,7 @@ export const useIdeaLikeToggle = () => {
         navigate("/login");
         return;
       }
-      await axiosInstance.post(
-        `/api/boards/toggle-like`,
-        { boardId: boardId },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      await axiosInstance.post(`/api/boards/toggle-like`,{ boardId: boardId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -209,25 +185,10 @@ export const useIdeaLikeToggle = () => {
 export const useIdeaDetail = () => {
   const { toast } = useToast();
   const [detailData, setDetailData] = useState<BoardDetail>();
-  const { accessToken, isAuthenticated } = useAuth();
   const ideaDetailApi = async (boardId: string) => {
     try {
-      if (isAuthenticated) {
-        const response = await axiosInstance.get(
-          `/api/boards/`+boardId,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          }
-        );
-        setDetailData(response.data.result);
-      } else {
-      const response = await axiosInstance.get(
-        `/api/boards/`+boardId,
-      );
+      const response = await axiosInstance.get(`/api/boards/`+boardId);
       setDetailData(response.data.result);
-    }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
@@ -257,23 +218,13 @@ export const useIdeaDetail = () => {
 // 아이디어 삭제 API
 export const useIdeaDelete = () => {
   const { toast } = useToast();
-  const { accessToken, isAuthenticated } = useAuth();
   const ideaDeleteApi = async (boardId: string) => {
     try {
-      if (isAuthenticated) {
-        await axiosInstance.delete(
-          `/api/boards/`+boardId,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          }
-        );
-        toast({
-          description: "삭제되었습니다.",
-          duration: 2000,
-        });
-      }
+      await axiosInstance.delete(`/api/boards/`+boardId);
+      toast({
+        description: "삭제되었습니다.",
+        duration: 2000,
+      });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage =
@@ -301,7 +252,6 @@ export const useIdeaDelete = () => {
 
 // 아이디어 수정 API
 export const useIdeaModify = () => {
-  const { accessToken } = useAuth();
   const { toast } = useToast();
   const ideaModifyApi = async (param: BoardModifyReq) => {
     try {
@@ -313,11 +263,7 @@ export const useIdeaModify = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.put(`/api/boards`, param, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosInstance.put(`/api/boards`, param);
 
       toast({
         description: '아이디어 수정되었습니다.',

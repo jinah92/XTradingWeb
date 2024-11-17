@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+/* page */
 import Home from "@/pages/Home";
 import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
@@ -7,13 +8,13 @@ import News from "@/pages/news/News";
 import Interest from "@/pages/interest/Interest";
 import Market from "@/pages/market/Market";
 import ChartView from "@/pages/market/ChartView";
-import Test from "@/pages/test";
-
+import MyPage from "@/pages/mypage/MyPage";
+/* layout */
 import MainLayout from "@/layout/MainLayout";
 import NewsLayout from "@/layout/NewsLayout";
-
-import PrivateRoute from "./PrivateRoute";
-import { AuthProvider } from "./AuthContext";
+/* config */
+import PrivateRoute from "@/router/PrivateRoute";
+import { AuthProvider } from "@/router/AuthContext";
 
 function CommonRouter() {
   return (
@@ -29,8 +30,8 @@ function CommonRouter() {
           <Route path="/idea/:id" element={<Idea />}></Route>
           <Route path="/idea/:id/:item" element={<Idea />}></Route>
           <Route
-            path="/test"
-            element={<PrivateRoute element={<Test />} />}
+            path="/mypage"
+            element={<PrivateRoute element={<MyPage />} />}
           ></Route>
         </Route>
         <Route element={<NewsLayout />}>
@@ -40,11 +41,7 @@ function CommonRouter() {
 
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
-        {/* <Route element={<SubLayout />}>
-        <Route path="/detail/:id" element={<Detail />}></Route>
-        <Route path="/character/:id" element={<CharacterInfo />}></Route>
-      </Route> 
-      // TODO: 404 처리 필요*/}
+        {/*// TODO: 404 처리 필요*/}
         {/*<Route component={NotFound} />*/}
       </Routes>
     </AuthProvider>
