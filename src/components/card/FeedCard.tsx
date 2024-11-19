@@ -8,10 +8,11 @@ import ProfileImage from "@/components/ui/profileImg";
 import EllipsisText from "@/components/ui/ellipsisText";
 import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
-import FeedDetail from "@/components/modal/FeedDetail";
 import Avatar from "@/components/ui/avartar";
 /* common */
 import { openModal, closeModal } from "@/common/Utils";
+/* page */
+import FeedDetail from "@/pages/idea/FeedDetail";
 
 interface CardItemProps {
   item: FeedData;

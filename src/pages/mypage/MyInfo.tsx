@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 /* hook */
 import {
-  useNickNameChk,
-  useNickNameModify,
   useFollowerList,
   useFollowingList,
   useMemberInfo,
 } from "@/hooks/mypage/MyPageApi";
 /* component */
-import { useLocation } from "react-router-dom";
-import { useAuth } from "@/router/AuthContext";
 import ProfileImage from "@/components/ui/profileImg";
 import Avatar from "@/components/ui/avartar";
 import { Button } from "@/components/ui/button";
-import Modal from "../../components/modal/Modal";
-import NickNameChange from "../../components/modal/NickNameChange";
+import Modal from "@/components/modal/Modal";
+/* page */
+import NickNameChange from "@/pages/mypage/NickNameChange";
+import { useAuth } from "@/router/AuthContext";
 
 const MyInfo = () => {
   const { memberInfo, memberInfoApi } = useMemberInfo();

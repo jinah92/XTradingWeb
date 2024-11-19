@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+/* hook */
 import {
   nickNameReq,
   useNickNameChk,
   useNickNameModify,
-} from "../../hooks/mypage/MyPageApi";
-import { useAuth } from "../../router/AuthContext";
+} from "@/hooks/mypage/MyPageApi";
+/* component */
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/router/AuthContext";
 
 interface ParentComponentProps {
   searchData: () => void;

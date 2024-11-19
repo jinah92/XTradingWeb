@@ -20,10 +20,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import IdeaModify from "@/components/ui/ideaModify";
 import CommentInput from "@/components/ui/commentInput";
 import Comment from "@/components/ui/comment";
 import Avatar from "@/components/ui/avartar";
+/* page */
+import ReportForm from "@/pages/idea/ReportForm";
+import IdeaModify from "@/pages/idea/IdeaModify";
+import { reportFormReq } from "@/hooks/report/ReportApi";
 
 interface ParentComponentProps {
   boardId: string;
@@ -55,6 +58,8 @@ const IdeaDetail = ({
   const [likeCount, setLikeCount] = useState(0);
 
   const [viewType, setViewType] = useState("search");
+
+  const [reportData, setReportData] = useState<reportFormReq>();
 
   /* 좋아요 토글 */
   const likeToggle = async () => {
@@ -98,6 +103,19 @@ const IdeaDetail = ({
   // 아이디어 수정 화면 호출
   const ideaModify = () => {
     setViewType("modify");
+  };
+
+  // 유저 신고 화면 호출
+  const userReport = () => {
+    if (detailData) {
+      setReportData({
+        cretName: detailData.cretInfo.name,
+        targetId: detailData.boardId,
+        targetType: "BOARD",
+        title: detailData.subject,
+      });
+      setViewType("report");
+    }
   };
 
   // 아이디어 조회 화면 호출
@@ -159,7 +177,7 @@ const IdeaDetail = ({
 
   return (
     <>
-      {viewType == "search" ? (
+      {viewType === "search" && (
         <div className="flex w-full flex-col sm:justify-center justify-normal space-y-6 h-screen sm:h-auto pt-3 pb-3">
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
@@ -230,7 +248,7 @@ const IdeaDetail = ({
                         </>
                       ) : (
                         <>
-                          <DropdownMenuItem onClick={ideaModify}>
+                          <DropdownMenuItem onClick={userReport}>
                             신고하기
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={ideaBlock}>
@@ -317,8 +335,12 @@ const IdeaDetail = ({
             </div>
           </div>
         </div>
-      ) : (
+      )}
+      {viewType === "modify" && (
         <IdeaModify data={detailData} ideaMethod={ideaSearch} />
+      )}
+      {viewType === "report" && (
+        <ReportForm data={reportData} closeMethod={ideaSearch} />
       )}
     </>
   );
