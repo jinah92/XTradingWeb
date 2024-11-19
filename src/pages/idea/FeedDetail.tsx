@@ -9,6 +9,7 @@ import {
 import { useFeedCommentList } from "@/hooks/comment/CommentApi";
 import { FollowReq, useFollow, useUnfollow } from "@/hooks/mypage/MyPageApi";
 import { useUserBlockToggle } from "@/hooks/member/MemberApi";
+import { reportFormReq } from "@/hooks/report/ReportApi";
 /* component */
 import ProfileImage from "@/components/ui/profileImg";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -19,10 +20,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import FeedModify from "@/components/ui/feedModify";
 import CommentInput from "@/components/ui/commentInput";
 import Comment from "@/components/ui/comment";
 import Avatar from "@/components/ui/avartar";
+/* page */
+import ReportForm from "@/pages/idea/ReportForm";
+import FeedModify from "@/pages/idea/FeedModify";
 
 interface ParentComponentProps {
   feedId: string;
@@ -52,6 +55,8 @@ const IdeaDetail = ({
   const [likeCount, setLikeCount] = useState(0);
 
   const [viewType, setViewType] = useState("search");
+
+  const [reportData, setReportData] = useState<reportFormReq>();
 
   /* 좋아요 토글 */
   const likeToggle = async () => {
@@ -93,6 +98,19 @@ const IdeaDetail = ({
   // 피드 수정 화면 호출
   const feedModify = () => {
     setViewType("modify");
+  };
+
+  // 유저 신고 화면 호출
+  const userReport = () => {
+    if (detailData) {
+      setReportData({
+        cretName: detailData.cretInfo.name,
+        targetId: detailData.feedId,
+        targetType: "FEED",
+        title: detailData.subject,
+      });
+      setViewType("report");
+    }
   };
 
   // 피드 조회 화면 호출
@@ -152,18 +170,19 @@ const IdeaDetail = ({
 
   return (
     <>
-      {viewType == "search" ? (
+      {viewType === "search" && (
         <div className="flex w-full flex-col sm:justify-center justify-normal space-y-6 h-screen sm:h-auto pt-3 pb-3">
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
               <div className="mb-5 font-semibold flex items-start sm:items-center justify-between">
                 <div className="cursor-pointer flex items-center">
+                  {detailData.cretInfo.profileImg ? (
+                    <ProfileImage src={detailData.cretInfo.profileImg} />
+                  ) : (
+                    <Avatar id={detailData.cretInfo.userId} />
+                  )}
+
                   <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
-                    {detailData.cretInfo.profileImg ? (
-                      <ProfileImage src={detailData.cretInfo.profileImg} />
-                    ) : (
-                      <Avatar id={detailData.cretInfo.userId} />
-                    )}
                     <span className="ml-3">{detailData.cretInfo.name}</span>
                     <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
                       {detailData.cretInfo.userGrade}
@@ -221,7 +240,7 @@ const IdeaDetail = ({
                         </>
                       ) : (
                         <>
-                          <DropdownMenuItem onClick={feedBlock}>
+                          <DropdownMenuItem onClick={userReport}>
                             신고하기
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={feedBlock}>
@@ -307,8 +326,12 @@ const IdeaDetail = ({
             </div>
           </div>
         </div>
-      ) : (
+      )}
+      {viewType === "modify" && (
         <FeedModify data={detailData} feedMethod={feedSearch} />
+      )}
+      {viewType === "report" && (
+        <ReportForm data={reportData} closeMethod={feedSearch} />
       )}
     </>
   );

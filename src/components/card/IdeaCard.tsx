@@ -7,9 +7,10 @@ import { Card } from "@/components/ui/card";
 import EllipsisText from "@/components/ui/ellipsisText";
 import DateDisplay from "@/components/ui/dateDisplay";
 import Modal from "@/components/modal/Modal";
-import IdeaDetail from "@/components/modal/IdeaDetail";
 /* common */
 import { openModal, closeModal } from "@/common/Utils";
+/* page */
+import IdeaDetail from "@/pages/idea/IdeaDetail";
 
 interface CardItemProps {
   item: BoardData;
