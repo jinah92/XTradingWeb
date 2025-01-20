@@ -1,8 +1,8 @@
-import axiosInstance from "@/configs/axios/axiosConfig";
-import axios from "axios";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/router/AuthContext";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from '@/configs/axios/axiosConfig';
+import axios from 'axios';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/router/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export interface LoginData {
   email: string;
@@ -25,15 +25,13 @@ export interface MailAuthData {
 export const useCheckAuthEmail = () => {
   const checkAuthEmailApi = async (email: string) => {
     try {
-      const response = await axiosInstance.get(
-        `/api/auth/check-email-status?email=${email}`
-      );
+      const response = await axiosInstance.get(`/api/auth/check-email-status?email=${email}`);
       if (response.status === 200) {
         const emailStatus = response.data.result.emailStatus;
         return emailStatus;
       }
     } catch (error) {
-      console.error("오류:", error);
+      console.error('오류:', error);
     }
   };
 
@@ -50,11 +48,11 @@ export const useLogin = () => {
 
   const loginApi = async (param: LoginData) => {
     try {
-      const response = await axiosInstance.post("/api/auth/login", param);
+      const response = await axiosInstance.post('/api/auth/login', param);
 
       if (response.status === 200) {
         toast({
-          title: "로그인 되었습니다.",
+          title: '로그인 되었습니다.',
           description: response.data.result.userRes.activitySummary,
           duration: 2000,
         });
@@ -63,28 +61,24 @@ export const useLogin = () => {
           response.data.result.userRes.email,
           response.data.result.userRes.userId,
           response.data.result.accessToken,
-          response.data.result.refreshTokenKey
+          response.data.result.refreshTokenKey,
         );
-        navigate("/");
+        navigate('/');
       }
-
-
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          error.response.data?.result?.message ||
-          "로그인 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '로그인 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
-      console.error("오류:", error);
+      console.error('오류:', error);
     }
   };
 
@@ -98,22 +92,17 @@ export const useLoginGoogle = () => {
   const { toast } = useToast();
   const loginGoogleApi = async (token: string | undefined) => {
     try {
-      const response = await axiosInstance.post(
-        `/api/auth/google/verify`,
-        token
-      );
+      const response = await axiosInstance.post(`/api/auth/google/verify`, token);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          error.response.data?.result?.message ||
-          "로그인 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '로그인 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
@@ -133,24 +122,22 @@ export const useSignUp = () => {
       const response = await axiosInstance.post(`/api/auth/signup`, param);
       if (response.status === 200) {
         toast({
-          title: "",
-          description: "회원가입 되었습니다. 이메일 인증을 진행해주세요.",
+          title: '',
+          description: '회원가입 되었습니다. 이메일 인증을 진행해주세요.',
           duration: 2000,
         });
-        navigate("/login");
+        navigate('/login');
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          error.response.data?.result?.message ||
-          "회원가입 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '회원가입 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
@@ -170,23 +157,21 @@ export const useMailSend = () => {
 
       if (response.status === 200) {
         toast({
-          title: "",
-          description: "메일 전송하였습니다.",
+          title: '',
+          description: '메일 전송하였습니다.',
           duration: 2000,
         });
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          error.response.data?.result?.message ||
-          "메일 전송 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '메일 전송 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
@@ -206,8 +191,8 @@ export const useMailAuth = () => {
 
       if (response.status === 200) {
         toast({
-          title: "",
-          description: "인증 되었습니다.",
+          title: '',
+          description: '인증 되었습니다.',
           duration: 2000,
         });
 
@@ -215,16 +200,14 @@ export const useMailAuth = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          error.response.data?.result?.message ||
-          "메일 전송 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '메일 전송 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }

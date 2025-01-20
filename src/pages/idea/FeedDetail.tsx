@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 /* hook */
-import {
-  useFeedDetail,
-  useFeedDelete,
-  useFeedLikeToggle,
-  useFeedBlockToggle,
-} from "@/hooks/feed/FeedApi";
-import { useFeedCommentList } from "@/hooks/comment/CommentApi";
-import { FollowReq, useFollow, useUnfollow } from "@/hooks/mypage/MyPageApi";
-import { useUserBlockToggle } from "@/hooks/member/MemberApi";
-import { reportFormReq } from "@/hooks/report/ReportApi";
+import { useFeedDetail, useFeedDelete, useFeedLikeToggle, useFeedBlockToggle } from '@/hooks/feed/FeedApi';
+import { useFeedCommentList } from '@/hooks/comment/CommentApi';
+import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
+import { useUserBlockToggle } from '@/hooks/member/MemberApi';
+import { reportFormReq } from '@/hooks/report/ReportApi';
 /* component */
-import ProfileImage from "@/components/ui/profileImg";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import DateDisplay from "@/components/ui/dateDisplay";
+import ProfileImage from '@/components/ui/profileImg';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import DateDisplay from '@/components/ui/dateDisplay';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import CommentInput from "@/components/ui/commentInput";
-import Comment from "@/components/ui/comment";
-import Avatar from "@/components/ui/avartar";
+} from '@/components/ui/dropdown-menu';
+import CommentInput from '@/components/ui/commentInput';
+import Comment from '@/components/ui/comment';
+import Avatar from '@/components/ui/avartar';
 /* page */
-import ReportForm from "@/pages/idea/ReportForm";
-import FeedModify from "@/pages/idea/FeedModify";
+import ReportForm from '@/pages/idea/ReportForm';
+import FeedModify from '@/pages/idea/FeedModify';
 
 interface ParentComponentProps {
   feedId: string;
@@ -34,12 +29,7 @@ interface ParentComponentProps {
   onLikeToggle: (liked: boolean, likeCount: number) => void;
 }
 
-const IdeaDetail = ({
-  feedId,
-  onClose,
-  onViewTF,
-  onLikeToggle,
-}: ParentComponentProps) => {
+const IdeaDetail = ({ feedId, onClose, onViewTF, onLikeToggle }: ParentComponentProps) => {
   const { detailData, feedDetailApi } = useFeedDetail();
   const { feedLikeToggleApi } = useFeedLikeToggle();
   const { feedDeleteApi } = useFeedDelete();
@@ -54,7 +44,7 @@ const IdeaDetail = ({
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  const [viewType, setViewType] = useState("search");
+  const [viewType, setViewType] = useState('search');
 
   const [reportData, setReportData] = useState<reportFormReq>();
 
@@ -97,7 +87,7 @@ const IdeaDetail = ({
 
   // 피드 수정 화면 호출
   const feedModify = () => {
-    setViewType("modify");
+    setViewType('modify');
   };
 
   // 유저 신고 화면 호출
@@ -106,10 +96,10 @@ const IdeaDetail = ({
       setReportData({
         cretName: detailData.cretInfo.name,
         targetId: detailData.feedId,
-        targetType: "FEED",
+        targetType: 'FEED',
         title: detailData.subject,
       });
-      setViewType("report");
+      setViewType('report');
     }
   };
 
@@ -117,7 +107,7 @@ const IdeaDetail = ({
   const feedSearch = async () => {
     await feedDetailApi(feedId);
     await commentListApi(feedId);
-    setViewType("search");
+    setViewType('search');
   };
 
   // 피드 삭제
@@ -170,7 +160,7 @@ const IdeaDetail = ({
 
   return (
     <>
-      {viewType === "search" && (
+      {viewType === 'search' && (
         <div className="flex w-full flex-col sm:justify-center justify-normal space-y-6 h-screen sm:h-auto pt-3 pb-3">
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
@@ -184,14 +174,10 @@ const IdeaDetail = ({
 
                   <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
                     <span className="ml-3">{detailData.cretInfo.name}</span>
-                    <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
-                      {detailData.cretInfo.userGrade}
-                    </span>
+                    <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">{detailData.cretInfo.userGrade}</span>
                   </div>
                   <span className="text-xs ml-1 text-slate-400 font-medium">
-                    <DateDisplay
-                      isoString={detailData.createdDatetime}
-                    ></DateDisplay>
+                    <DateDisplay isoString={detailData.createdDatetime}></DateDisplay>
                   </span>
                 </div>
                 <div>
@@ -231,24 +217,14 @@ const IdeaDetail = ({
                     <DropdownMenuContent>
                       {detailData.youCreate ? (
                         <>
-                          <DropdownMenuItem onClick={feedModify}>
-                            수정하기
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={feedDelete}>
-                            삭제하기
-                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={feedModify}>수정하기</DropdownMenuItem>
+                          <DropdownMenuItem onClick={feedDelete}>삭제하기</DropdownMenuItem>
                         </>
                       ) : (
                         <>
-                          <DropdownMenuItem onClick={userReport}>
-                            신고하기
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={feedBlock}>
-                            컨텐츠 차단하기
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={userBlock}>
-                            유저 차단하기
-                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={userReport}>신고하기</DropdownMenuItem>
+                          <DropdownMenuItem onClick={feedBlock}>컨텐츠 차단하기</DropdownMenuItem>
+                          <DropdownMenuItem onClick={userBlock}>유저 차단하기</DropdownMenuItem>
                         </>
                       )}
                     </DropdownMenuContent>
@@ -256,12 +232,8 @@ const IdeaDetail = ({
                 </div>
               </div>
               <div className="sm:mr-10 sm:ml-10">
-                <div className="font-semibold mb-7 tracking-wide">
-                  {detailData.subject}
-                </div>
-                <div className="mb-7 text-slate-600 dark:text-slate-300">
-                  {detailData.contents}
-                </div>
+                <div className="font-semibold mb-7 tracking-wide">{detailData.subject}</div>
+                <div className="mb-7 text-slate-600 dark:text-slate-300">{detailData.contents}</div>
               </div>
               <div className="mb-7">
                 <div className="cursor-pointer flex items-center">
@@ -280,11 +252,7 @@ const IdeaDetail = ({
               </div>
               <div className="flex mt-3 text-xs text-slate-400 font-semibold">
                 <div className="mr-3 flex items-center">
-                  <img
-                    src="/images/icons8-view.png"
-                    alt="viewCount"
-                    className="w-5 mr-1"
-                  />
+                  <img src="/images/icons8-view.png" alt="viewCount" className="w-5 mr-1" />
                   <span>{detailData.viewCount}</span>
                 </div>
                 <div className="flex items-center">
@@ -307,19 +275,11 @@ const IdeaDetail = ({
                 </div>
               </div>
               <div className="mt-5">
-                <CommentInput
-                  targetId={detailData.feedId}
-                  targetType="FEED"
-                  refresh={feedSearch}
-                ></CommentInput>
+                <CommentInput targetId={detailData.feedId} targetType="FEED" refresh={feedSearch}></CommentInput>
 
                 <div>
-                  {commentList.map((comment) => (
-                    <Comment
-                      key={comment.commentId}
-                      comment={comment}
-                      refresh={feedSearch}
-                    ></Comment>
+                  {commentList.map(comment => (
+                    <Comment key={comment.commentId} comment={comment} refresh={feedSearch}></Comment>
                   ))}
                 </div>
               </div>
@@ -327,12 +287,8 @@ const IdeaDetail = ({
           </div>
         </div>
       )}
-      {viewType === "modify" && (
-        <FeedModify data={detailData} feedMethod={feedSearch} />
-      )}
-      {viewType === "report" && (
-        <ReportForm data={reportData} closeMethod={feedSearch} />
-      )}
+      {viewType === 'modify' && <FeedModify data={detailData} feedMethod={feedSearch} />}
+      {viewType === 'report' && <ReportForm data={reportData} closeMethod={feedSearch} />}
     </>
   );
 };

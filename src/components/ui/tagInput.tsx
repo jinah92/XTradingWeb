@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 
 interface TagInputProps {
   placeholder?: string;
@@ -24,8 +24,8 @@ const TagInput = forwardRef(({ placeholder = '태그', onChange, tagList = [] }:
       e.preventDefault();
       const trimmedValue = inputValue.trim();
 
-      if(trimmedValue.length > 10) {
-        toast({description: '10자 이내로 입력하세요.', duration: 2000});
+      if (trimmedValue.length > 10) {
+        toast({ description: '10자 이내로 입력하세요.', duration: 2000 });
         setInputValue('');
         return;
       }
@@ -36,7 +36,7 @@ const TagInput = forwardRef(({ placeholder = '태그', onChange, tagList = [] }:
         setInputValue('');
         onChange(newTags);
       } else {
-        toast({description: `"${trimmedValue}"는 이미 존재하는 태그입니다.`, duration: 2000});
+        toast({ description: `"${trimmedValue}"는 이미 존재하는 태그입니다.`, duration: 2000 });
         setInputValue('');
       }
     }
@@ -48,14 +48,13 @@ const TagInput = forwardRef(({ placeholder = '태그', onChange, tagList = [] }:
     onChange(newTags);
   };
 
-
   return (
-    <div className='mb-3 text-sm'>
+    <div className="mb-3 text-sm">
       <input
         type="text"
         value={inputValue}
         placeholder={placeholder}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={e => setInputValue(e.target.value)}
         onKeyDown={addTag}
         className="mb-3 h-9 outline-none flex-grow px-3 py-1 w-full rounded-md border border-input dark:border-slate-300 bg-transparent dark:text-white"
       />

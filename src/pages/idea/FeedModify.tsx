@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 /* hook */
-import { FeedDetail, useFeedModify, FeedModifyReq } from "@/hooks/feed/FeedApi";
+import { FeedDetail, useFeedModify, FeedModifyReq } from '@/hooks/feed/FeedApi';
 /* component */
-import { Input } from "@/components/ui/input";
-import TagInput from "@/components/ui/tagInput";
-import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
-import { Button } from "@/components/ui/button";
+import { Input } from '@/components/ui/input';
+import TagInput from '@/components/ui/tagInput';
+import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   data: FeedDetail;
@@ -42,18 +42,9 @@ const IssueModify = ({ data, feedMethod }: Props) => {
     <>
       <div className="border-t border-b flex justify-center">
         <div className="mt-8 mb-8 w-4/5">
-          <Input
-            placeholder="제목"
-            className="mb-5"
-            onChange={(e) => setSubject(e.target.value)}
-            value={subject}
-          />
+          <Input placeholder="제목" className="mb-5" onChange={e => setSubject(e.target.value)} value={subject} />
           <div className="flex mt-8 mb-8">
-            <Input
-              placeholder="종목을 선택해주세요."
-              value={addCode}
-              disabled={true}
-            />
+            <Input placeholder="종목을 선택해주세요." value={addCode} disabled={true} />
             {/* <Button onClick={() => openKeyword('add')}>검색</Button> */}
           </div>
           <TagInput onChange={setTagList} ref={tagInputRef} />

@@ -1,15 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 /* hook */
-import {
-  BoardDetail,
-  useIdeaModify,
-  BoardModifyReq,
-} from "@/hooks/idea/IdeaApi";
+import { BoardDetail, useIdeaModify, BoardModifyReq } from '@/hooks/idea/IdeaApi';
 /* component */
-import { Input } from "@/components/ui/input";
-import TagInput from "@/components/ui/tagInput";
-import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
-import { Button } from "@/components/ui/button";
+import { Input } from '@/components/ui/input';
+import TagInput from '@/components/ui/tagInput';
+import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   data: BoardDetail;
@@ -44,17 +40,8 @@ const IssueModify = ({ data, ideaMethod }: Props) => {
     <>
       <div className="border-t border-b flex justify-center">
         <div className="mt-8 mb-8 w-4/5">
-          <Input
-            placeholder="제목"
-            className="mb-5"
-            onChange={(e) => setSubject(e.target.value)}
-            value={subject}
-          />
-          <TagInput
-            onChange={setTagList}
-            ref={tagInputRef}
-            tagList={data.tagList}
-          />
+          <Input placeholder="제목" className="mb-5" onChange={e => setSubject(e.target.value)} value={subject} />
+          <TagInput onChange={setTagList} ref={tagInputRef} tagList={data.tagList} />
           <AutoResizeTextarea value={contents} onChange={setContents} />
           <div className="flex justify-end mt-5">
             <Button onClick={ideaModify}>수정</Button>

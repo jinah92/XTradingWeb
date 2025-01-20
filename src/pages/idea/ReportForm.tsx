@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { reportFormReq, reportReq, useReport } from "@/hooks/report/ReportApi";
-import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import React, { useEffect, useState } from 'react';
+import { reportFormReq, reportReq, useReport } from '@/hooks/report/ReportApi';
+import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface ParentComponentProps {
   data: reportFormReq | undefined;
@@ -12,20 +12,20 @@ interface ParentComponentProps {
 /* 필요한 정보 : 작성자 닉네임, 제목, targetType, targetId, contents */
 const ReportForm = ({ data, closeMethod }: ParentComponentProps) => {
   const reportType = [
-    { name: "Defamation/Abusive Language" },
-    { name: "Fraud" },
-    { name: "Pornographic Content" },
-    { name: "Dissemination of False Information" },
-    { name: "Spam" },
-    { name: "Pump and Dump" },
-    { name: "Solicitation for Meeting" },
-    { name: "Post/Comment Flooding" },
-    { name: "ETC" },
+    { name: 'Defamation/Abusive Language' },
+    { name: 'Fraud' },
+    { name: 'Pornographic Content' },
+    { name: 'Dissemination of False Information' },
+    { name: 'Spam' },
+    { name: 'Pump and Dump' },
+    { name: 'Solicitation for Meeting' },
+    { name: 'Post/Comment Flooding' },
+    { name: 'ETC' },
   ];
 
-  const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>('');
   const [etcFormView, setEtcFormView] = useState<boolean>(false);
-  const [contents, setContents] = useState("");
+  const [contents, setContents] = useState('');
 
   const { reportApi } = useReport();
   const { toast } = useToast();
@@ -35,9 +35,9 @@ const ReportForm = ({ data, closeMethod }: ParentComponentProps) => {
   };
 
   const reportAction = async () => {
-    if (contents === "") {
+    if (contents === '') {
       toast({
-        description: "사유를 입력하세요.",
+        description: '사유를 입력하세요.',
         duration: 2000,
       });
       return;
@@ -58,8 +58,8 @@ const ReportForm = ({ data, closeMethod }: ParentComponentProps) => {
   };
 
   useEffect(() => {
-    if (selectedType === "ETC") {
-      setContents("");
+    if (selectedType === 'ETC') {
+      setContents('');
       setEtcFormView(true);
     } else {
       setContents(selectedType);
@@ -84,15 +84,11 @@ const ReportForm = ({ data, closeMethod }: ParentComponentProps) => {
               <tr>
                 <td rowSpan={10}>사유</td>
               </tr>
-              {reportType.map((row) => (
+              {reportType.map(row => (
                 <tr key={row.name}>
                   <td className="text-left">
                     <label>
-                      <input
-                        type="radio"
-                        name="rowSelect"
-                        onChange={() => handleRadioChange(row.name)}
-                      />
+                      <input type="radio" name="rowSelect" onChange={() => handleRadioChange(row.name)} />
                       <span className="ml-3">{row.name}</span>
                     </label>
                   </td>
@@ -100,9 +96,7 @@ const ReportForm = ({ data, closeMethod }: ParentComponentProps) => {
               ))}
             </tbody>
           </table>
-          {etcFormView ? (
-            <AutoResizeTextarea value={contents} onChange={setContents} />
-          ) : null}
+          {etcFormView ? <AutoResizeTextarea value={contents} onChange={setContents} /> : null}
           <div className="flex justify-end mt-5">
             <Button onClick={reportAction}>신고</Button>
           </div>

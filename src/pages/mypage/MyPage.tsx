@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState } from 'react';
 /* hook */
 /* component */
-import MyInfo from "@/pages/mypage/MyInfo";
-import Setting from "@/pages/mypage/Setting";
+import MyInfo from '@/pages/mypage/MyInfo';
+import Setting from '@/pages/mypage/Setting';
 
 const Mypage = () => {
   const [myInfo, setMyInfo] = useState(true);
@@ -15,8 +15,8 @@ const Mypage = () => {
 
   // 본문 내용 change
   const switching = (apply: string) => {
-    setMyInfo(apply === "myInfo");
-    setSetting(apply === "setting");
+    setMyInfo(apply === 'myInfo');
+    setSetting(apply === 'setting');
   };
 
   return (
@@ -25,16 +25,13 @@ const Mypage = () => {
         <main className="w-full max-w-8xl mt-6 grid grid-cols-1 md:grid-cols-7 gap-4">
           <div>
             {/* 모바일 화면에서 사이드바 토글 버튼 */}
-            <button
-              className="md:hidden p-2 text-gray-700"
-              onClick={toggleSidebar}
-            >
-              {isOpen ? "닫기" : "메뉴"}
+            <button className="md:hidden p-2 text-gray-700" onClick={toggleSidebar}>
+              {isOpen ? '닫기' : '메뉴'}
             </button>
 
             <aside
               className={`p-4 transform transition-transform duration-300 ease-in-out ${
-                isOpen ? "block" : "hidden"
+                isOpen ? 'block' : 'hidden'
               } md:block`}
             >
               <ul className="space-y-2">
@@ -42,7 +39,7 @@ const Mypage = () => {
                   <button
                     className="w-full text-left text-md font-semibold text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
                     onClick={() => {
-                      switching("myInfo");
+                      switching('myInfo');
                       if (isOpen) toggleSidebar();
                     }}
                   >
@@ -53,7 +50,7 @@ const Mypage = () => {
                   <button
                     className="w-full text-left text-md font-semibold text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
                     onClick={() => {
-                      switching("setting");
+                      switching('setting');
                       if (isOpen) toggleSidebar();
                     }}
                   >

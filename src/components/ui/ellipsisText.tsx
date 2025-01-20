@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface EllipsisTextProps {
   text: string; // 표시할 텍스트
@@ -9,14 +9,10 @@ const EllipsisText: React.FC<EllipsisTextProps> = ({ text, maxLines = 1 }) => {
   return (
     <div
       className={`overflow-hidden text-ellipsis whitespace-pre-line 
-                  ${
-                    maxLines === 1
-                      ? "whitespace-nowrap"
-                      : `line-clamp-${maxLines}`
-                  }`}
+                  ${maxLines === 1 ? 'whitespace-nowrap' : `line-clamp-${maxLines}`}`}
       style={{
-        display: "-webkit-box",
-        WebkitBoxOrient: "vertical",
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
         WebkitLineClamp: maxLines,
       }}
     >

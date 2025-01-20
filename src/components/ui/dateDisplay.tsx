@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // 상대적 시간 계산 함수
 const timeAgo = (date: Date): string => {
@@ -20,12 +20,11 @@ const timeAgo = (date: Date): string => {
   interval = Math.floor(seconds / 60);
   if (interval >= 1) return `${interval}분 전`;
 
-  return "방금 전";
+  return '방금 전';
 };
 
 const DateDisplay: React.FC<{ isoString: string }> = ({ isoString }) => {
-
-  const normalizedDateStr = isoString.replace(/\./g, "-"); // "2024.10.30T00:39:04" -> "2024-10-30T00:39:04"
+  const normalizedDateStr = isoString.replace(/\./g, '-'); // "2024.10.30T00:39:04" -> "2024-10-30T00:39:04"
   // API로부터 받은 ISO 날짜 문자열을 Date 객체로 변환
   const date = new Date(normalizedDateStr);
 
