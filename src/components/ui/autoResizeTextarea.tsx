@@ -36,7 +36,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 
   return (
     <textarea
-      className='dark:bg-darkMode text-sm dark:text-white'
+      className="dark:bg-darkMode text-sm dark:text-white"
       ref={textareaRef}
       value={value}
       onChange={handleChange}
@@ -53,7 +53,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
         transition: 'border-color 0.3s',
       }}
-      onBlur={(e) => (e.target.style.borderColor = '#ccc')}
+      onBlur={e => (e.target.style.borderColor = '#ccc')}
     />
   );
 };

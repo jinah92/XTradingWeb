@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Interest = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    navigate("/market"); // '/market'으로 이동
+    navigate('/market'); // '/market'으로 이동
   };
 
   return (

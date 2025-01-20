@@ -1,6 +1,6 @@
-import axios from "axios";
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { getCookie, setCookie } from "../../common/Cookie";
+import axios from 'axios';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getCookie, setCookie } from '../../common/Cookie';
 
 // ApiResponse Class
 type apiResponse<T> = {
@@ -10,9 +10,9 @@ type apiResponse<T> = {
 
 const axiosInstance = axios.create({
   headers: {
-    "X-Requested-With": "XMLHttpRequest",
-    "Content-Type": "application/json",
-    "x-appkey": import.meta.env.VITE_APP_KEY,
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json',
+    'x-appkey': import.meta.env.VITE_APP_KEY,
   },
 });
 
@@ -34,7 +34,7 @@ let refreshSubscribers: Array<(token: string) => void> = [];
 
 // 토큰 갱신 후 대기 중인 요청 재시도
 const onRefreshed = (token: string) => {
-  refreshSubscribers.forEach((callback) => callback(token));
+  refreshSubscribers.forEach(callback => callback(token));
   refreshSubscribers = [];
 };
 
@@ -57,9 +57,9 @@ axiosInstance.interceptors.response.use(
       if (originalRequest && !originalRequest._retry) {
         if (isRefreshing) {
           // 이미 갱신 요청 중이면 대기
-          return new Promise((resolve) => {
+          return new Promise(resolve => {
             addRefreshSubscriber((newToken: string) => {
-              originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+              originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
               resolve(axiosInstance(originalRequest));
             });
           });
@@ -71,11 +71,11 @@ axiosInstance.interceptors.response.use(
         try {
           // Refresh Token을 사용하여 새로운 Access Token 요청
           const response = await axiosInstance.post<apiResponse<Tokens>>(
-            "/api/auth/reissue-access-token", // 실제 토큰 갱신 API URL
+            '/api/auth/reissue-access-token', // 실제 토큰 갱신 API URL
             {
-              userId: getCookie("userId"),
-              refreshTokenKey: getCookie("refreshToken"),
-            }
+              userId: getCookie('userId'),
+              refreshTokenKey: getCookie('refreshToken'),
+            },
           );
 
           // 새 토큰 저장
@@ -90,11 +90,11 @@ axiosInstance.interceptors.response.use(
           onRefreshed(tokens.accessToken);
 
           // 원래 요청 재시도
-          originalRequest.headers["Authorization"] = `Bearer ${tokens.accessToken}`;
+          originalRequest.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
-          window.location.href = "/login"; // 토큰 갱신 실패 시 로그인 화면으로 리디렉션
+          window.location.href = '/login'; // 토큰 갱신 실패 시 로그인 화면으로 리디렉션
           return Promise.reject(refreshError);
         }
       }
@@ -104,35 +104,39 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       const { status } = error.response;
       if (status === 403) {
-        console.log("403 error");
+        console.log('403 error');
       } else if (status === 500) {
-        console.log("500 error");
+        console.log('500 error');
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
-
 // 요청 인터셉터 추가
-axiosInstance.interceptors.request.use((config) => {
-  const accessToken = getCookie("accessToken");
-  // accessToken 재발급 & 로그인 API 제외
-  if (config.url && !config.url.includes("/api/auth/reissue-access-token") && !config.url.includes("/api/auth/login")) {
-
-    // 토큰이 존재하면 Authorization 헤더에 Bearer 토큰 추가
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+axiosInstance.interceptors.request.use(
+  config => {
+    const accessToken = getCookie('accessToken');
+    // accessToken 재발급 & 로그인 API 제외
+    if (
+      config.url &&
+      !config.url.includes('/api/auth/reissue-access-token') &&
+      !config.url.includes('/api/auth/login')
+    ) {
+      // 토큰이 존재하면 Authorization 헤더에 Bearer 토큰 추가
+      if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`;
+      }
+    } else {
+      config.headers['noAuth'] = true;
     }
-  }
-  else {
-    config.headers["noAuth"] = true;
-  }
 
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
 
 export default axiosInstance;

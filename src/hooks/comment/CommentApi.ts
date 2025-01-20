@@ -1,15 +1,15 @@
-import axiosInstance from "@/configs/axios/axiosConfig";
-import { useAuth } from "@/router/AuthContext";
-import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from '@/configs/axios/axiosConfig';
+import { useAuth } from '@/router/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export type CommentAddReq = {
   targetType: string;
   targetId: string;
   contents: string;
-}
+};
 
 export type CommentListRes = {
   commentId: string;
@@ -26,7 +26,7 @@ export type CommentListRes = {
   youCreate: boolean;
   youLiked: boolean;
   youBlock: boolean;
-}
+};
 
 export type Reply = {
   commentId: string;
@@ -43,13 +43,12 @@ export type Reply = {
   youCreate: boolean;
   youLiked: boolean;
   youBlock: boolean;
-}
+};
 
 export type CommentModifyReq = {
   commentId: string;
   contents: string;
-}
-
+};
 
 // 댓글 등록 API
 export const useCommentAdd = () => {
@@ -57,7 +56,7 @@ export const useCommentAdd = () => {
   const { toast } = useToast();
   const commentAddApi = async (param: CommentAddReq) => {
     try {
-      if(!isAuthenticated) {
+      if (!isAuthenticated) {
         toast({
           description: '로그인 후 댓글을 작성하실 수 있습니다.',
           duration: 2000,
@@ -65,8 +64,8 @@ export const useCommentAdd = () => {
         return;
       }
 
-      if(param.contents == '') {
-        toast({description: '내용을 입력해주세요.', duration: 2000});
+      if (param.contents == '') {
+        toast({ description: '내용을 입력해주세요.', duration: 2000 });
         return;
       }
 
@@ -80,20 +79,18 @@ export const useCommentAdd = () => {
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-        error.response.data?.result?.message ||
-        "댓글 등록 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '댓글 등록 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
-      console.error("오류:", error);
+      console.error('오류:', error);
       return false;
     }
   };
@@ -107,19 +104,19 @@ export const useCommentAdd = () => {
 export const useBoardCommentList = () => {
   const [commentList, setCommentList] = useState<CommentListRes[]>([]);
 
-  const commentListApi = async (boardId:string) => {
+  const commentListApi = async (boardId: string) => {
     try {
       const response = await axiosInstance.get(`/api/boards/${boardId}/comments`);
       setCommentList(response.data.result.commentList);
     } catch (error) {
-      console.error("데이터 요청 오류:", error);
+      console.error('데이터 요청 오류:', error);
       throw error;
     }
   };
 
   return {
     commentListApi,
-    commentList
+    commentList,
   };
 };
 
@@ -127,30 +124,29 @@ export const useBoardCommentList = () => {
 export const useFeedCommentList = () => {
   const [commentList, setCommentList] = useState<CommentListRes[]>([]);
 
-  const commentListApi = async (boardId:string) => {
+  const commentListApi = async (boardId: string) => {
     try {
       const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`);
       setCommentList(response.data.result.commentList);
     } catch (error) {
-      console.error("데이터 요청 오류:", error);
+      console.error('데이터 요청 오류:', error);
       throw error;
     }
   };
 
   return {
     commentListApi,
-    commentList
+    commentList,
   };
 };
-
 
 // 댓글 수정 API
 export const useCommentModify = () => {
   const { toast } = useToast();
   const commentModifyApi = async (param: CommentModifyReq) => {
     try {
-      if(param.contents == '') {
-        toast({description: '내용을 입력해주세요.', duration: 2000});
+      if (param.contents == '') {
+        toast({ description: '내용을 입력해주세요.', duration: 2000 });
         return;
       }
 
@@ -164,20 +160,18 @@ export const useCommentModify = () => {
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-        error.response.data?.result?.message ||
-        "댓글 수정 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '댓글 수정 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
-      console.error("오류:", error);
+      console.error('오류:', error);
       return false;
     }
   };
@@ -192,7 +186,7 @@ export const useCommentDelete = () => {
   const { toast } = useToast();
   const commentDeleteApi = async (commentId: string) => {
     try {
-      await axiosInstance.delete(`/api/comments/`+commentId+`?sortType=NEWEST`);
+      await axiosInstance.delete(`/api/comments/` + commentId + `?sortType=NEWEST`);
 
       toast({
         description: '댓글 삭제되었습니다.',
@@ -202,20 +196,18 @@ export const useCommentDelete = () => {
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-        error.response.data?.result?.message ||
-        "댓글 삭제 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '댓글 삭제 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
-      console.error("오류:", error);
+      console.error('오류:', error);
       return false;
     }
   };
@@ -225,7 +217,6 @@ export const useCommentDelete = () => {
   };
 };
 
-
 // 좋아요 토글 API
 export const useCommentLikeToggle = () => {
   const navigate = useNavigate();
@@ -234,28 +225,26 @@ export const useCommentLikeToggle = () => {
   const commentLikeToggleApi = async (commentId: string) => {
     try {
       // 로그인 안했을 경우 로그인 화면으로 이동
-      if(!isAuthenticated) {
-        navigate("/login");
+      if (!isAuthenticated) {
+        navigate('/login');
         return;
       }
-      await axiosInstance.post(`/api/comments/toggle-like`,{ commentId: commentId });
+      await axiosInstance.post(`/api/comments/toggle-like`, { commentId: commentId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-        error.response.data?.result?.message ||
-        "좋아요 중 오류가 발생했습니다.";
+        const errorMessage = error.response.data?.result?.message || '좋아요 중 오류가 발생했습니다.';
         toast({
           description: errorMessage,
           duration: 2000,
         });
       } else {
         toast({
-          description: "예기치 못한 오류가 발생했습니다.",
+          description: '예기치 못한 오류가 발생했습니다.',
           duration: 2000,
         });
       }
-      console.error("오류:", error);
+      console.error('오류:', error);
       return false;
     }
   };

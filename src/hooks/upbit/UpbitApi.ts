@@ -1,5 +1,5 @@
-import axiosInstance from "@/configs/axios/axiosConfig";
-import { useEffect, useState } from "react";
+import axiosInstance from '@/configs/axios/axiosConfig';
+import { useEffect, useState } from 'react';
 
 export interface ItemData {
   market: string;
@@ -44,19 +44,19 @@ export const useUpbitMarket = () => {
 
   const upbitMarketApi = async () => {
     try {
-      const response = await axiosInstance.get("/upbit-api/v1/market/all");
+      const response = await axiosInstance.get('/upbit-api/v1/market/all');
       const data: ItemData[] = response.data;
       const KRW: ItemData[] = [];
       const BTC: ItemData[] = [];
       const USDT: ItemData[] = [];
 
       for (const item of data) {
-        const unit = item.market.split("-");
-        if (unit[0] === "KRW") {
+        const unit = item.market.split('-');
+        if (unit[0] === 'KRW') {
           KRW.push(item);
-        } else if (unit[0] === "BTC") {
+        } else if (unit[0] === 'BTC') {
           BTC.push(item);
-        } else if (unit[0] === "USDT") {
+        } else if (unit[0] === 'USDT') {
           USDT.push(item);
         }
       }
@@ -65,7 +65,7 @@ export const useUpbitMarket = () => {
       setBTCList(BTC);
       setUSDTList(USDT);
     } catch (error) {
-      console.error("오류:", error);
+      console.error('오류:', error);
     }
   };
 
@@ -90,15 +90,15 @@ export const useUpbitChart = () => {
 
   const upbitChartApi = async (param: ChartParam) => {
     try {
-      const BASE_PATH = "/upbit-api/v1/candles/";
+      const BASE_PATH = '/upbit-api/v1/candles/';
       let CHART_PATH = BASE_PATH + param.type;
-      if (param.type === "minutes") {
-        CHART_PATH += "/" + param.unit;
+      if (param.type === 'minutes') {
+        CHART_PATH += '/' + param.unit;
       }
       const response = await axiosInstance.get(CHART_PATH, { params: param });
       setDataList(response.data);
     } catch (error) {
-      console.error("오류:", error);
+      console.error('오류:', error);
     }
   };
 

@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 /* hook */
-import {
-  useIdeaDetail,
-  useIdeaLikeToggle,
-  useIdeaDelete,
-  BoardDetail,
-  useIdeaBlockToggle,
-} from "@/hooks/idea/IdeaApi";
-import { useUserBlockToggle } from "@/hooks/member/MemberApi";
-import { useBoardCommentList } from "@/hooks/comment/CommentApi";
-import { FollowReq, useFollow, useUnfollow } from "@/hooks/mypage/MyPageApi";
+import { useIdeaDetail, useIdeaLikeToggle, useIdeaDelete, BoardDetail, useIdeaBlockToggle } from '@/hooks/idea/IdeaApi';
+import { useUserBlockToggle } from '@/hooks/member/MemberApi';
+import { useBoardCommentList } from '@/hooks/comment/CommentApi';
+import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
 /* component */
-import ProfileImage from "@/components/ui/profileImg";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import DateDisplay from "@/components/ui/dateDisplay";
+import ProfileImage from '@/components/ui/profileImg';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import DateDisplay from '@/components/ui/dateDisplay';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import CommentInput from "@/components/ui/commentInput";
-import Comment from "@/components/ui/comment";
-import Avatar from "@/components/ui/avartar";
+} from '@/components/ui/dropdown-menu';
+import CommentInput from '@/components/ui/commentInput';
+import Comment from '@/components/ui/comment';
+import Avatar from '@/components/ui/avartar';
 /* page */
-import ReportForm from "@/pages/idea/ReportForm";
-import IdeaModify from "@/pages/idea/IdeaModify";
-import { reportFormReq } from "@/hooks/report/ReportApi";
+import ReportForm from '@/pages/idea/ReportForm';
+import IdeaModify from '@/pages/idea/IdeaModify';
+import { reportFormReq } from '@/hooks/report/ReportApi';
 
 interface ParentComponentProps {
   boardId: string;
@@ -36,13 +30,7 @@ interface ParentComponentProps {
   onIssueData: (detail: BoardDetail) => void;
 }
 
-const IdeaDetail = ({
-  boardId,
-  onClose,
-  onViewTF,
-  onLikeToggle,
-  onIssueData,
-}: ParentComponentProps) => {
+const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: ParentComponentProps) => {
   const { detailData, ideaDetailApi } = useIdeaDetail();
   const { ideaLikeToggleApi } = useIdeaLikeToggle();
   const { ideaDeleteApi } = useIdeaDelete();
@@ -57,7 +45,7 @@ const IdeaDetail = ({
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  const [viewType, setViewType] = useState("search");
+  const [viewType, setViewType] = useState('search');
 
   const [reportData, setReportData] = useState<reportFormReq>();
 
@@ -102,7 +90,7 @@ const IdeaDetail = ({
 
   // 아이디어 수정 화면 호출
   const ideaModify = () => {
-    setViewType("modify");
+    setViewType('modify');
   };
 
   // 유저 신고 화면 호출
@@ -111,10 +99,10 @@ const IdeaDetail = ({
       setReportData({
         cretName: detailData.cretInfo.name,
         targetId: detailData.boardId,
-        targetType: "BOARD",
+        targetType: 'BOARD',
         title: detailData.subject,
       });
-      setViewType("report");
+      setViewType('report');
     }
   };
 
@@ -122,7 +110,7 @@ const IdeaDetail = ({
   const ideaSearch = async () => {
     await ideaDetailApi(boardId);
     await commentListApi(boardId);
-    setViewType("search");
+    setViewType('search');
   };
 
   // 아이디어 삭제
@@ -177,7 +165,7 @@ const IdeaDetail = ({
 
   return (
     <>
-      {viewType === "search" && (
+      {viewType === 'search' && (
         <div className="flex w-full flex-col sm:justify-center justify-normal space-y-6 h-screen sm:h-auto pt-3 pb-3">
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
             <div className="p-4 flex flex-col justify-between text-left">
@@ -191,14 +179,10 @@ const IdeaDetail = ({
 
                   <div className="cursor-pointer flex flex-col items-start sm:items-center sm:flex-row sm:text-sm text-xs">
                     <span className="ml-3">{detailData.cretInfo.name}</span>
-                    <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">
-                      {detailData.cretInfo.userGrade}
-                    </span>
+                    <span className="p-1 ml-1 sm:text-sm text-xs text-blue-500">{detailData.cretInfo.userGrade}</span>
                   </div>
                   <span className="text-xs ml-1 text-slate-400 font-medium">
-                    <DateDisplay
-                      isoString={detailData.cretDatetime}
-                    ></DateDisplay>
+                    <DateDisplay isoString={detailData.cretDatetime}></DateDisplay>
                   </span>
                 </div>
                 <div>
@@ -239,24 +223,14 @@ const IdeaDetail = ({
                     <DropdownMenuContent>
                       {detailData.youCreate ? (
                         <>
-                          <DropdownMenuItem onClick={ideaModify}>
-                            수정하기
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={ideaDelete}>
-                            삭제하기
-                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={ideaModify}>수정하기</DropdownMenuItem>
+                          <DropdownMenuItem onClick={ideaDelete}>삭제하기</DropdownMenuItem>
                         </>
                       ) : (
                         <>
-                          <DropdownMenuItem onClick={userReport}>
-                            신고하기
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={ideaBlock}>
-                            컨텐츠 차단하기
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={userBlock}>
-                            유저 차단하기
-                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={userReport}>신고하기</DropdownMenuItem>
+                          <DropdownMenuItem onClick={ideaBlock}>컨텐츠 차단하기</DropdownMenuItem>
+                          <DropdownMenuItem onClick={userBlock}>유저 차단하기</DropdownMenuItem>
                         </>
                       )}
                     </DropdownMenuContent>
@@ -264,12 +238,8 @@ const IdeaDetail = ({
                 </div>
               </div>
               <div className="sm:mr-10 sm:ml-10">
-                <div className="font-semibold mb-7 tracking-wide">
-                  {detailData.subject}
-                </div>
-                <div className="mb-7 text-slate-600 dark:text-slate-300 whitespace-pre-line">
-                  {detailData.contents}
-                </div>
+                <div className="font-semibold mb-7 tracking-wide">{detailData.subject}</div>
+                <div className="mb-7 text-slate-600 dark:text-slate-300 whitespace-pre-line">{detailData.contents}</div>
               </div>
               <div className="text-yellow-500 font-semibold flex flex-wrap">
                 {detailData.tagList.length > 0 &&
@@ -281,19 +251,11 @@ const IdeaDetail = ({
               </div>
               <div className="flex mt-3 text-xs text-slate-400 font-semibold">
                 <div className="mr-3 flex items-center">
-                  <img
-                    src="/images/icons8-view.png"
-                    alt="viewCount"
-                    className="w-5 mr-1"
-                  />
+                  <img src="/images/icons8-view.png" alt="viewCount" className="w-5 mr-1" />
                   <span>{detailData.viewCount}</span>
                 </div>
                 <div className="mr-3 flex items-center">
-                  <img
-                    src="/images/icons8-comment.png"
-                    alt="commentCount"
-                    className="w-5 mr-1"
-                  />
+                  <img src="/images/icons8-comment.png" alt="commentCount" className="w-5 mr-1" />
                   <span>{detailData.commentCount}</span>
                 </div>
                 <div className="flex items-center">
@@ -316,19 +278,11 @@ const IdeaDetail = ({
                 </div>
               </div>
               <div className="mt-5">
-                <CommentInput
-                  targetId={detailData.boardId}
-                  targetType="BOARD"
-                  refresh={ideaSearch}
-                ></CommentInput>
+                <CommentInput targetId={detailData.boardId} targetType="BOARD" refresh={ideaSearch}></CommentInput>
 
                 <div>
-                  {commentList.map((comment) => (
-                    <Comment
-                      key={comment.commentId}
-                      comment={comment}
-                      refresh={ideaSearch}
-                    ></Comment>
+                  {commentList.map(comment => (
+                    <Comment key={comment.commentId} comment={comment} refresh={ideaSearch}></Comment>
                   ))}
                 </div>
               </div>
@@ -336,12 +290,8 @@ const IdeaDetail = ({
           </div>
         </div>
       )}
-      {viewType === "modify" && (
-        <IdeaModify data={detailData} ideaMethod={ideaSearch} />
-      )}
-      {viewType === "report" && (
-        <ReportForm data={reportData} closeMethod={ideaSearch} />
-      )}
+      {viewType === 'modify' && <IdeaModify data={detailData} ideaMethod={ideaSearch} />}
+      {viewType === 'report' && <ReportForm data={reportData} closeMethod={ideaSearch} />}
     </>
   );
 };

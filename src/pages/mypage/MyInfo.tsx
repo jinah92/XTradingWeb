@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 /* hook */
-import {
-  useFollowerList,
-  useFollowingList,
-  useMemberInfo,
-} from "@/hooks/mypage/MyPageApi";
+import { useFollowerList, useFollowingList, useMemberInfo } from '@/hooks/mypage/MyPageApi';
 /* component */
-import ProfileImage from "@/components/ui/profileImg";
-import Avatar from "@/components/ui/avartar";
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/modal/Modal";
+import ProfileImage from '@/components/ui/profileImg';
+import Avatar from '@/components/ui/avartar';
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/modal/Modal';
 /* page */
-import NickNameChange from "@/pages/mypage/NickNameChange";
-import { useAuth } from "@/router/AuthContext";
+import NickNameChange from '@/pages/mypage/NickNameChange';
+import { useAuth } from '@/router/AuthContext';
 
 const MyInfo = () => {
   const { memberInfo, memberInfoApi } = useMemberInfo();
@@ -50,7 +46,7 @@ const MyInfo = () => {
         <div className="flex">
           <div>
             {memberInfo?.profilePicUrl ? (
-              <ProfileImage src={memberInfo?.profilePicUrl} size={"80px"} />
+              <ProfileImage src={memberInfo?.profilePicUrl} size={'80px'} />
             ) : (
               <Avatar id={id} size={80} />
             )}
@@ -76,23 +72,19 @@ const MyInfo = () => {
             <li className="flex-1 p-3">
               <span className="font-semibold">팔로우 리스트</span>
               {Array.isArray(followerList) && followerList.length > 0 ? (
-                followerList.map((user) => (
+                followerList.map(user => (
                   <div key={user.userId}>
                     {user.profilePicUrl ? (
                       <div className="flex items-center mt-5">
                         <ProfileImage src={user.profilePicUrl} />
                         <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">
-                          {user.userGrade}
-                        </span>
+                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
                       </div>
                     ) : (
                       <div className="flex items-center">
                         <Avatar id={user.userId} />
                         <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">
-                          {user.userGrade}
-                        </span>
+                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
                       </div>
                     )}
                   </div>
@@ -104,23 +96,19 @@ const MyInfo = () => {
             <li className="flex-1 py-3 px-5">
               <span className="font-semibold">팔로잉 리스트</span>
               {Array.isArray(followingList) && followingList.length > 0 ? (
-                followingList.map((user) => (
+                followingList.map(user => (
                   <div key={user.userId} className="mt-5">
                     {user.profilePicUrl ? (
                       <div className="flex items-center">
                         <ProfileImage src={user.profilePicUrl} />
                         <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">
-                          {user.userGrade}
-                        </span>
+                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
                       </div>
                     ) : (
                       <div className="flex items-center">
                         <Avatar id={user.userId} />
                         <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">
-                          {user.userGrade}
-                        </span>
+                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
                       </div>
                     )}
                   </div>

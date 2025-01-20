@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Item } from "@/hooks/news/NewsApi.ts"; // Assuming you have this type
-import { Card } from "@/components/ui/card";
+import React, { useEffect, useState } from 'react';
+import { Item } from '@/hooks/news/NewsApi.ts'; // Assuming you have this type
+import { Card } from '@/components/ui/card';
 
 interface CardItemProps {
   item: Item;
 }
 
 const NewsCard: React.FC<CardItemProps> = ({ item }) => {
-  const fallbackImage = "/images/no-image.png";
-  const [description, setDescription] = useState("");
+  const fallbackImage = '/images/no-image.png';
+  const [description, setDescription] = useState('');
 
   const currentPath = location.pathname;
 
   useEffect(() => {
-    if (currentPath.includes("/cointelegraph")) {
-      setDescription(item.description.replace("<p>", ""));
-      setDescription(item.description.replace("</p>", ""));
-      setDescription(
-        item.description.replace(/<img[^>]*>/g, "").replace(/<p[^>]*>/g, "")
-      );
+    if (currentPath.includes('/cointelegraph')) {
+      setDescription(item.description.replace('<p>', ''));
+      setDescription(item.description.replace('</p>', ''));
+      setDescription(item.description.replace(/<img[^>]*>/g, '').replace(/<p[^>]*>/g, ''));
     } else {
       setDescription(item.description);
     }
@@ -34,15 +32,13 @@ const NewsCard: React.FC<CardItemProps> = ({ item }) => {
           <div className="w-full sm:w-52 h-32 overflow-hidden">
             <img
               className="object-fill w-full h-full rounded-xl"
-              src={item["media:content"]?.["@_url"] || fallbackImage}
+              src={item['media:content']?.['@_url'] || fallbackImage}
               alt={item.title}
             />
           </div>
         </div>
         <div className="p-4 flex flex-col justify-between">
-          <p className="text-lg font-semibold mb-2 text-left text-lg">
-            {item.title}
-          </p>
+          <p className="text-lg font-semibold mb-2 text-left text-lg">{item.title}</p>
           <p
             className="text-gray-700 dark:text-white text-left text-sm"
             dangerouslySetInnerHTML={{ __html: description }}

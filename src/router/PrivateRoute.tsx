@@ -1,8 +1,8 @@
 // PrivateRoute.tsx
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthContext";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface PrivateRouteProps {
   element: React.ReactElement;
@@ -23,11 +23,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     );
   }
 
-  return isAuthenticated ? (
-    element
-  ) : (
-    <Navigate to="/login" state={{ from: location }} />
-  );
+  return isAuthenticated ? element : <Navigate to="/login" state={{ from: location }} />;
 };
 
 export default PrivateRoute;

@@ -1,8 +1,8 @@
-import { useNewsList } from "@/hooks/news/NewsApi";
-import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import NewsCard from "@/components/card/NewsCard";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { useNewsList } from '@/hooks/news/NewsApi';
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import NewsCard from '@/components/card/NewsCard';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const News = () => {
   const navigate = useNavigate();
@@ -11,9 +11,9 @@ const News = () => {
 
   useEffect(() => {
     if (id === undefined) {
-      navigate("/news/mk");
+      navigate('/news/mk');
     } else {
-      newsListApi("/" + id + "-api");
+      newsListApi('/' + id + '-api');
     }
   }, [id]);
 
@@ -32,10 +32,7 @@ const News = () => {
   return (
     <>
       <div className="flex flex-col">
-        {displayedItems.length > 0 &&
-          displayedItems.map((item, index) => (
-            <NewsCard key={index} item={item} />
-          ))}
+        {displayedItems.length > 0 && displayedItems.map((item, index) => <NewsCard key={index} item={item} />)}
       </div>
     </>
   );

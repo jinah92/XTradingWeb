@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useTheme } from "@/ThemeProvider";
+import React, { useEffect, useState } from 'react';
+import { useTheme } from '@/ThemeProvider';
 
 interface ProfileImageProps {
   src?: string; // 이미지 URL
@@ -7,16 +7,12 @@ interface ProfileImageProps {
   size?: string; // 이미지 크기
 }
 
-const ProfileImage: React.FC<ProfileImageProps> = ({
-  src,
-  alt = "Profile Image",
-  size = "2.5rem",
-}) => {
+const ProfileImage: React.FC<ProfileImageProps> = ({ src, alt = 'Profile Image', size = '2.5rem' }) => {
   const { darkMode } = useTheme();
   const [imgSrc, setImgSrc] = useState<string>();
 
   useEffect(() => {
-    if (src != null && src != "") {
+    if (src != null && src != '') {
       setImgSrc(src);
       return;
     }
@@ -27,8 +23,8 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
       src={imgSrc} // src가 없을 경우 기본 이미지 사용
       alt={alt}
       style={{
-        borderRadius: "50%", // 동그라미 형태로 만들기
-        objectFit: "cover", // 이미지 비율 유지
+        borderRadius: '50%', // 동그라미 형태로 만들기
+        objectFit: 'cover', // 이미지 비율 유지
         width: size,
         height: size,
       }}
