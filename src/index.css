@@ -3,15 +3,22 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Geist Sans";
-  src: url("./fonts/GeistSans.woff2") format("woff2"),
-    url("./fonts/GeistSans.woff") format("woff");
+  font-family: 'Geist Sans';
+  src:
+    url('./fonts/GeistSans.woff2') format('woff2'),
+    url('./fonts/GeistSans.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  font-family: "Geist Sans", -apple-system, sans-serif;
+  font-family:
+    'Geist Sans',
+    -apple-system,
+    sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 @layer base {

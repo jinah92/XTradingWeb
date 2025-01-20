@@ -1,32 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 /* hook */
-import {
-  useIdeaList,
-  BoardData,
-  ListReq,
-  useIdeaAdd,
-  BoardAddReq,
-} from "@/hooks/idea/IdeaApi";
-import {
-  useFeedList,
-  FeedData,
-  useFeedAdd,
-  FeedAddReq,
-} from "@/hooks/feed/FeedApi";
+import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from '@/hooks/idea/IdeaApi';
+import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from '@/hooks/feed/FeedApi';
 /* component */
-import IdeaCard from "@/components/card/IdeaCard";
-import FeedCard from "@/components/card/FeedCard";
-import { Input } from "@/components/ui/input";
-import LeftNavbar from "@/components/navbar/LeftNavbar";
-import { useParams } from "react-router-dom";
-import AutoResizeTextarea from "@/components/ui/autoResizeTextarea";
-import TagInput from "@/components/ui/tagInput";
-import { useAuth } from "@/router/AuthContext";
-import Modal from "@/components/modal/Modal";
-import { Button } from "@/components/ui/button";
-import CodeList from "@/components/modal/CodeList";
+import IdeaCard from '@/components/card/IdeaCard';
+import FeedCard from '@/components/card/FeedCard';
+import { Input } from '@/components/ui/input';
+import LeftNavbar from '@/components/navbar/LeftNavbar';
+import { useParams } from 'react-router-dom';
+import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
+import TagInput from '@/components/ui/tagInput';
+import { useAuth } from '@/router/AuthContext';
+import Modal from '@/components/modal/Modal';
+import { Button } from '@/components/ui/button';
+import CodeList from '@/components/modal/CodeList';
 /* common */
-import { openModal, closeModal } from "@/common/Utils";
+import { openModal, closeModal } from '@/common/Utils';
 
 const Idea = () => {
   const { isAuthenticated } = useAuth();
@@ -43,8 +32,8 @@ const Idea = () => {
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 불러올 데이터가 있는지 확인
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [urlId, setUrlId] = useState<string | undefined>(id);
-  const [ideaKeyword, setIdeaKeyword] = useState<string>("");
-  const [feedCode, setFeedCode] = useState<string>("");
+  const [ideaKeyword, setIdeaKeyword] = useState<string>('');
+  const [feedCode, setFeedCode] = useState<string>('');
 
   // TODO : test로 조회 후 스크롤 내리고 다시 test 조회하면 무한스크롤이 안되는 현상
 
@@ -63,7 +52,7 @@ const Idea = () => {
 
         // idea 조회
         if (id === undefined) {
-          if (ideaKeyword != "") {
+          if (ideaKeyword != '') {
             param.keyword = ideaKeyword;
           }
 
@@ -73,7 +62,7 @@ const Idea = () => {
           }
 
           newIdeaItems = await ideaListApi(param);
-          setIdeaList((prevData) => [...prevData, ...newIdeaItems]);
+          setIdeaList(prevData => [...prevData, ...newIdeaItems]);
 
           // 이후 데이터 유무 확인
           if (newIdeaItems.length < 10) {
@@ -83,10 +72,10 @@ const Idea = () => {
           }
         }
         // feed 조회
-        else if (id === "feed") {
-          param.type = "COIN";
+        else if (id === 'feed') {
+          param.type = 'COIN';
 
-          if (feedCode != "") {
+          if (feedCode != '') {
             param.code = feedCode;
           }
 
@@ -96,7 +85,7 @@ const Idea = () => {
           }
 
           newFeedItems = await feedListApi(param);
-          setFeedList((prevData) => [...prevData, ...newFeedItems]);
+          setFeedList(prevData => [...prevData, ...newFeedItems]);
 
           // 이후 데이터 유무 확인
           if (newFeedItems.length < 10) {
@@ -111,7 +100,7 @@ const Idea = () => {
         setLoading(false);
       }
     },
-    [page, ideaKeyword, feedCode]
+    [page, ideaKeyword, feedCode],
   );
 
   // IntersectionObserver로 트리거 감지
@@ -119,7 +108,7 @@ const Idea = () => {
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
       if (target.isIntersecting && !loading && hasMore) {
-        setPage((prevPage) => prevPage + 1); // 페이지 증가
+        setPage(prevPage => prevPage + 1); // 페이지 증가
 
         // 트리거 요소에 대한 관찰 중지 (데이터가 로드되면 다시 관찰)
         if (observerRef.current) {
@@ -127,17 +116,17 @@ const Idea = () => {
         }
       }
     },
-    [loading, hasMore]
+    [loading, hasMore],
   );
 
   // 트리거 요소가 감지되면 IntersectionObserver가 실행됨
   useEffect(() => {
-    const target = document.getElementById("scroll-trigger");
+    const target = document.getElementById('scroll-trigger');
 
     // IntersectionObserver 설정
     observerRef.current = new IntersectionObserver(observerCallback, {
       root: null, // 뷰포트를 기준으로
-      rootMargin: "0px",
+      rootMargin: '0px',
       threshold: 1.0, // 100% 보여졌을 때 트리거
     });
 
@@ -164,7 +153,7 @@ const Idea = () => {
 
   // Enter Key 이벤트
   const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       loadMoreData(id);
     }
   };
@@ -183,12 +172,12 @@ const Idea = () => {
       setIdeaList([]);
       setFeedList([]);
       setUrlId(id); // URL ID 업데이트
-      setIdeaKeyword("");
-      setFeedCode("");
+      setIdeaKeyword('');
+      setFeedCode('');
 
       // Post 입력 값 초기화
-      setSubject("");
-      setContents("");
+      setSubject('');
+      setContents('');
       resetTagsInChild();
 
       if (page !== 1) {
@@ -216,13 +205,13 @@ const Idea = () => {
   const { feedAddApi } = useFeedAdd();
 
   // issue 저장 변수
-  const [subject, setSubject] = useState("");
-  const [contents, setContents] = useState("");
+  const [subject, setSubject] = useState('');
+  const [contents, setContents] = useState('');
   const [tagList, setTagList] = useState<string[] | null>(null);
   const tagInputRef = useRef<{ resetTags: () => void }>(null); // TagInput의 resetTags에 접근할 ref
 
   // feed 저장 변수
-  const [addCode, setAddCode] = useState("");
+  const [addCode, setAddCode] = useState('');
 
   const resetTagsInChild = () => {
     if (tagInputRef.current) {
@@ -250,8 +239,8 @@ const Idea = () => {
       }
 
       /* 입력란 초기화 */
-      setSubject("");
-      setContents("");
+      setSubject('');
+      setContents('');
       resetTagsInChild();
       setTagList([]);
     }
@@ -278,9 +267,9 @@ const Idea = () => {
       }
 
       /* 입력란 초기화 */
-      setAddCode("");
-      setSubject("");
-      setContents("");
+      setAddCode('');
+      setSubject('');
+      setContents('');
       resetTagsInChild();
       setTagList([]);
     }
@@ -288,7 +277,7 @@ const Idea = () => {
 
   // 검색 키워드 모달
   const [keywordModal, setKeywordModal] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<string>("");
+  const [modalType, setModalType] = useState<string>('');
 
   const openKeyword = (type: string) => {
     openModal();
@@ -316,112 +305,89 @@ const Idea = () => {
   return (
     <>
       <div className="flex flex-col items-center sm:mt-10">
-        <div className="sm:w-[1300px] min-w-80 rounded-lg">
-          <div className="flex flex-col sm:flex-row">
-            <div className="sm:w-3/12 sm:flex sm:block sm:mr-3 flex-row-reverse">
-              <div className="sm:w-10/12">
-                <LeftNavbar />
-              </div>
-            </div>
-            <div className="sm:w-6/12 w-screen border sm:rounded-2xl min-h-screen">
-              <div className="pt-10">
-                {/* idea add */}
-                {id === undefined &&
-                  (isAuthenticated ? (
-                    <div className="border-t border-b flex justify-center">
-                      <div className="mt-8 mb-8 w-4/5">
-                        <Input
-                          placeholder="제목"
-                          className="mb-5"
-                          onChange={(e) => setSubject(e.target.value)}
-                          value={subject}
-                        />
-                        <TagInput onChange={setTagList} ref={tagInputRef} />
-                        <AutoResizeTextarea
-                          value={contents}
-                          onChange={setContents}
-                        />
-                        <div className="flex justify-end mt-5">
-                          <Button onClick={ideaAdd}>Post</Button>
-                        </div>
+        <div className="rounded-lg w-full">
+          <div className="flex">
+            <LeftNavbar />
+
+            <div className="flex-auto border sm:rounded-2xl overflow-auto h-[calc(100vh-8rem)]">
+              {/* idea add */}
+              {id === undefined &&
+                (isAuthenticated ? (
+                  <div className="border-t border-b flex justify-center">
+                    <div className="mt-8 mb-8 w-4/5">
+                      <Input
+                        placeholder="제목"
+                        className="mb-5"
+                        onChange={e => setSubject(e.target.value)}
+                        value={subject}
+                      />
+                      <TagInput onChange={setTagList} ref={tagInputRef} />
+                      <AutoResizeTextarea value={contents} onChange={setContents} />
+                      <div className="flex justify-end mt-5">
+                        <Button onClick={ideaAdd}>Post</Button>
                       </div>
                     </div>
-                  ) : null)}
+                  </div>
+                ) : null)}
 
-                {/* feed add */}
-                {id === "feed" &&
-                  (isAuthenticated ? (
-                    <div className="border-t border-b flex justify-center">
-                      <div className="mt-8 mb-8 w-4/5">
-                        <Input
-                          placeholder="제목"
-                          className="mb-5"
-                          onChange={(e) => setSubject(e.target.value)}
-                          value={subject}
-                        />
-                        <div className="flex mt-8 mb-8">
-                          <Input
-                            placeholder="종목을 선택해주세요."
-                            value={addCode}
-                            disabled={true}
-                          />
-                          <Button onClick={() => openKeyword("add")}>
-                            검색
-                          </Button>
-                        </div>
-                        <TagInput onChange={setTagList} ref={tagInputRef} />
-                        <AutoResizeTextarea
-                          value={contents}
-                          onChange={setContents}
-                        />
-                        <div className="flex justify-end mt-5">
-                          <Button onClick={feedAdd}>Post</Button>
-                        </div>
+              {/* feed add */}
+              {id === 'feed' &&
+                (isAuthenticated ? (
+                  <div className="border-t border-b flex justify-center">
+                    <div className="mt-8 mb-8 w-4/5">
+                      <Input
+                        placeholder="제목"
+                        className="mb-5"
+                        onChange={e => setSubject(e.target.value)}
+                        value={subject}
+                      />
+                      <div className="flex mt-8 mb-8">
+                        <Input placeholder="종목을 선택해주세요." value={addCode} disabled={true} />
+                        <Button onClick={() => openKeyword('add')}>검색</Button>
+                      </div>
+                      <TagInput onChange={setTagList} ref={tagInputRef} />
+                      <AutoResizeTextarea value={contents} onChange={setContents} />
+                      <div className="flex justify-end mt-5">
+                        <Button onClick={feedAdd}>Post</Button>
                       </div>
                     </div>
-                  ) : null)}
+                  </div>
+                ) : null)}
 
-                {id === undefined &&
-                  ideaList &&
-                  (ideaList.length > 0 ? (
-                    ideaList.map((item, index) => (
-                      <IdeaCard key={index} item={item} />
-                    ))
-                  ) : (
-                    <p>데이터가 없습니다.</p>
-                  ))}
+              {id === undefined &&
+                ideaList &&
+                (ideaList.length > 0 ? (
+                  ideaList.map((item, index) => <IdeaCard key={index} item={item} />)
+                ) : (
+                  <p>데이터가 없습니다.</p>
+                ))}
 
-                {id === "feed" &&
-                  feedList &&
-                  (feedList.length > 0 ? (
-                    feedList.map((item, index) => (
-                      <FeedCard key={index} item={item} />
-                    ))
-                  ) : (
-                    <p>데이터가 없습니다.</p>
-                  ))}
-              </div>
+              {id === 'feed' &&
+                feedList &&
+                (feedList.length > 0 ? (
+                  feedList.map((item, index) => <FeedCard key={index} item={item} />)
+                ) : (
+                  <p>데이터가 없습니다.</p>
+                ))}
+              {/* 스크롤이 끝에 다다를 때 이 요소가 감지됨 */}
+              <div id="scroll-trigger" style={{ height: '20px', backgroundColor: 'transparent' }} />
             </div>
-            <div className="sm:w-3/12 hidden sm:flex ml-3 justify-evenly">
-              <div className="fixed">
+            <div className="flex-none">
+              <div className="px-2">
                 {id === undefined ? (
                   <div className="flex">
                     <Input
                       placeholder="search..."
                       value={ideaKeyword}
-                      onChange={(e) => setIdeaKeyword(e.target.value)}
+                      onChange={e => setIdeaKeyword(e.target.value)}
                       onKeyDown={handleEnterPress}
                     />
                     <Button onClick={searchData}>검색</Button>
                   </div>
-                ) : id === "feed" ? (
+                ) : id === 'feed' ? (
                   <div className="flex">
-                    <Input
-                      placeholder="종목을 선택해주세요."
-                      value={feedCode}
-                      disabled={true}
-                    />
-                    <Button onClick={() => openKeyword("search")}>검색</Button>
+                    <Input placeholder="종목을 선택해주세요." value={feedCode} disabled={true} />
+                    <Button onClick={() => openKeyword('search')}>검색</Button>
                   </div>
                 ) : (
                   <div></div>
@@ -431,19 +397,10 @@ const Idea = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={keywordModal} onClose={closeKeyword}>
-        <CodeList
-          onSearchSelect={searchKeywordSelect}
-          onAddSelect={addKeywordSelect}
-          type={modalType}
-        />
-      </Modal>
 
-      {/* 스크롤이 끝에 다다를 때 이 요소가 감지됨 */}
-      <div
-        id="scroll-trigger"
-        style={{ height: "20px", backgroundColor: "transparent" }}
-      />
+      <Modal isOpen={keywordModal} onClose={closeKeyword}>
+        <CodeList onSearchSelect={searchKeywordSelect} onAddSelect={addKeywordSelect} type={modalType} />
+      </Modal>
     </>
   );
 };
