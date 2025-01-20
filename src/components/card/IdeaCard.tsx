@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 /* hook */
-import { BoardData, BoardDetail } from "@/hooks/idea/IdeaApi";
-import { useIdeaLikeToggle } from "@/hooks/idea/IdeaApi";
+import { BoardData, BoardDetail } from '@/hooks/idea/IdeaApi';
+import { useIdeaLikeToggle } from '@/hooks/idea/IdeaApi';
 /* components */
-import { Card } from "@/components/ui/card";
-import EllipsisText from "@/components/ui/ellipsisText";
-import DateDisplay from "@/components/ui/dateDisplay";
-import Modal from "@/components/modal/Modal";
+import { Card } from '@/components/ui/card';
+import EllipsisText from '@/components/ui/ellipsisText';
+import DateDisplay from '@/components/ui/dateDisplay';
+import Modal from '@/components/modal/Modal';
 /* common */
-import { openModal, closeModal } from "@/common/Utils";
+import { openModal, closeModal } from '@/common/Utils';
 /* page */
-import IdeaDetail from "@/pages/idea/IdeaDetail";
+import IdeaDetail from '@/pages/idea/IdeaDetail';
 
 interface CardItemProps {
   item: BoardData;
@@ -73,7 +73,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
     <>
       {viewTF && !item.youBlock ? (
         <Card
-          className="dark:border-slate-300 w-full rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
+          className="dark:border-slate-300 rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
           onClick={openDetail}
         >
           <div className="flex flex-col dark:bg-darkMode dark:text-white">
@@ -83,18 +83,14 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
                   <div className="cursor-pointer flex items-center">
                     <span className="ml-3">{item.cretName}</span>
                   </div>
-                  <span className="p-1 ml-1 text-sm text-blue-500">
-                    {item.cretUserGrade}
-                  </span>
+                  <span className="p-1 ml-1 text-sm text-blue-500">{item.cretUserGrade}</span>
                   <span className="text-xs ml-1 text-slate-400 font-medium">
                     <DateDisplay isoString={item.cretDatetime}></DateDisplay>
                   </span>
                 </div>
               </div>
               <div className="cursor-pointer sm:mr-10 sm:ml-10">
-                <div className="font-semibold mb-7 tracking-wide">
-                  {subject}
-                </div>
+                <div className="font-semibold mb-7 tracking-wide">{subject}</div>
                 <div className="mb-7 text-slate-500 dark:text-slate-300">
                   <EllipsisText text={contents} maxLines={10}></EllipsisText>
                 </div>
@@ -109,19 +105,11 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
               </div>
               <div className="flex mt-3 text-xs text-slate-400 font-semibold">
                 <div className="mr-3 flex items-center">
-                  <img
-                    src="/images/icons8-view.png"
-                    alt="viewCount"
-                    className="w-5 mr-1"
-                  />
+                  <img src="/images/icons8-view.png" alt="viewCount" className="w-5 mr-1" />
                   <span>{item.viewCount}</span>
                 </div>
                 <div className="mr-3 flex items-center">
-                  <img
-                    src="/images/icons8-comment.png"
-                    alt="commentCount"
-                    className="w-5 mr-1"
-                  />
+                  <img src="/images/icons8-comment.png" alt="commentCount" className="w-5 mr-1" />
                   <span>{item.commentCount}</span>
                 </div>
                 <div className="flex items-center">
