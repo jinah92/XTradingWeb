@@ -15,7 +15,7 @@ export const currencyFormatter = (
     } else if (currency >= 1_000) {
       return `${(currency / 1_000).toFixed(decimalPlaces)}${units.K}`;
     } else {
-      return currency.toString();
+      return currency.toFixed(2).toString();
     }
   }
   if (decimalPlaces)
@@ -23,3 +23,5 @@ export const currencyFormatter = (
     return `$${parseFloat(currency?.toFixed(decimalPlaces)).toLocaleString()}`;
   return `$${currency?.toLocaleString()}`;
 };
+
+export const percentFormatter = (decimal: number) => `${Math.round((decimal || 0) * 100) / 100}%`;
