@@ -1,7 +1,16 @@
 type PriceChange = 'RISE' | 'EVEN' | 'FALL';
 
+export type MarketType = 'KRW' | 'BTC' | 'USDT' | 'ALL';
+
+interface MarketEvent {
+  warning: boolean;
+  caution: object;
+}
+
 export interface UpbitTicker {
   code?: string;
+  korean_name?: string;
+  english_name?: string;
   trade_price?: number;
   prev_closing_price?: number;
   change?: PriceChange;
@@ -11,4 +20,7 @@ export interface UpbitTicker {
   acc_trade_price_24h?: number;
 }
 
-export type ChartUpbitTicker = Partial<UpbitTicker>;
+export interface UpbitTicker {
+  market: string;
+  market_event: MarketEvent;
+}
