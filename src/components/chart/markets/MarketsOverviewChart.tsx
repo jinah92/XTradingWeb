@@ -4,7 +4,7 @@ import { useRef, useMemo } from 'react';
 import { MarketType, UpbitTicker } from '../../../apis/market';
 import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
 import { UPBIT_URL } from '../../../configs/ws-upbit/config';
-import { UseWebSocket } from '../../../hooks/websocket/use-websocket';
+import { useWebSocket } from '../../../hooks/websocket/use-websocket';
 import { useSelectMarketsQuery } from '../../../queries/upbit';
 import React from 'react';
 
@@ -37,7 +37,7 @@ export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) 
     }
   }
 
-  const { isConnect } = UseWebSocket(UPBIT_URL, tickerMessage, onMessage);
+  const { isConnect } = useWebSocket(UPBIT_URL, tickerMessage, onMessage);
 
   return (
     isConnect && <AgGridReact<UpbitTicker> onGridReady={onGridReady} rowData={data} {...realtimeCurrencyOptions} />

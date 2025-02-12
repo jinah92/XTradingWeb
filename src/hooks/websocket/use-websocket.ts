@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 
-export const UseWebSocket = (
+export const useWebSocket = (
   wsUrl: string,
   initRequest: any,
   onMessage: (this: WebSocket, ev: MessageEvent) => any,
@@ -13,7 +13,6 @@ export const UseWebSocket = (
     ws.current = new WebSocket(wsUrl);
 
     ws.current.onopen = () => {
-      console.log('websocket connect');
       setIsConnect(true);
       ws.current?.send(JSON.stringify(initRequest));
     };
