@@ -1,6 +1,6 @@
 type PriceChange = 'RISE' | 'EVEN' | 'FALL';
 
-export type MarketType = 'KRW' | 'BTC' | 'USDT';
+export type MarketType = 'KRW' | 'BTC' | 'USDT' | 'ALL';
 
 interface MarketEvent {
   warning: boolean;

@@ -12,7 +12,10 @@ const options = {
   selectFilteredMarkets: (type: MarketType) =>
     queryOptions({
       ...options.getMarkets(),
-      select: data => data.filter(item => new RegExp(`${type}*`).test(item.market)),
+      select: data => {
+        if (type === 'ALL') return data;
+        return data.filter(item => new RegExp(`^${type}*`).test(item.market));
+      },
     }),
 };
 
