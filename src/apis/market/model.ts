@@ -1,3 +1,5 @@
+import { Time } from 'lightweight-charts';
+
 type PriceChange = 'RISE' | 'EVEN' | 'FALL';
 
 export type MarketType = 'KRW' | 'BTC' | 'USDT' | 'ALL';
@@ -52,7 +54,7 @@ export interface UpbitMarketLongTermCandleResponse extends UpbitMarketCandleResp
 }
 
 export interface TradingData {
-  time: string;
+  time: Time;
   open: number;
   high: number;
   low: number;
