@@ -15,6 +15,7 @@ import NewsLayout from '@/layout/NewsLayout';
 /* config */
 import PrivateRoute from '@/router/PrivateRoute';
 import { AuthProvider } from '@/router/AuthContext';
+import MarketDetail from '../pages/market/MarketDetail';
 
 function CommonRouter() {
   return (
@@ -25,6 +26,7 @@ function CommonRouter() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/interest" element={<Interest />}></Route>
           <Route path="/market" element={<Market />}></Route>
+          <Route path="/market/:marketId" element={<MarketDetail />} />
           <Route path="/chart" element={<ChartView />}></Route>
           <Route path="/idea" element={<Idea />}></Route>
           <Route path="/idea/:id" element={<Idea />}></Route>

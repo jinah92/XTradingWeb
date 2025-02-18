@@ -7,9 +7,11 @@ import { UPBIT_URL } from '../../../configs/ws-upbit/config';
 import { useWebSocket } from '../../../hooks/websocket/use-websocket';
 import { useSelectMarketsQuery } from '../../../queries/upbit';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) => {
   const gridApiRef = useRef<GridApi<UpbitTicker> | null>(null);
+  const navigate = useNavigate();
   const { data } = useSelectMarketsQuery(type);
 
   const onGridReady = (params: GridReadyEvent<UpbitTicker, any>) => {
@@ -39,7 +41,18 @@ export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) 
 
   const { isConnect } = useWebSocket(UPBIT_URL, tickerMessage, onMessage);
 
+  const handleMarketRow = (event: { data: UpbitTicker }) => {
+    navigate(`market/${event.data.code}`);
+  };
+
   return (
-    isConnect && <AgGridReact<UpbitTicker> onGridReady={onGridReady} rowData={data} {...realtimeCurrencyOptions} />
+    isConnect && (
+      <AgGridReact<UpbitTicker>
+        onRowClicked={handleMarketRow}
+        onGridReady={onGridReady}
+        rowData={data}
+        {...realtimeCurrencyOptions}
+      />
+    )
   );
 });
