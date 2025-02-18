@@ -22,6 +22,7 @@ const options = {
     queryOptions({
       queryKey: [options.rootKey, props.market, props.range],
       queryFn: () => MarketService.getMarketCandlesWithUnit(props),
+      gcTime: 0,
     }),
 };
 

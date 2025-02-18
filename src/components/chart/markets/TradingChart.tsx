@@ -21,7 +21,6 @@ export const TradingChart = ({ market }: TradingChartProps) => {
     if (isLoading) return;
 
     if (data?.length && seriesInstance.current && chartInstance.current) {
-      console.log('chart data', data.getData());
       chartInstance.current.timeScale().fitContent();
       seriesInstance.current?.setData(data.getData());
       toRef.current = data.firstDate;
