@@ -24,3 +24,37 @@ export interface UpbitTicker {
   market: string;
   market_event: MarketEvent;
 }
+
+export interface UpbitMarketCandleResponse {
+  market: string;
+  candle_date_time_utc: string;
+  candle_date_time_kst: string;
+  opening_price: number;
+  high_price: number;
+  low_price: number;
+  trade_price: number;
+  timestamp: number;
+  candle_acc_trade_price: number;
+  candle_acc_trade_volume: number;
+}
+
+// day
+export interface UpbitMarketShortTermCandleResponse extends UpbitMarketCandleResponse {
+  prev_closing_price: number;
+  change_price: number;
+  change_rate: number;
+  converted_trade_price: number;
+}
+
+// week, month, year
+export interface UpbitMarketLongTermCandleResponse extends UpbitMarketCandleResponse {
+  first_day_of_period: string;
+}
+
+export interface TradingData {
+  time: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}
