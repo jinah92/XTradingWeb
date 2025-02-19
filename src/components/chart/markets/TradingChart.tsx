@@ -2,7 +2,7 @@ import { createChart, ColorType, CandlestickSeries, IChartApi, ISeriesApi } from
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ISODateString, MarketCandleRange } from '../../../app/const/market';
-import { useMarketCandlesMinuteQuery } from '../../../queries/upbit';
+import { useMarketCandlesMinuteQuery } from '../../../queries';
 import { Button } from '../../ui/button';
 
 interface TradingChartProps {

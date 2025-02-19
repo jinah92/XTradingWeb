@@ -4,10 +4,10 @@ import { MarketType } from '../apis/market';
 import { MarketCandle, MarketCandleRange } from '../app/const/market';
 
 const options = {
-  rootKey: 'upbit',
+  rootKey: 'market',
   getMarkets: () =>
     queryOptions({
-      queryKey: [options.rootKey, 'market'],
+      queryKey: [options.rootKey],
       queryFn: () => MarketService.getMarkets(),
     }),
   selectFilteredMarkets: (type: MarketType) =>
