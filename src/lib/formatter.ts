@@ -1,27 +1,30 @@
+import { CurrencyUnit, CurrencyUnitType, NumberScales } from '../app/const/currency';
+
 export const currencyFormatter = (
   currency: number,
-  decimalPlaces?: number,
-  units?: { K: string; M: string; B: string; G: string },
+  decimalPlaces: number = 2,
+  showNumericalScales: boolean = true,
+  unit: CurrencyUnitType = 'en',
 ) => {
   if (!currency) return '';
-  if (units) {
+  let result = '';
+  const abs = Math.abs(currency);
+  if (showNumericalScales) {
     // unit 표현
-    if (currency >= 1_000_000_000_000) {
-      return `${(currency / 1_000_000_000_000).toFixed(decimalPlaces)}${units.G}`;
-    } else if (currency >= 1_000_000_000) {
-      return `${(currency / 1_000_000_000).toFixed(decimalPlaces)}${units.B}`;
-    } else if (currency >= 1_000_000) {
-      return `${(currency / 1_000_000).toFixed(decimalPlaces)}${units.M}`;
-    } else if (currency >= 1_000) {
-      return `${(currency / 1_000).toFixed(decimalPlaces)}${units.K}`;
+    if (abs >= 1_000_000_000_000) {
+      result += `${Number((currency / 1_000_000_000_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.trillion}`;
+    } else if (abs >= 1_000_000_000) {
+      result += `${Number((currency / 1_000_000_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.billion}`;
+    } else if (abs >= 1_000_000) {
+      result += `${Number((currency / 1_000_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.million}`;
+    } else if (abs >= 1_000) {
+      result += `${Number((currency / 1_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.thousand}`;
     } else {
-      return currency.toFixed(2).toString();
+      const round = Number(currency.toFixed(decimalPlaces));
+      result += round === 0 ? 0 : round.toLocaleString();
     }
   }
-  if (decimalPlaces)
-    // 소숫점 자리 표현
-    return `$${parseFloat(currency?.toFixed(decimalPlaces)).toLocaleString()}`;
-  return `$${currency?.toLocaleString()}`;
+  return `${CurrencyUnit?.[unit]}${result}`;
 };
 
 export const percentFormatter = (decimal: number) => `${Math.round((decimal || 0) * 100) / 100}%`;

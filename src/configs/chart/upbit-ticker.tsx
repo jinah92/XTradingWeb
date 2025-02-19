@@ -1,6 +1,7 @@
-import type { GridOptions, ValueFormatterParams } from 'ag-grid-community';
-import { UpbitTicker } from '../../apis/market';
+import type { GridOptions, ValueFormatterParams, CellR, ICellRendererParams } from 'ag-grid-community';
 import { currencyFormatter, percentFormatter } from '../../lib/formatter';
+import { UpbitTicker } from '../../apis/ticker';
+import SignedNumberTypo from '../../components/typography/SignedNumberTypo';
 
 export const realtimeCurrencyOptions: GridOptions<UpbitTicker> = {
   getRowId: ({ data }) => data.market,
@@ -16,17 +17,19 @@ export const realtimeCurrencyOptions: GridOptions<UpbitTicker> = {
     {
       field: 'signed_change_rate',
       headerName: 'Change',
-      valueFormatter: ({ value }) => percentFormatter(value as number),
+      cellRenderer: (params: ICellRendererParams<UpbitTicker, number>) => (
+        <SignedNumberTypo data={params.value!} formatter={percentFormatter} />
+      ),
     },
     {
       field: 'acc_trade_volume_24h',
       headerName: '24h Volume',
-      valueFormatter: ({ value }) => currencyFormatter(value as number, 2, { K: 'K', M: 'M', B: 'B', G: 'G' }),
+      valueFormatter: ({ value }) => currencyFormatter(value as number),
     },
     {
       field: 'acc_trade_price_24h',
       headerName: '24h Price',
-      valueFormatter: ({ value }) => currencyFormatter(value as number, 2, { K: 'K', M: 'M', B: 'B', G: 'G' }),
+      valueFormatter: ({ value }) => currencyFormatter(value as number),
     },
     {
       field: 'prev_closing_price',
