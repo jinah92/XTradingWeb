@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { TradingChart } from '../../components/chart/markets/TradingChart';
+import { CurrencyCard } from '../../components/card/CurrencyCard';
 
 const MarketDetail = () => {
   const params = useParams();
@@ -10,6 +11,7 @@ const MarketDetail = () => {
       <div className="p-10">
         <TradingChart market={params?.marketId!} />
       </div>
+      <CurrencyCard market={params?.marketId!} />
     </>
   );
 };
