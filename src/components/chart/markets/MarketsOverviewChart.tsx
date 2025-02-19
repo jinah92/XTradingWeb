@@ -1,17 +1,16 @@
 import { GridApi, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { useRef, useMemo } from 'react';
-import { MarketType, UpbitTicker } from '../../../apis/market';
+import { MarketType } from '../../../apis/market';
 import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
 import { UPBIT_URL } from '../../../configs/ws-upbit/config';
 import { useWebSocket } from '../../../hooks/websocket/use-websocket';
-import { useSelectMarketsQuery } from '../../../queries/upbit';
+import { useSelectMarketsQuery } from '../../../queries';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { UpbitTicker } from '../../../apis/ticker';
 
 export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) => {
   const gridApiRef = useRef<GridApi<UpbitTicker> | null>(null);
-  const navigate = useNavigate();
   const { data } = useSelectMarketsQuery(type);
 
   const onGridReady = (params: GridReadyEvent<UpbitTicker, any>) => {
@@ -42,7 +41,9 @@ export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) 
   const { isConnect } = useWebSocket(UPBIT_URL, tickerMessage, onMessage);
 
   const handleMarketRow = (event: { data: UpbitTicker }) => {
-    navigate(`market/${event.data.code}`);
+    const path = `/market/${event.data.code}`;
+    const fullPath = `${window.location.origin}${path}`; // Construct full URL
+    window.open(fullPath, '_blank', 'noopener,noreferrer'); // Open in new tab
   };
 
   return (
