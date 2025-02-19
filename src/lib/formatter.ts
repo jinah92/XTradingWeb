@@ -8,21 +8,23 @@ export const currencyFormatter = (
 ) => {
   if (!currency) return '';
   let result = '';
+  const abs = Math.abs(currency);
   if (showNumericalScales) {
     // unit 표현
-    if (currency >= 1_000_000_000_000) {
-      result += `${(currency / 1_000_000_000_000).toFixed(decimalPlaces)}${NumberScales.trillion}`;
-    } else if (currency >= 1_000_000_000) {
-      result += `${(currency / 1_000_000_000).toFixed(decimalPlaces)}${NumberScales.billion}`;
-    } else if (currency >= 1_000_000) {
-      result += `${(currency / 1_000_000).toFixed(decimalPlaces)}${NumberScales.million}`;
-    } else if (currency >= 1_000) {
-      result += `${(currency / 1_000).toFixed(decimalPlaces)}${NumberScales.thousand}`;
+    if (abs >= 1_000_000_000_000) {
+      result += `${Number((currency / 1_000_000_000_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.trillion}`;
+    } else if (abs >= 1_000_000_000) {
+      result += `${Number((currency / 1_000_000_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.billion}`;
+    } else if (abs >= 1_000_000) {
+      result += `${Number((currency / 1_000_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.million}`;
+    } else if (abs >= 1_000) {
+      result += `${Number((currency / 1_000).toFixed(decimalPlaces)).toLocaleString()}${NumberScales.thousand}`;
     } else {
-      result += currency.toFixed(2).toString();
+      const round = Number(currency.toFixed(decimalPlaces));
+      result += round === 0 ? 0 : round.toLocaleString();
     }
   }
-  return `${CurrencyUnit[unit]}${result}`;
+  return `${CurrencyUnit?.[unit]}${result}`;
 };
 
 export const percentFormatter = (decimal: number) => `${Math.round((decimal || 0) * 100) / 100}%`;
