@@ -1,7 +1,8 @@
 import axiosInstance from '../../configs/axios/axiosConfig';
 import type { AxiosResponse } from 'axios';
-import type { UpbitMarketCandleResponse, UpbitTicker } from './model';
+import type { UpbitMarketCandleResponse } from './model';
 import { MarketCandle } from '../../app/const/market';
+import { UpbitTicker } from '../ticker';
 
 export const findMarkets = async () => {
   const { data }: AxiosResponse<UpbitTicker[]> = await axiosInstance.get(`upbit-api/v1/market/all`);
