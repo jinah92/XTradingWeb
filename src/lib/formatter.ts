@@ -1,27 +1,28 @@
+import { CurrencyUnit, CurrencyUnitType, NumberScales } from '../app/const/currency';
+
 export const currencyFormatter = (
   currency: number,
-  decimalPlaces?: number,
-  units?: { K: string; M: string; B: string; G: string },
+  decimalPlaces: number = 2,
+  showNumericalScales: boolean = true,
+  unit: CurrencyUnitType = 'en',
 ) => {
   if (!currency) return '';
-  if (units) {
+  let result = '';
+  if (showNumericalScales) {
     // unit 표현
     if (currency >= 1_000_000_000_000) {
-      return `${(currency / 1_000_000_000_000).toFixed(decimalPlaces)}${units.G}`;
+      result += `${(currency / 1_000_000_000_000).toFixed(decimalPlaces)}${NumberScales.trillion}`;
     } else if (currency >= 1_000_000_000) {
-      return `${(currency / 1_000_000_000).toFixed(decimalPlaces)}${units.B}`;
+      result += `${(currency / 1_000_000_000).toFixed(decimalPlaces)}${NumberScales.billion}`;
     } else if (currency >= 1_000_000) {
-      return `${(currency / 1_000_000).toFixed(decimalPlaces)}${units.M}`;
+      result += `${(currency / 1_000_000).toFixed(decimalPlaces)}${NumberScales.million}`;
     } else if (currency >= 1_000) {
-      return `${(currency / 1_000).toFixed(decimalPlaces)}${units.K}`;
+      result += `${(currency / 1_000).toFixed(decimalPlaces)}${NumberScales.thousand}`;
     } else {
-      return currency.toFixed(2).toString();
+      result += currency.toFixed(2).toString();
     }
   }
-  if (decimalPlaces)
-    // 소숫점 자리 표현
-    return `$${parseFloat(currency?.toFixed(decimalPlaces)).toLocaleString()}`;
-  return `$${currency?.toLocaleString()}`;
+  return `${CurrencyUnit[unit]}${result}`;
 };
 
 export const percentFormatter = (decimal: number) => `${Math.round((decimal || 0) * 100) / 100}%`;
