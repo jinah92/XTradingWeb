@@ -5,7 +5,7 @@ interface EllipsisTextProps {
   maxLines?: number; // 최대 줄 수
 }
 
-const EllipsisText: React.FC<EllipsisTextProps> = ({ text, maxLines = 1 }) => {
+export const EllipsisText: React.FC<EllipsisTextProps> = ({ text, maxLines = 1 }) => {
   return (
     <div
       className={`overflow-hidden text-ellipsis whitespace-pre-line 
@@ -20,5 +20,3 @@ const EllipsisText: React.FC<EllipsisTextProps> = ({ text, maxLines = 1 }) => {
     </div>
   );
 };
-
-export default EllipsisText;

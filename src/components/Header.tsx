@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+} from '@shared/ui';
 
 const Header = () => {
   const { darkMode, toggleDarkMode } = useTheme();

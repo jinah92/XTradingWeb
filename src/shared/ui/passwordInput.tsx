@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@/components/ui/input';
+import { Input } from '@shared/ui';
 
 // Props 타입 정의
 interface PasswordInputProps {
@@ -8,7 +8,7 @@ interface PasswordInputProps {
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange, onKeyDown }) => {
+export const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange, onKeyDown }) => {
   // const [show, setShow] = React.useState(false);
   // const handleClick = () => setShow(!show);
 
@@ -26,5 +26,3 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange, onKeyDow
     </div>
   );
 };
-
-export default PasswordInput;

@@ -23,7 +23,7 @@ const timeAgo = (date: Date): string => {
   return '방금 전';
 };
 
-const DateDisplay: React.FC<{ isoString: string }> = ({ isoString }) => {
+export const DateDisplay: React.FC<{ isoString: string }> = ({ isoString }) => {
   const normalizedDateStr = isoString.replace(/\./g, '-'); // "2024.10.30T00:39:04" -> "2024-10-30T00:39:04"
   // API로부터 받은 ISO 날짜 문자열을 Date 객체로 변환
   const date = new Date(normalizedDateStr);
@@ -33,5 +33,3 @@ const DateDisplay: React.FC<{ isoString: string }> = ({ isoString }) => {
 
   return <div>{timeAgo(kstDate)}</div>;
 };
-
-export default DateDisplay;

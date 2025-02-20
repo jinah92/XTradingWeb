@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import PasswordInput from '@/components/ui/passwordInput';
+import { Button, Input, PasswordInput } from '@shared/ui';
 import { SignUpData, useSignUp } from '@/hooks/auth/AuthApi';
 import CryptoJS from 'crypto-js';
 import { Link } from 'react-router-dom';

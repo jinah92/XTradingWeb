@@ -7,7 +7,7 @@ interface ProfileImageProps {
   size?: string; // 이미지 크기
 }
 
-const ProfileImage: React.FC<ProfileImageProps> = ({ src, alt = 'Profile Image', size = '2.5rem' }) => {
+export const ProfileImage: React.FC<ProfileImageProps> = ({ src, alt = 'Profile Image', size = '2.5rem' }) => {
   const { darkMode } = useTheme();
   const [imgSrc, setImgSrc] = useState<string>();
 
@@ -32,5 +32,3 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ src, alt = 'Profile Image',
     />
   );
 };
-
-export default ProfileImage;

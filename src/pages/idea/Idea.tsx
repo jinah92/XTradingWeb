@@ -5,14 +5,11 @@ import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from '@/hooks/feed/Feed
 /* component */
 import IdeaCard from '@/components/card/IdeaCard';
 import FeedCard from '@/components/card/FeedCard';
-import { Input } from '@/components/ui/input';
 import LeftNavbar from '@/components/navbar/LeftNavbar';
 import { useParams } from 'react-router-dom';
-import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
-import TagInput from '@/components/ui/tagInput';
+import { AutoResizeTextarea, Button, Input, TagInput } from '@shared/ui';
 import { useAuth } from '@/router/AuthContext';
 import Modal from '@/components/modal/Modal';
-import { Button } from '@/components/ui/button';
 import CodeList from '@/components/modal/CodeList';
 /* common */
 import { openModal, closeModal } from '@/common/Utils';

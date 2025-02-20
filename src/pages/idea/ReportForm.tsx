@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { reportFormReq, reportReq, useReport } from '@/hooks/report/ReportApi';
-import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
-import { Button } from '@/components/ui/button';
+import { AutoResizeTextarea, Button } from '@shared/ui';
 import { useToast } from '@/hooks/use-toast';
 
 interface ParentComponentProps {

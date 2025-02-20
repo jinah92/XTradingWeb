@@ -3,12 +3,8 @@ import React, { useState } from 'react';
 import { FeedData } from '@/hooks/feed/FeedApi';
 import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
 /* component */
-import { Card } from '@/components/ui/card';
-import ProfileImage from '@/components/ui/profileImg';
-import EllipsisText from '@/components/ui/ellipsisText';
-import DateDisplay from '@/components/ui/dateDisplay';
 import Modal from '@/components/modal/Modal';
-import Avatar from '@/components/ui/avartar';
+import { Avatar, Card, DateDisplay, EllipsisText, ProfileImage } from '@shared/ui';
 /* common */
 import { openModal, closeModal } from '@/common/Utils';
 /* page */

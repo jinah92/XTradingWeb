@@ -6,7 +6,7 @@ interface props {
   size?: number;
 }
 
-const Avatar = ({ id, size = 38 }: props) => {
+export const Avatar = ({ id, size = 38 }: props) => {
   const hash = id; // 사용자 ID나 고유 값을 입력으로 사용
   const svg = jdenticon.toSvg(hash, size); // SVG 문자열 생성
 
@@ -16,5 +16,3 @@ const Avatar = ({ id, size = 38 }: props) => {
     </div>
   );
 };
-
-export default Avatar;

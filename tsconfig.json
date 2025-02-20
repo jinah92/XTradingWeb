@@ -22,7 +22,8 @@
     /* alias */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"],
+      "@shared/*": ["src/shared/*"]
     },
 
     "types": ["node"]

@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { BoardData, BoardDetail } from '@/hooks/idea/IdeaApi';
 import { useIdeaLikeToggle } from '@/hooks/idea/IdeaApi';
 /* components */
-import { Card } from '@/components/ui/card';
-import EllipsisText from '@/components/ui/ellipsisText';
-import DateDisplay from '@/components/ui/dateDisplay';
+import { Card, DateDisplay, EllipsisText } from '@shared/ui';
 import Modal from '@/components/modal/Modal';
 /* common */
 import { openModal, closeModal } from '@/common/Utils';

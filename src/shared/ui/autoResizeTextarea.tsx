@@ -8,7 +8,7 @@ interface AutoResizeTextareaProps {
   maxHeight?: string;
 }
 
-const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
+export const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
   value,
   onChange,
   placeholder = 'Type something...',
@@ -57,5 +57,3 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
     />
   );
 };
-
-export default AutoResizeTextarea;

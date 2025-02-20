@@ -3,9 +3,7 @@ import { useLocation } from 'react-router-dom';
 /* hook */
 import { useFollowerList, useFollowingList, useMemberInfo } from '@/hooks/mypage/MyPageApi';
 /* component */
-import ProfileImage from '@/components/ui/profileImg';
-import Avatar from '@/components/ui/avartar';
-import { Button } from '@/components/ui/button';
+import { Avatar, Button, ProfileImage } from '@shared/ui';
 import Modal from '@/components/modal/Modal';
 /* page */
 import NickNameChange from '@/pages/mypage/NickNameChange';

@@ -5,18 +5,18 @@ import { useUserBlockToggle } from '@/hooks/member/MemberApi';
 import { useBoardCommentList } from '@/hooks/comment/CommentApi';
 import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
 /* component */
-import ProfileImage from '@/components/ui/profileImg';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import DateDisplay from '@/components/ui/dateDisplay';
 import {
+  Avatar,
+  Comment,
+  CommentInput,
+  DateDisplay,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import CommentInput from '@/components/ui/commentInput';
-import Comment from '@/components/ui/comment';
-import Avatar from '@/components/ui/avartar';
+  ProfileImage,
+} from '@shared/ui';
 /* page */
 import ReportForm from '@/pages/idea/ReportForm';
 import IdeaModify from '@/pages/idea/IdeaModify';

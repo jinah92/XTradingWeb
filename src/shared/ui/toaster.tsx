@@ -1,7 +1,7 @@
 import { useToast } from '@/hooks/use-toast';
-import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '@/components/ui/toast';
+import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '@shared/ui';
 
-export function Toaster() {
+export const Toaster = () => {
   const { toasts } = useToast();
 
   return (
@@ -21,4 +21,4 @@ export function Toaster() {
       <ToastViewport />
     </ToastProvider>
   );
-}
+};

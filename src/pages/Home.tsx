@@ -4,7 +4,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 import { MarketType } from '../apis/market';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui';
 import { MarketsOverviewChart } from '../components/chart/markets/marketsOverviewChart';
 
 const Home = () => {

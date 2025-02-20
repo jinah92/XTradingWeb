@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ISODateString, MarketCandleRange } from '../../../app/const/market';
 import { useMarketCandlesMinuteQuery } from '../../../queries';
-import { Button } from '../../ui/button';
+import { Button } from '@shared/ui';
 
 interface TradingChartProps {
   market: string;

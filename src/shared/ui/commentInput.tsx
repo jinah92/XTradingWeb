@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 /* hook */
 import { useCommentAdd, CommentAddReq, CommentModifyReq, useCommentModify } from '@/hooks/comment/CommentApi';
 /* component */
-import AutoResizeTextarea from '@/components/ui/autoResizeTextarea';
-import { Button } from '@/components/ui/button';
+import { AutoResizeTextarea, Button } from '@shared/ui';
 
 interface ParentComponentProps {
   targetType?: string;
@@ -13,7 +12,13 @@ interface ParentComponentProps {
   refresh: () => void;
 }
 
-const CommentInput = ({ targetType, targetId, beforeContent = '', type = 'add', refresh }: ParentComponentProps) => {
+export const CommentInput = ({
+  targetType,
+  targetId,
+  beforeContent = '',
+  type = 'add',
+  refresh,
+}: ParentComponentProps) => {
   const [contents, setContents] = useState(beforeContent);
   const { commentAddApi } = useCommentAdd();
   const { commentModifyApi } = useCommentModify();
@@ -100,4 +105,3 @@ const CommentInput = ({ targetType, targetId, beforeContent = '', type = 'add', 
     </>
   );
 };
-export default CommentInput;

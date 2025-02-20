@@ -7,7 +7,7 @@ interface TagInputProps {
   tagList?: string[];
 }
 
-const TagInput = forwardRef(({ placeholder = '태그', onChange, tagList = [] }: TagInputProps, ref) => {
+export const TagInput = forwardRef(({ placeholder = '태그', onChange, tagList = [] }: TagInputProps, ref) => {
   const [tags, setTags] = useState<string[]>(tagList || []);
   const [inputValue, setInputValue] = useState<string>('');
   const { toast } = useToast();
@@ -71,5 +71,3 @@ const TagInput = forwardRef(({ placeholder = '태그', onChange, tagList = [] }:
     </div>
   );
 });
-
-export default TagInput;

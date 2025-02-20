@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 /* hook */
 import { CommentListRes, useCommentLikeToggle, useCommentDelete } from '@/hooks/comment/CommentApi';
 /* component */
-import ProfileImage from '@/components/ui/profileImg';
-import DateDisplay from '@/components/ui/dateDisplay';
 import {
+  Avatar,
+  CommentInput,
+  DateDisplay,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import CommentInput from '@/components/ui/commentInput';
-import Avatar from '@/components/ui/avartar';
+  ProfileImage,
+} from '@shared/ui';
 
 interface ParentComponentProps {
   comment: CommentListRes;
   refresh?: () => void;
 }
 
-const Comment = ({ comment, refresh = () => {} }: ParentComponentProps) => {
+export const Comment = ({ comment, refresh = () => {} }: ParentComponentProps) => {
   const { commentLikeToggleApi } = useCommentLikeToggle();
   const { commentDeleteApi } = useCommentDelete();
 
@@ -359,4 +359,3 @@ const Comment = ({ comment, refresh = () => {} }: ParentComponentProps) => {
     </>
   );
 };
-export default Comment;
