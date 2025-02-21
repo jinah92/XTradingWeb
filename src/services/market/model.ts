@@ -1,4 +1,4 @@
-import { TradingData } from '../../apis/market';
+import type { TradingData } from '../../apis/market';
 
 export class TradingModel {
   constructor(private readonly data: TradingData) {}

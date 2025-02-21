@@ -1,4 +1,4 @@
-import { Time } from 'lightweight-charts';
+import type { Time } from 'lightweight-charts';
 
 export const timeToLocal = (originalTime: number): Time => {
   const d = new Date(originalTime);

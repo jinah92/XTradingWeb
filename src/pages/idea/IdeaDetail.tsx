@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-/* hook */
-import { useIdeaDetail, useIdeaLikeToggle, useIdeaDelete, BoardDetail, useIdeaBlockToggle } from '@/hooks/idea/IdeaApi';
-import { useUserBlockToggle } from '@/hooks/member/MemberApi';
-import { useBoardCommentList } from '@/hooks/comment/CommentApi';
-import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
-/* component */
-import LoadingSpinner from '@/components/LoadingSpinner';
+
 import {
   Avatar,
   Comment,
@@ -17,10 +11,22 @@ import {
   DropdownMenuTrigger,
   ProfileImage,
 } from '@shared';
-/* page */
-import ReportForm from '@/pages/idea/ReportForm';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { useBoardCommentList } from '@/hooks/comment/CommentApi';
+import {
+  useIdeaDetail,
+  useIdeaLikeToggle,
+  useIdeaDelete,
+  type BoardDetail,
+  useIdeaBlockToggle,
+} from '@/hooks/idea/IdeaApi';
+import { useUserBlockToggle } from '@/hooks/member/MemberApi';
+import { type FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
 import IdeaModify from '@/pages/idea/IdeaModify';
-import { reportFormReq } from '@/hooks/report/ReportApi';
+import ReportForm from '@/pages/idea/ReportForm';
+
+import type { reportFormReq } from '@/hooks/report/ReportApi';
 
 interface ParentComponentProps {
   boardId: string;

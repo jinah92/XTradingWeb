@@ -1,4 +1,5 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
+
 import { TickerService } from '../services';
 
 const options = {

@@ -1,4 +1,4 @@
-import { CurrencyUnit, CurrencyUnitType, NumberScales } from '../app/const/currency';
+import { CurrencyUnit, NumberScales, type CurrencyUnitType } from '../app/const/currency';
 
 export const currencyFormatter = (
   currency: number,

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-/* hook */
-import { CommentListRes, useCommentLikeToggle, useCommentDelete } from '@/hooks/comment/CommentApi';
-/* component */
+
 import {
   Avatar,
   CommentInput,
@@ -12,6 +10,8 @@ import {
   DropdownMenuTrigger,
   ProfileImage,
 } from '@shared';
+
+import { type CommentListRes, useCommentLikeToggle, useCommentDelete } from '@/hooks/comment/CommentApi';
 
 interface ParentComponentProps {
   comment: CommentListRes;

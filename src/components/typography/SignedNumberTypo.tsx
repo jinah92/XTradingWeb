@@ -1,4 +1,4 @@
-import { CurrencyUnit, CurrencyUnitType } from '../../app/const/currency';
+import { CurrencyUnit, type CurrencyUnitType } from '../../app/const/currency';
 import { cn } from '../../lib/utils';
 
 interface SignedNumberTypoProps {

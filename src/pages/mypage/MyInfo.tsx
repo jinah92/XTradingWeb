@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-/* hook */
-import { useFollowerList, useFollowingList, useMemberInfo } from '@/hooks/mypage/MyPageApi';
-/* component */
+
 import { Avatar, Button, ProfileImage } from '@shared';
+
 import Modal from '@/components/modal/Modal';
-/* page */
+import { useFollowerList, useFollowingList, useMemberInfo } from '@/hooks/mypage/MyPageApi';
 import NickNameChange from '@/pages/mypage/NickNameChange';
 import { useAuth } from '@/router/AuthContext';
 

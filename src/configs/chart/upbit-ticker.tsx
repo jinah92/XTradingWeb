@@ -1,7 +1,8 @@
-import type { GridOptions, ValueFormatterParams, CellR, ICellRendererParams } from 'ag-grid-community';
-import { currencyFormatter, percentFormatter } from '../../lib/formatter';
-import { UpbitTicker } from '../../apis/ticker';
 import SignedNumberTypo from '../../components/typography/SignedNumberTypo';
+import { currencyFormatter, percentFormatter } from '../../lib/formatter';
+
+import type { UpbitTicker } from '../../apis/ticker';
+import type { GridOptions, ValueFormatterParams, ICellRendererParams } from 'ag-grid-community';
 
 export const realtimeCurrencyOptions: GridOptions<UpbitTicker> = {
   getRowId: ({ data }) => data.market,

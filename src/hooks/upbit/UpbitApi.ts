@@ -1,5 +1,6 @@
-import { apiWithoutAuth } from '@shared';
 import { useEffect, useState } from 'react';
+
+import { apiWithoutAuth } from '@shared';
 
 export interface ItemData {
   market: string;

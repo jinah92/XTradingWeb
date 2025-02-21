@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useUpbitMarket, ItemData } from '@/hooks/upbit/UpbitApi';
+
+import { Button } from '@shared';
+
+import { useUpbitMarket } from '@/hooks/upbit/UpbitApi';
+
+import type { ItemData } from '@/hooks/upbit/UpbitApi';
+
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
-import { Button } from '@shared';
 
 // props의 타입을 정의합니다.
 interface ParentComponentProps {

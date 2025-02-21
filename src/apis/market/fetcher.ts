@@ -1,8 +1,9 @@
-import type { AxiosResponse } from 'axios';
-import type { UpbitMarketCandleResponse } from './model';
-import { MarketCandle } from '../../app/const/market';
-import { UpbitTicker } from '../ticker';
 import { apiWithoutAuth } from '@shared';
+
+import type { MarketCandle } from '../../app/const/market';
+import type { UpbitTicker } from '../ticker';
+import type { UpbitMarketCandleResponse } from './model';
+import type { AxiosResponse } from 'axios';
 
 export const findMarkets = async () => {
   const { data }: AxiosResponse<UpbitTicker[]> = await apiWithoutAuth.get(`upbit-api/v1/market/all`);

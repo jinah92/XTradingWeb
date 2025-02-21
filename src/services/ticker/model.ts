@@ -1,4 +1,4 @@
-import { UpbitTickerResponse } from '../../apis/ticker';
+import type { UpbitTickerResponse } from '../../apis/ticker';
 
 export class TickerModel {
   constructor(private readonly data: UpbitTickerResponse) {}

@@ -1,5 +1,6 @@
-import { Button } from '@shared';
 import { useNavigate } from 'react-router-dom';
+
+import { Button } from '@shared';
 
 const Interest = () => {
   const navigate = useNavigate();

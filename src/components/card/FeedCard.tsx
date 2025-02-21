@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-/* hook */
-import { FeedData } from '@/hooks/feed/FeedApi';
-import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
-/* component */
-import Modal from '@/components/modal/Modal';
+
 import { Avatar, Card, DateDisplay, EllipsisText, ProfileImage } from '@shared';
-/* common */
+
 import { openModal, closeModal } from '@/common/Utils';
-/* page */
+import Modal from '@/components/modal/Modal';
+import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
 import FeedDetail from '@/pages/idea/FeedDetail';
+
+import type { FeedData } from '@/hooks/feed/types';
 
 interface CardItemProps {
   item: FeedData;

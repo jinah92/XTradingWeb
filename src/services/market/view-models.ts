@@ -1,5 +1,6 @@
-import { UpbitMarketCandleResponse } from '../../apis/market';
 import { timeToLocal } from '../../lib/date';
+
+import type { UpbitMarketCandleResponse } from '../../apis/market';
 
 export class MarketCandleViewModel {
   data: UpbitMarketCandleResponse[];

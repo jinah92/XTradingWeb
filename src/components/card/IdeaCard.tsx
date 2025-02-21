@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-/* hook */
-import { BoardData, BoardDetail } from '@/hooks/idea/IdeaApi';
-import { useIdeaLikeToggle } from '@/hooks/idea/IdeaApi';
-/* components */
+
 import { Card, DateDisplay, EllipsisText } from '@shared';
-import Modal from '@/components/modal/Modal';
-/* common */
+
 import { openModal, closeModal } from '@/common/Utils';
-/* page */
+import Modal from '@/components/modal/Modal';
+import { useIdeaLikeToggle } from '@/hooks/idea/IdeaApi';
 import IdeaDetail from '@/pages/idea/IdeaDetail';
+
+import type { BoardData, BoardDetail } from '@/hooks/idea/IdeaApi';
 
 interface CardItemProps {
   item: BoardData;

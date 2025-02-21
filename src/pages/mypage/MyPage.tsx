@@ -1,6 +1,5 @@
 import { useState } from 'react';
-/* hook */
-/* component */
+
 import MyInfo from '@/pages/mypage/MyInfo';
 import Setting from '@/pages/mypage/Setting';
 

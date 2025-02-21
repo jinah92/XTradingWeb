@@ -1,5 +1,5 @@
-import { TickerRepository } from '../../apis';
 import { MarketTickerViewModel } from './view-models';
+import { TickerRepository } from '../../apis';
 
 class TickerService {
   private repository: typeof TickerRepository;

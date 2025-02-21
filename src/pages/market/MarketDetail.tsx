@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { TradingChart } from '../../components/chart/markets/TradingChart';
+
 import { CurrencyCard } from '../../components/card/CurrencyCard';
+import { TradingChart } from '../../components/chart/markets/TradingChart';
 
 const MarketDetail = () => {
   const params = useParams();

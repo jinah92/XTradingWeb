@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, PasswordInput } from '@shared';
-import { SignUpData, useSignUp } from '@/hooks/auth/AuthApi';
-import CryptoJS from 'crypto-js';
 import { Link } from 'react-router-dom';
+
+import CryptoJS from 'crypto-js';
+
+import { Button, Input, PasswordInput } from '@shared';
+
+import { type SignUpData, useSignUp } from '@/hooks/auth/AuthApi';
 import { useToast } from '@/hooks/use-toast';
 
 const SignUp = () => {

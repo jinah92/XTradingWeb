@@ -1,8 +1,10 @@
 // PrivateRoute.tsx
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+
 import LoadingSpinner from '@/components/LoadingSpinner';
+
+import { useAuth } from './AuthContext';
 
 interface PrivateRouteProps {
   element: React.ReactElement;

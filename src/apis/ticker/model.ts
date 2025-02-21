@@ -1,4 +1,4 @@
-import { PriceChange, RawUpbitMarketData } from '../market';
+import type { PriceChange, RawUpbitMarketData } from '../market';
 
 interface MarketEvent {
   warning: boolean;

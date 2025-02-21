@@ -1,20 +1,20 @@
 import { Routes, Route } from 'react-router-dom';
+
 /* page */
-import Home from '@/pages/Home';
-import Login from '@/pages/auth/Login';
-import SignUp from '@/pages/auth/SignUp';
-import Idea from '@/pages/idea/Idea';
-import News from '@/pages/news/News';
-import Interest from '@/pages/interest/Interest';
-import Market from '@/pages/market/Market';
-import ChartView from '@/pages/market/ChartView';
-import MyPage from '@/pages/mypage/MyPage';
-/* layout */
 import MainLayout from '@/layout/MainLayout';
 import NewsLayout from '@/layout/NewsLayout';
-/* config */
-import PrivateRoute from '@/router/PrivateRoute';
+import Login from '@/pages/auth/Login';
+import SignUp from '@/pages/auth/SignUp';
+import Home from '@/pages/Home';
+import Idea from '@/pages/idea/Idea';
+import Interest from '@/pages/interest/Interest';
+import ChartView from '@/pages/market/ChartView';
+import Market from '@/pages/market/Market';
+import MyPage from '@/pages/mypage/MyPage';
+import News from '@/pages/news/News';
 import { AuthProvider } from '@/router/AuthContext';
+import PrivateRoute from '@/router/PrivateRoute';
+
 import MarketDetail from '../pages/market/MarketDetail';
 
 function CommonRouter() {

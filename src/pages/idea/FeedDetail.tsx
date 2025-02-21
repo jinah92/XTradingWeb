@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
 /* hook */
-import { useFeedDetail, useFeedDelete, useFeedLikeToggle, useFeedBlockToggle } from '@/hooks/feed/FeedApi';
-import { useFeedCommentList } from '@/hooks/comment/CommentApi';
-import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
-import { useUserBlockToggle } from '@/hooks/member/MemberApi';
-import { reportFormReq } from '@/hooks/report/ReportApi';
-/* component */
-import LoadingSpinner from '@/components/LoadingSpinner';
 import {
   Avatar,
   Comment,
@@ -18,9 +12,17 @@ import {
   DropdownMenuTrigger,
   ProfileImage,
 } from '@shared';
-/* page */
-import ReportForm from '@/pages/idea/ReportForm';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { useFeedCommentList } from '@/hooks/comment/CommentApi';
+import { useFeedDetail, useFeedDelete, useFeedLikeToggle, useFeedBlockToggle } from '@/hooks/feed/FeedApi';
+import { useUserBlockToggle } from '@/hooks/member/MemberApi';
+import { useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
 import FeedModify from '@/pages/idea/FeedModify';
+import ReportForm from '@/pages/idea/ReportForm';
+
+import type { FollowReq } from '@/hooks/mypage/MyPageApi';
+import type { reportFormReq } from '@/hooks/report/ReportApi';
 
 interface ParentComponentProps {
   feedId: string;

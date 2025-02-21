@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { useToast } from '@/hooks/use-toast';
+
 import { apiWithAuth } from '@shared';
+
+import { useToast } from '@/hooks/use-toast';
 
 // 사용자 차단 토글 API
 export const useUserBlockToggle = () => {

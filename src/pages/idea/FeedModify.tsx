@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-/* hook */
-import { FeedDetail, useFeedModify, FeedModifyReq } from '@/hooks/feed/FeedApi';
-/* component */
+
 import { AutoResizeTextarea, Button, Input, TagInput } from '@shared';
+
+import { useFeedModify, type FeedDetail, type FeedModifyReq } from '@/hooks/feed/FeedApi';
 
 type Props = {
   data: FeedDetail;

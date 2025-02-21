@@ -1,7 +1,9 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
+
 import { MarketService } from '../services';
-import { MarketType } from '../apis/market';
-import { MarketCandle, MarketCandleRange } from '../app/const/market';
+
+import type { MarketType } from '../apis/market';
+import type { MarketCandle, MarketCandleRange } from '../app/const/market';
 
 const options = {
   rootKey: 'market',

@@ -1,6 +1,8 @@
 import axios from 'axios';
-import type { CreateAxiosDefaults } from 'axios';
+
 import { responseErrorHandler, responseSuccessHandler, withAuthRequestHandler } from './handlers';
+
+import type { CreateAxiosDefaults } from 'axios';
 
 const createAxiosInstance = (config: CreateAxiosDefaults) => axios.create(config);
 

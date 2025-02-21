@@ -1,18 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-/* hook */
-import { useIdeaList, BoardData, ListReq, useIdeaAdd, BoardAddReq } from '@/hooks/idea/IdeaApi';
-import { useFeedList, FeedData, useFeedAdd, FeedAddReq } from '@/hooks/feed/FeedApi';
-/* component */
-import IdeaCard from '@/components/card/IdeaCard';
-import FeedCard from '@/components/card/FeedCard';
-import LeftNavbar from '@/components/navbar/LeftNavbar';
 import { useParams } from 'react-router-dom';
+
 import { AutoResizeTextarea, Button, Input, TagInput } from '@shared';
-import { useAuth } from '@/router/AuthContext';
-import Modal from '@/components/modal/Modal';
-import CodeList from '@/components/modal/CodeList';
-/* common */
+
 import { openModal, closeModal } from '@/common/Utils';
+import FeedCard from '@/components/card/FeedCard';
+import IdeaCard from '@/components/card/IdeaCard';
+import CodeList from '@/components/modal/CodeList';
+import Modal from '@/components/modal/Modal';
+import LeftNavbar from '@/components/navbar/LeftNavbar';
+import { useFeedList, type FeedData, useFeedAdd, type FeedAddReq } from '@/hooks/feed/FeedApi';
+import { useIdeaList, type BoardData, type ListReq, useIdeaAdd, type BoardAddReq } from '@/hooks/idea/IdeaApi';
+import { useAuth } from '@/router/AuthContext';
 
 const Idea = () => {
   const { isAuthenticated } = useAuth();

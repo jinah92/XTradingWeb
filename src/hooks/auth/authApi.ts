@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
+
+import { apiWithoutAuth } from '@shared';
+
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/router/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { apiWithoutAuth } from '@shared';
 
 export interface LoginData {
   email: string;

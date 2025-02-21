@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-/* hook */
-import { BoardDetail, useIdeaModify, BoardModifyReq } from '@/hooks/idea/IdeaApi';
-/* component */
+
 import { AutoResizeTextarea, Button, Input, TagInput } from '@shared';
+
+import { type BoardDetail, useIdeaModify, type BoardModifyReq } from '@/hooks/idea/IdeaApi';
 
 type Props = {
   data: BoardDetail;

@@ -1,8 +1,10 @@
 import { getCookie, setCookie } from '@/common/Cookie';
+
+import { apiWithAuth } from './instances';
+import { addRefreshSubscriber, onRefreshed } from './utils';
+
 import type { ApiResponse, CustomAxiosRequestConfig, Token } from '@shared/types';
 import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { addRefreshSubscriber, onRefreshed } from './utils';
-import { apiWithAuth } from './instances';
 
 // 토큰 갱신 요청 상태
 let isRefreshing = false;

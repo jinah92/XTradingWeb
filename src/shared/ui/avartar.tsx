@@ -1,4 +1,5 @@
 import React from 'react';
+
 import * as jdenticon from 'jdenticon';
 
 interface props {

@@ -1,5 +1,6 @@
-import { UpbitTickerResponse } from '../../apis/ticker';
 import { TickerModel } from './model';
+
+import type { UpbitTickerResponse } from '../../apis/ticker';
 
 export class MarketTickerViewModel {
   data: TickerModel;

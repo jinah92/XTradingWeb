@@ -1,9 +1,12 @@
-import { createChart, ColorType, CandlestickSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ISODateString, MarketCandleRange } from '../../../app/const/market';
-import { useMarketCandlesMinuteQuery } from '../../../queries';
+import { createChart, ColorType, CandlestickSeries, type IChartApi, type ISeriesApi } from 'lightweight-charts';
+
 import { Button } from '@shared';
+
+import { useMarketCandlesMinuteQuery } from '../../../queries';
+
+import type { ISODateString, MarketCandleRange } from '../../../app/const/market';
 
 interface TradingChartProps {
   market: string;

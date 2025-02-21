@@ -1,8 +1,9 @@
-import { useNewsList } from '@/hooks/news/NewsApi';
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+
 import NewsCard from '@/components/card/NewsCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useNewsList } from '@/hooks/news/NewsApi';
 
 const News = () => {
   const navigate = useNavigate();
