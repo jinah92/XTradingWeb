@@ -1,4 +1,5 @@
-import { currencyFormatter } from '../../lib/formatter';
+import { currencyFormatter } from '@shared/lib';
+
 import { useMarketTickerQuery } from '../../queries/ticker';
 import SignedNumberTypo from '../typography/SignedNumberTypo';
 

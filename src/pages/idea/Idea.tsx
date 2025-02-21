@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { AutoResizeTextarea, Button, Input, TagInput } from '@shared';
+import { openModal, closeModal } from '@shared/lib';
 
-import { openModal, closeModal } from '@/common/Utils';
 import FeedCard from '@/components/card/FeedCard';
 import IdeaCard from '@/components/card/IdeaCard';
 import CodeList from '@/components/modal/CodeList';

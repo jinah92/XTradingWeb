@@ -1,4 +1,4 @@
-import { timeToLocal } from '../../lib/date';
+import { timeToLocal } from '@shared/lib';
 
 import type { UpbitMarketCandleResponse } from '../../apis/market';
 

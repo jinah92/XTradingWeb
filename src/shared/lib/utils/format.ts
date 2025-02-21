@@ -1,10 +1,10 @@
-import { CurrencyUnit, NumberScales, type CurrencyUnitType } from '../app/const/currency';
+import { CurrencyUnit, NumberScales } from '@shared';
 
 export const currencyFormatter = (
   currency: number,
   decimalPlaces: number = 2,
   showNumericalScales: boolean = true,
-  unit: CurrencyUnitType = 'en',
+  unit: keyof typeof CurrencyUnit = 'en',
 ) => {
   if (!currency) return '';
   let result = '';

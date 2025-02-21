@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { Card, DateDisplay, EllipsisText } from '@shared';
+import { openModal, closeModal } from '@shared/lib';
 
-import { openModal, closeModal } from '@/common/Utils';
 import Modal from '@/components/modal/Modal';
 import { useIdeaLikeToggle } from '@/hooks/idea/IdeaApi';
 import IdeaDetail from '@/pages/idea/IdeaDetail';

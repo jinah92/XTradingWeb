@@ -1,5 +1,6 @@
+import { currencyFormatter, percentFormatter } from '@shared/lib';
+
 import SignedNumberTypo from '../../components/typography/SignedNumberTypo';
-import { currencyFormatter, percentFormatter } from '../../lib/formatter';
 
 import type { UpbitTicker } from '../../apis/ticker';
 import type { GridOptions, ValueFormatterParams, ICellRendererParams } from 'ag-grid-community';

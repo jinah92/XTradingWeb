@@ -1,7 +1,7 @@
-import { getCookie, setCookie } from '@/common/Cookie';
+import { getCookie, setCookie } from '@shared/lib';
 
+import { addRefreshSubscriber, onRefreshed } from './helpers';
 import { apiWithAuth } from './instances';
-import { addRefreshSubscriber, onRefreshed } from './utils';
 
 import type { ApiResponse, CustomAxiosRequestConfig, Token } from '@shared/types';
 import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';

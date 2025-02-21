@@ -50,7 +50,7 @@ export default [
               position: 'before', // React 라이브러리를 외부 라이브러리 그룹의 최상단에 배치
             },
             {
-              pattern: '@shared*',
+              pattern: '@{shared,shared/**/*}',
               group: 'internal',
               position: 'before', // 내부 경로(@/...)를 internal 그룹의 최상단에 배치
             },

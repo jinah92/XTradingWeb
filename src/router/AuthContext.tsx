@@ -1,7 +1,7 @@
 // AuthContext.tsx
 import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
 
-import { getCookie, setCookie } from '@/common/Cookie';
+import { getCookie, setCookie } from '@shared/lib';
 
 interface AuthContextType {
   isAuthenticated: boolean | null;

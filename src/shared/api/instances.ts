@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { env } from '@shared';
+
 import { responseErrorHandler, responseSuccessHandler, withAuthRequestHandler } from './handlers';
 
 import type { CreateAxiosDefaults } from 'axios';
@@ -10,7 +12,7 @@ const defaultConfig: CreateAxiosDefaults = {
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/json',
-    'x-appkey': import.meta.env.VITE_APP_KEY,
+    'x-appkey': env.appKey,
   },
 };
 

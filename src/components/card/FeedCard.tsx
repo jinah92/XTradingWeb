@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { Avatar, Card, DateDisplay, EllipsisText, ProfileImage } from '@shared';
+import { openModal, closeModal } from '@shared/lib';
 
-import { openModal, closeModal } from '@/common/Utils';
 import Modal from '@/components/modal/Modal';
 import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
 import FeedDetail from '@/pages/idea/FeedDetail';

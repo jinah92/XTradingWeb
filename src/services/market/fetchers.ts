@@ -1,7 +1,8 @@
+import { splitValue } from '@shared/lib';
+
 import { MarketCandleViewModel } from './view-models';
 import { MarketRepository } from '../../apis';
 import { type MarketCandle, MAX_COUNT, TotalCountsForMinutes, MinUnitsForRange } from '../../app/const/market';
-import { splitValue } from '../../lib/utils';
 
 import type { UpbitMarketCandleResponse } from '../../apis/market';
 

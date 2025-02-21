@@ -3,8 +3,9 @@ import React from 'react';
 
 import { AgGridReact } from 'ag-grid-react';
 
+import { env } from '@shared';
+
 import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
-import { UPBIT_URL } from '../../../configs/ws-upbit/config';
 import { useWebSocket } from '../../../hooks/websocket/use-websocket';
 import { useSelectMarketsQuery } from '../../../queries';
 
@@ -41,7 +42,7 @@ export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) 
     }
   }
 
-  const { isConnect } = useWebSocket(UPBIT_URL, tickerMessage, onMessage);
+  const { isConnect } = useWebSocket(env.upbitWebsocketUrl, tickerMessage, onMessage);
 
   const handleMarketRow = (event: { data: UpbitTicker }) => {
     const path = `/market/${event.data.code}`;
