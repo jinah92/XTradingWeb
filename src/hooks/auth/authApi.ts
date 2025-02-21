@@ -1,8 +1,8 @@
-import axiosInstance from '@/configs/axios/axiosConfig';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/router/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { apiWithoutAuth } from '@shared';
 
 export interface LoginData {
   email: string;
@@ -25,7 +25,7 @@ export interface MailAuthData {
 export const useCheckAuthEmail = () => {
   const checkAuthEmailApi = async (email: string) => {
     try {
-      const response = await axiosInstance.get(`/api/auth/check-email-status?email=${email}`);
+      const response = await apiWithoutAuth.get(`/api/auth/check-email-status?email=${email}`);
       if (response.status === 200) {
         const emailStatus = response.data.result.emailStatus;
         return emailStatus;
@@ -48,7 +48,7 @@ export const useLogin = () => {
 
   const loginApi = async (param: LoginData) => {
     try {
-      const response = await axiosInstance.post('/api/auth/login', param);
+      const response = await apiWithoutAuth.post('/api/auth/login', param);
 
       if (response.status === 200) {
         toast({
@@ -92,7 +92,7 @@ export const useLoginGoogle = () => {
   const { toast } = useToast();
   const loginGoogleApi = async (token: string | undefined) => {
     try {
-      const response = await axiosInstance.post(`/api/auth/google/verify`, token);
+      const response = await apiWithoutAuth.post(`/api/auth/google/verify`, token);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage = error.response.data?.result?.message || '로그인 중 오류가 발생했습니다.';
@@ -119,7 +119,7 @@ export const useSignUp = () => {
   const navigate = useNavigate();
   const signUpApi = async (param: SignUpData) => {
     try {
-      const response = await axiosInstance.post(`/api/auth/signup`, param);
+      const response = await apiWithoutAuth.post(`/api/auth/signup`, param);
       if (response.status === 200) {
         toast({
           title: '',
@@ -153,7 +153,7 @@ export const useMailSend = () => {
   const { toast } = useToast();
   const mailSendApi = async (param: string) => {
     try {
-      const response = await axiosInstance.post(`/api/auth/email/send`, param);
+      const response = await apiWithoutAuth.post(`/api/auth/email/send`, param);
 
       if (response.status === 200) {
         toast({
@@ -187,7 +187,7 @@ export const useMailAuth = () => {
   const { toast } = useToast();
   const mailAuthApi = async (param: MailAuthData) => {
     try {
-      const response = await axiosInstance.post(`/api/auth/email`, param);
+      const response = await apiWithoutAuth.post(`/api/auth/email`, param);
 
       if (response.status === 200) {
         toast({

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 /* hook */
 import { BoardDetail, useIdeaModify, BoardModifyReq } from '@/hooks/idea/IdeaApi';
 /* component */
-import { AutoResizeTextarea, Button, Input, TagInput } from '@shared/ui';
+import { AutoResizeTextarea, Button, Input, TagInput } from '@shared';
 
 type Props = {
   data: BoardDetail;

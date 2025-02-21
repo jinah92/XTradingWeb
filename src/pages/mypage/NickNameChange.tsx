@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 /* hook */
 import { nickNameReq, useNickNameChk, useNickNameModify } from '@/hooks/mypage/MyPageApi';
 /* component */
-import { Button, Input } from '@shared/ui';
+import { Button, Input } from '@shared';
 import { useAuth } from '@/router/AuthContext';
 
 interface ParentComponentProps {

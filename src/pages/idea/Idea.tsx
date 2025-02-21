@@ -7,7 +7,7 @@ import IdeaCard from '@/components/card/IdeaCard';
 import FeedCard from '@/components/card/FeedCard';
 import LeftNavbar from '@/components/navbar/LeftNavbar';
 import { useParams } from 'react-router-dom';
-import { AutoResizeTextarea, Button, Input, TagInput } from '@shared/ui';
+import { AutoResizeTextarea, Button, Input, TagInput } from '@shared';
 import { useAuth } from '@/router/AuthContext';
 import Modal from '@/components/modal/Modal';
 import CodeList from '@/components/modal/CodeList';

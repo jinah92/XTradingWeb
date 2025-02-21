@@ -1,17 +1,17 @@
-import axiosInstance from '../../configs/axios/axiosConfig';
 import type { AxiosResponse } from 'axios';
 import type { UpbitMarketCandleResponse } from './model';
 import { MarketCandle } from '../../app/const/market';
 import { UpbitTicker } from '../ticker';
+import { apiWithoutAuth } from '@shared';
 
 export const findMarkets = async () => {
-  const { data }: AxiosResponse<UpbitTicker[]> = await axiosInstance.get(`upbit-api/v1/market/all`);
+  const { data }: AxiosResponse<UpbitTicker[]> = await apiWithoutAuth.get(`upbit-api/v1/market/all`);
 
   return data;
 };
 
 export const findMarketCandles = async ({ market, to, count, interval }: MarketCandle) => {
-  const { data }: AxiosResponse<UpbitMarketCandleResponse[]> = await axiosInstance.get(
+  const { data }: AxiosResponse<UpbitMarketCandleResponse[]> = await apiWithoutAuth.get(
     `/upbit-api/v1/candles/${interval}`,
     {
       params: {
@@ -26,7 +26,7 @@ export const findMarketCandles = async ({ market, to, count, interval }: MarketC
 };
 
 export const findMarketCandlesWithUnit = async ({ market, to, count, unit }: Omit<MarketCandle, 'interval'>) => {
-  const { data }: AxiosResponse<UpbitMarketCandleResponse[]> = await axiosInstance.get(
+  const { data }: AxiosResponse<UpbitMarketCandleResponse[]> = await apiWithoutAuth.get(
     `/upbit-api/v1/candles/minutes/${unit}`,
     {
       params: {

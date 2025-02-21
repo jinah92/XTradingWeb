@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Item } from '@/hooks/news/NewsApi.ts'; // Assuming you have this type
-import { Card } from '@shared/ui';
+import { Card } from '@shared';
 
 interface CardItemProps {
   item: Item;

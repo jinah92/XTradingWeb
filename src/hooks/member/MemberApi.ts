@@ -1,13 +1,13 @@
-import axiosInstance from '@/configs/axios/axiosConfig';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
+import { apiWithAuth } from '@shared';
 
 // 사용자 차단 토글 API
 export const useUserBlockToggle = () => {
   const { toast } = useToast();
   const userBlockToggle = async (userId: string) => {
     try {
-      await axiosInstance.post(`/api/members/toggle-block`, { userId: userId });
+      await apiWithAuth.post(`/api/members/toggle-block`, { userId: userId });
 
       toast({
         description: '차단 되었습니다.',

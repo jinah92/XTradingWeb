@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useUpbitMarket } from '@/hooks/upbit/UpbitApi';
-import { Button } from '@shared/ui';
+import { Button } from '@shared';
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 import LoadingSpinner from '@/components/LoadingSpinner';

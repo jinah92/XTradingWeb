@@ -1,6 +1,6 @@
 import CommonRouter from '@/router/CommonRouter';
 import './App.css';
-import { Toaster } from '@shared/ui';
+import { Toaster } from '@shared';
 import { ThemeProvider } from './ThemeProvider';
 import { CookiesProvider } from 'react-cookie';
 import { AuthProvider } from './router/AuthContext';

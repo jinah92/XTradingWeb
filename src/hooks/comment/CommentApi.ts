@@ -1,9 +1,9 @@
-import axiosInstance from '@/configs/axios/axiosConfig';
 import { useAuth } from '@/router/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiWithAuth } from '@shared';
 
 export type CommentAddReq = {
   targetType: string;
@@ -69,7 +69,7 @@ export const useCommentAdd = () => {
         return;
       }
 
-      await axiosInstance.post(`/api/comments`, param);
+      await apiWithAuth.post(`/api/comments`, param);
 
       toast({
         description: '댓글 등록되었습니다.',
@@ -106,7 +106,7 @@ export const useBoardCommentList = () => {
 
   const commentListApi = async (boardId: string) => {
     try {
-      const response = await axiosInstance.get(`/api/boards/${boardId}/comments`);
+      const response = await apiWithAuth.get(`/api/boards/${boardId}/comments`);
       setCommentList(response.data.result.commentList);
     } catch (error) {
       console.error('데이터 요청 오류:', error);
@@ -126,7 +126,7 @@ export const useFeedCommentList = () => {
 
   const commentListApi = async (boardId: string) => {
     try {
-      const response = await axiosInstance.get(`/api/feeds/${boardId}/comments`);
+      const response = await apiWithAuth.get(`/api/feeds/${boardId}/comments`);
       setCommentList(response.data.result.commentList);
     } catch (error) {
       console.error('데이터 요청 오류:', error);
@@ -150,7 +150,7 @@ export const useCommentModify = () => {
         return;
       }
 
-      await axiosInstance.put(`/api/comments`, param);
+      await apiWithAuth.put(`/api/comments`, param);
 
       toast({
         description: '댓글 수정되었습니다.',
@@ -186,7 +186,7 @@ export const useCommentDelete = () => {
   const { toast } = useToast();
   const commentDeleteApi = async (commentId: string) => {
     try {
-      await axiosInstance.delete(`/api/comments/` + commentId + `?sortType=NEWEST`);
+      await apiWithAuth.delete(`/api/comments/` + commentId + `?sortType=NEWEST`);
 
       toast({
         description: '댓글 삭제되었습니다.',
@@ -229,7 +229,7 @@ export const useCommentLikeToggle = () => {
         navigate('/login');
         return;
       }
-      await axiosInstance.post(`/api/comments/toggle-like`, { commentId: commentId });
+      await apiWithAuth.post(`/api/comments/toggle-like`, { commentId: commentId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

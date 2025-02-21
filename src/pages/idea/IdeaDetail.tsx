@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   ProfileImage,
-} from '@shared/ui';
+} from '@shared';
 /* page */
 import ReportForm from '@/pages/idea/ReportForm';
 import IdeaModify from '@/pages/idea/IdeaModify';

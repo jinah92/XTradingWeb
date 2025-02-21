@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
-import { Button, Input, PasswordInput } from '@shared/ui';
+import { Button, Input, PasswordInput } from '@shared';
 import { LoginData, useLogin, useCheckAuthEmail, useMailSend, useMailAuth, MailAuthData } from '@/hooks/auth/AuthApi';
 import { useToast } from '@/hooks/use-toast';
 import CryptoJS from 'crypto-js';

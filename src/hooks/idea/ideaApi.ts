@@ -1,9 +1,9 @@
-import axiosInstance from '@/configs/axios/axiosConfig';
 import { useAuth } from '@/router/AuthContext';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { apiWithAuth, apiWithoutAuth } from '@shared';
 
 export interface BoardData {
   boardId: string;
@@ -70,7 +70,7 @@ export type BoardDetail = {
 export const useIdeaList = () => {
   const ideaListApi = async (param: ListReq) => {
     try {
-      const response = await axiosInstance.get(`/api/boards`, {
+      const response = await apiWithoutAuth.get(`/api/boards`, {
         params: param,
       });
       return response.data.result.boardList;
@@ -106,7 +106,7 @@ export const useIdeaAdd = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.post(`/api/boards`, param);
+      await apiWithAuth.post(`/api/boards`, param);
 
       toast({
         description: '아이디어 등록되었습니다.',
@@ -149,7 +149,7 @@ export const useIdeaLikeToggle = () => {
         navigate('/login');
         return;
       }
-      await axiosInstance.post(`/api/boards/toggle-like`, { boardId: boardId });
+      await apiWithAuth.post(`/api/boards/toggle-like`, { boardId: boardId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -180,7 +180,7 @@ export const useIdeaDetail = () => {
   const [detailData, setDetailData] = useState<BoardDetail>();
   const ideaDetailApi = async (boardId: string) => {
     try {
-      const response = await axiosInstance.get(`/api/boards/` + boardId);
+      const response = await apiWithAuth.get(`/api/boards/` + boardId);
       setDetailData(response.data.result);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -211,7 +211,7 @@ export const useIdeaDelete = () => {
   const { toast } = useToast();
   const ideaDeleteApi = async (boardId: string) => {
     try {
-      await axiosInstance.delete(`/api/boards/` + boardId);
+      await apiWithAuth.delete(`/api/boards/` + boardId);
       toast({
         description: '삭제되었습니다.',
         duration: 2000,
@@ -252,7 +252,7 @@ export const useIdeaModify = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.put(`/api/boards`, param);
+      await apiWithAuth.put(`/api/boards`, param);
 
       toast({
         description: '아이디어 수정되었습니다.',
@@ -288,7 +288,7 @@ export const useIdeaBlockToggle = () => {
   const { toast } = useToast();
   const ideaBlockToggleApi = async (boardId: string) => {
     try {
-      await axiosInstance.post(`/api/boards/toggle-block`, { boardId: boardId });
+      await apiWithAuth.post(`/api/boards/toggle-block`, { boardId: boardId });
       toast({
         description: '게시글 차단 되었습니다.',
         duration: 2000,

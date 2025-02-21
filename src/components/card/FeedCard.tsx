@@ -4,7 +4,7 @@ import { FeedData } from '@/hooks/feed/FeedApi';
 import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
 /* component */
 import Modal from '@/components/modal/Modal';
-import { Avatar, Card, DateDisplay, EllipsisText, ProfileImage } from '@shared/ui';
+import { Avatar, Card, DateDisplay, EllipsisText, ProfileImage } from '@shared';
 /* common */
 import { openModal, closeModal } from '@/common/Utils';
 /* page */
