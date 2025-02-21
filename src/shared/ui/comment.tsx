@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   ProfileImage,
-} from '@shared/ui';
+} from '@shared';
 
 interface ParentComponentProps {
   comment: CommentListRes;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 /* hook */
 import { useCommentAdd, CommentAddReq, CommentModifyReq, useCommentModify } from '@/hooks/comment/CommentApi';
 /* component */
-import { AutoResizeTextarea, Button } from '@shared/ui';
+import { AutoResizeTextarea, Button } from '@shared';
 
 interface ParentComponentProps {
   targetType?: string;

@@ -1,5 +1,5 @@
 import { useToast } from '@/hooks/use-toast';
-import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '@shared/ui';
+import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '@shared';
 
 export const Toaster = () => {
   const { toasts } = useToast();
