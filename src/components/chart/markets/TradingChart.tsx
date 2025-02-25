@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { createChart, ColorType, CandlestickSeries, type IChartApi, type ISeriesApi } from 'lightweight-charts';
 
-import { Button } from '@shared';
+import { Button, type MarketCandleRange } from '@shared';
 
 import { useMarketCandlesMinuteQuery } from '../../../queries';
 
-import type { ISODateString, MarketCandleRange } from '../../../app/const/market';
+import type { ISODateString } from '@/app/const/common';
 
 interface TradingChartProps {
   market: string;
@@ -14,7 +14,7 @@ interface TradingChartProps {
 
 export const TradingChart = ({ market }: TradingChartProps) => {
   const [interval, setInterval] = useState<MarketCandleRange>('1D');
-  const { data, isLoading } = useMarketCandlesMinuteQuery(market, interval);
+  const { data: candles, isLoading } = useMarketCandlesMinuteQuery(market, interval);
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<ISODateString>('');
   const chartInstance = useRef<IChartApi | null>(null);
@@ -23,10 +23,10 @@ export const TradingChart = ({ market }: TradingChartProps) => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (data?.length && seriesInstance.current && chartInstance.current) {
+    if (candles?.length && seriesInstance.current && chartInstance.current) {
       chartInstance.current.timeScale().fitContent();
-      seriesInstance.current?.setData(data.getData());
-      toRef.current = data.firstDate;
+      seriesInstance.current?.setData(candles.data);
+      toRef.current = candles.firstDate;
     }
   }, [isLoading, interval]);
 

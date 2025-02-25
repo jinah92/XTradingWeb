@@ -1,10 +1,10 @@
-import { splitValue } from '@shared/lib';
+import { splitValue } from '@/shared/lib';
 
-import { MarketCandleViewModel } from './view-models';
-import { MarketRepository } from '../../apis';
-import { type MarketCandle, MAX_COUNT, TotalCountsForMinutes, MinUnitsForRange } from '../../app/const/market';
+import { MarketRepository } from '../api';
+import { CandleUnitsByRange, MaxCandleCount, TotalCandleCountByMinutes } from '../const';
+import { MarketViewModel } from '../model';
 
-import type { UpbitMarketCandleResponse } from '../../apis/market';
+import type { MarketCandle, UpbitMarketCandleResponse } from '../types';
 
 class MarketService {
   repository: typeof MarketRepository;
@@ -23,11 +23,11 @@ class MarketService {
   async getMarketCandlesWithUnit(props: Pick<MarketCandle, 'market' | 'range'>) {
     // 조회 기간에 따라 분 단위를 내부에서 조절해서 계산
     // 조회 기간 : 1일(5분봉), 7일(15분봉), 1달(60분봉), 3달(240분봉)
-    const unit = MinUnitsForRange[props.range!];
-    const count = splitValue(TotalCountsForMinutes[props.range!], MAX_COUNT);
+    const unit = CandleUnitsByRange[props.range!];
+    const count = splitValue(TotalCandleCountByMinutes[props.range!], MaxCandleCount);
     const data = await this.getMarketData(props.market, unit, count);
 
-    return new MarketCandleViewModel(data);
+    return new MarketViewModel(data);
   }
 
   // 한번 캔들을 가져올때 최대 200개씩 가져온다. (counts 배열에 가져올 count를 각 요소 최대 200개씩)
