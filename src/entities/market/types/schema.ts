@@ -6,8 +6,6 @@ import type { Time } from 'lightweight-charts';
 
 export type PriceChange = 'RISE' | 'EVEN' | 'FALL';
 
-export type MarketType = 'KRW' | 'BTC' | 'USDT' | 'ALL';
-
 export interface MarketCandle {
   market: string;
   interval: (typeof MarketCandleInterval)[keyof typeof MarketCandleInterval];

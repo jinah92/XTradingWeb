@@ -1,5 +1,5 @@
-import { MarketTickerViewModel } from './view-models';
-import { TickerRepository } from '../../apis';
+import { TickerRepository } from '../api';
+import { TickerViewModel } from '../model';
 
 class TickerService {
   private repository: typeof TickerRepository;
@@ -11,7 +11,7 @@ class TickerService {
   async getMarketTicker(market: string) {
     const data = await this.repository.findMarketTicker(market);
 
-    return new MarketTickerViewModel(data?.[0]);
+    return new TickerViewModel(data?.[0]);
   }
 }
 

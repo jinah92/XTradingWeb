@@ -1,6 +1,6 @@
 import { apiWithoutAuth } from '@shared';
 
-import type { UpbitTickerResponse } from './model';
+import type { UpbitTickerResponse } from '../types';
 import type { AxiosResponse } from 'axios';
 
 export const findMarketTicker = async (market: string) => {

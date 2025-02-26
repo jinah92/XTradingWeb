@@ -2,8 +2,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { MarketEntity } from '@/entities';
 
-import type { MarketType } from '../apis/market';
-import type { MarketCandle, MarketCandleRange } from '../app/const/market';
+import type { MarketType, MarketCandleRange } from '@shared';
 
 const options = {
   rootKey: 'market',
@@ -20,7 +19,7 @@ const options = {
         return data.filter(item => new RegExp(`^${type}*`).test(item.market));
       },
     }),
-  getMarketCandlesWithUnit: (props: Pick<MarketCandle, 'market' | 'range'>) =>
+  getMarketCandlesWithUnit: (props: { market: string; range: MarketCandleRange }) =>
     queryOptions({
       queryKey: [options.rootKey, props.market, props.range],
       queryFn: () => MarketEntity.marketService.getMarketCandlesWithUnit(props),

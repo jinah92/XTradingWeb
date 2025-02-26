@@ -6,7 +6,7 @@ import SignedNumberTypo from '../typography/SignedNumberTypo';
 export const CurrencyCard = ({ market }: { market: string }) => {
   const { data } = useMarketTickerQuery(market);
 
-  const prices = data?.getTickerData().price;
+  const prices = data?.ticker.price;
 
   return (
     <div className="flex justify-center gap-5">

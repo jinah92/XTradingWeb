@@ -1,4 +1,4 @@
-import type { MarketCandleRange } from '../types';
+import type { MarketCandleRange } from '@shared';
 
 export enum MarketCandleInterval {
   'SEC' = 'seconds',

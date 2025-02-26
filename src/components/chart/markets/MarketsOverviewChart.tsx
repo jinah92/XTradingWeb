@@ -9,8 +9,8 @@ import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
 import { useWebSocket } from '../../../hooks/websocket/use-websocket';
 import { useSelectMarketsQuery } from '../../../queries';
 
-import type { MarketType } from '../../../apis/market';
 import type { UpbitTicker } from '../../../apis/ticker';
+import type { MarketType } from '@shared';
 import type { GridApi, GridReadyEvent } from 'ag-grid-community';
 
 export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) => {
