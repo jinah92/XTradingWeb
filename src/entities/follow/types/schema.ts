@@ -17,3 +17,8 @@ export interface FolloweesResponse {
     followings: FollowerInfo[];
   };
 }
+
+export interface UpdateFollowerResponse {
+  message: string;
+  result: string;
+}
