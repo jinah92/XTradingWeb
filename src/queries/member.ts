@@ -16,10 +16,10 @@ const options = {
     queryOptions({ ...options.getMemberBaseInfo(userId), select: user => user.getFollowees() }),
   postMemberNickname: (userId: string) =>
     ({
-      mutationKey: [options.rootKey, userId],
+      mutationKey: ['update', 'nickname', userId],
       mutationFn: (nickname: string) => MemberEntity.memberService.updateMemberNickname(userId, nickname),
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [options.rootKey] }),
-    }) as unknown as UseMutationOptions<string, Error, string>,
+    }) as UseMutationOptions<any, Error, string>,
 };
 
 export const useSelectMemberQuery = (userId: string) => useQuery(options.getMemberBaseInfo(userId));

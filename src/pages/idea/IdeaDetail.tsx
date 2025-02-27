@@ -22,9 +22,9 @@ import {
   useIdeaBlockToggle,
 } from '@/hooks/idea/IdeaApi';
 import { useUserBlockToggle } from '@/hooks/member/MemberApi';
-import { type FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
 import IdeaModify from '@/pages/idea/IdeaModify';
 import ReportForm from '@/pages/idea/ReportForm';
+import { useAddFollowerMutation, useRemoveFollowerMutation } from '@/queries/follow';
 
 import type { reportFormReq } from '@/hooks/report/ReportApi';
 
@@ -40,8 +40,6 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
   const { detailData, ideaDetailApi } = useIdeaDetail();
   const { ideaLikeToggleApi } = useIdeaLikeToggle();
   const { ideaDeleteApi } = useIdeaDelete();
-  const { followApi } = useFollow();
-  const { unfollowApi } = useUnfollow();
   const { commentList, commentListApi } = useBoardCommentList();
   const { ideaBlockToggleApi } = useIdeaBlockToggle();
   const { userBlockToggle } = useUserBlockToggle();
@@ -54,6 +52,9 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
   const [viewType, setViewType] = useState('search');
 
   const [reportData, setReportData] = useState<reportFormReq>();
+
+  const { mutate: followMutate } = useAddFollowerMutation();
+  const { mutate: unfollowMutate } = useRemoveFollowerMutation();
 
   /* 좋아요 토글 */
   const likeToggle = async () => {
@@ -70,27 +71,25 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
 
   // 팔로우
   const followAction = async () => {
-    if (detailData) {
-      const param: FollowReq = {
-        targetId: detailData.cretInfo.userId,
-      };
-      const result = await followApi(param);
-      if (result) {
+    try {
+      if (detailData) {
+        await followMutate(detailData.cretInfo.userId);
         setFollowTF(true);
       }
+    } catch (error) {
+      setFollowTF(false);
     }
   };
 
   // 언팔로우
   const unfollowAction = async () => {
-    if (detailData) {
-      const param: FollowReq = {
-        targetId: detailData.cretInfo.userId,
-      };
-      const result = await unfollowApi(param);
-      if (result) {
+    try {
+      if (detailData) {
+        await unfollowMutate(detailData.cretInfo.userId);
         setFollowTF(false);
       }
+    } catch (error) {
+      setFollowTF(true);
     }
   };
 
