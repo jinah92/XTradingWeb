@@ -1,38 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, Input } from '@shared';
 
 import { type nickNameReq, useNickNameChk, useNickNameModify } from '@/hooks/mypage/MyPageApi';
+import { toast } from '@/hooks/use-toast';
+import { useMemberNicknameMutation } from '@/queries';
 import { useAuth } from '@/router/AuthContext';
 
 interface ParentComponentProps {
-  searchData: () => void;
   onClose: () => void;
 }
 
-const NickNameChange = ({ searchData, onClose }: ParentComponentProps) => {
+const NickNameChange = ({ onClose }: ParentComponentProps) => {
   const { nickNameChkApi } = useNickNameChk();
   const { nickNameModifyApi } = useNickNameModify();
   const [nickName, setNickName] = useState('');
   const { userId } = useAuth();
+  const { mutate, isError, isSuccess, error } = useMemberNicknameMutation(userId!);
 
   /* 닉네임 중복 체크, 변경 */
   const nickNameChk = async () => {
-    const chkResult = await nickNameChkApi(nickName);
-
-    /* 중복이 아닐 경우 변경 */
-    if (chkResult && userId != null) {
-      const param: nickNameReq = {
-        userId: userId,
-        nickName: nickName,
-      };
-      const result = await nickNameModifyApi(param);
-      if (result) {
-        searchData();
-        onClose();
-      }
+    // const chkResult = await nickNameChkApi(nickName);
+    if (nickName.length > 0) {
+      mutate(nickName);
     }
+    // /* 중복이 아닐 경우 변경 */
+    // if (chkResult && userId != null) {
+    //   const param: nickNameReq = {
+    //     userId: userId,
+    //     nickName: nickName,
+    //   };
+    //   const result = await nickNameModifyApi(param);
+    //   if (result) {
+    //     searchData();
+    //     onClose();
+    //   }
+    // }
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        description: error.message,
+        duration: 2000,
+      });
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        description: '변경되었습니다.',
+        duration: 2000,
+      });
+      onClose();
+    }
+  }, [isSuccess]);
 
   return (
     <>

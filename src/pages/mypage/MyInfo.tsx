@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Avatar, Button, ProfileImage } from '@shared';
@@ -6,29 +6,23 @@ import { Avatar, Button, ProfileImage } from '@shared';
 import Modal from '@/components/modal/Modal';
 import { useFollowerList, useFollowingList, useMemberInfo } from '@/hooks/mypage/MyPageApi';
 import NickNameChange from '@/pages/mypage/NickNameChange';
+import {
+  useMemberNicknameMutation,
+  useSelectMemberFolloweesQuery,
+  useSelectMemberFollowersQuery,
+  useSelectMemberQuery,
+} from '@/queries';
 import { useAuth } from '@/router/AuthContext';
 
 const MyInfo = () => {
-  const { memberInfo, memberInfoApi } = useMemberInfo();
-  const { followerList, followerListApi } = useFollowerList();
-  const { followingList, followingListApi } = useFollowingList();
   const { userId } = useAuth();
+
+  const { data: user } = useSelectMemberQuery(userId!);
+  const { data: followers } = useSelectMemberFollowersQuery(userId!);
+  const { data: followees } = useSelectMemberFolloweesQuery(userId!);
 
   const location = useLocation();
   const { id } = location.state ?? { id: userId };
-
-  useEffect(() => {
-    searchData();
-  }, [id]);
-
-  /* 데이터 조회 */
-  const searchData = () => {
-    memberInfoApi(id);
-    if (id === userId) {
-      followerListApi();
-      followingListApi();
-    }
-  };
 
   // 닉네임 변경 모달
   const [nickNameModal, setNickNameModal] = useState<boolean>(false);
@@ -37,19 +31,21 @@ const MyInfo = () => {
     setNickNameModal(false);
   };
 
+  const memoizedUser = useMemo(() => user?.getInfo(), [user]);
+
   return (
     <>
       <div>
         <div className="flex">
           <div>
-            {memberInfo?.profilePicUrl ? (
-              <ProfileImage src={memberInfo?.profilePicUrl} size={'80px'} />
+            {memoizedUser?.profile ? (
+              <ProfileImage src={memoizedUser?.profile} size={'80px'} />
             ) : (
               <Avatar id={id} size={80} />
             )}
           </div>
-          <h1 className="text-2xl font-semibold">{memberInfo?.nickName}</h1>
-          <p className="text-gray-600">{memberInfo?.email}</p>
+          <h1 className="text-2xl font-semibold">{memoizedUser?.nickname}</h1>
+          <p className="text-gray-600">{memoizedUser?.email}</p>
           <Button onClick={() => setNickNameModal(true)}>닉네임 변경</Button>
         </div>
         <div>
@@ -68,58 +64,37 @@ const MyInfo = () => {
             </li>
             <li className="flex-1 p-3">
               <span className="font-semibold">팔로우 리스트</span>
-              {Array.isArray(followerList) && followerList.length > 0 ? (
-                followerList.map(user => (
-                  <div key={user.userId}>
-                    {user.profilePicUrl ? (
-                      <div className="flex items-center mt-5">
-                        <ProfileImage src={user.profilePicUrl} />
-                        <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <Avatar id={user.userId} />
-                        <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
-                      </div>
-                    )}
+              {followers?.map(({ userId, profilePicUrl, userGrade, name }) => (
+                <div key={userId}>
+                  <div className="flex items-center">
+                    {profilePicUrl ? <ProfileImage src={profilePicUrl} /> : <Avatar id={userId} />}
+                    <span>{name}</span>
+                    <span className="p-1 ml-1 text-sm text-blue-500">{userGrade}</span>
                   </div>
-                ))
-              ) : (
-                <p className="mt-5">No following users.</p>
-              )}
+                </div>
+              ))}
+              {followers?.length === 0 && <p className="mt-5">No following users.</p>}
             </li>
             <li className="flex-1 py-3 px-5">
               <span className="font-semibold">팔로잉 리스트</span>
-              {Array.isArray(followingList) && followingList.length > 0 ? (
-                followingList.map(user => (
-                  <div key={user.userId} className="mt-5">
-                    {user.profilePicUrl ? (
-                      <div className="flex items-center">
-                        <ProfileImage src={user.profilePicUrl} />
-                        <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <Avatar id={user.userId} />
-                        <span>{user.name}</span>
-                        <span className="p-1 ml-1 text-sm text-blue-500">{user.userGrade}</span>
-                      </div>
-                    )}
+              <div className="flex flex-col gap-3">
+                {followees?.map(({ userId, profilePicUrl, userGrade, name }) => (
+                  <div key={userId}>
+                    <div className="flex items-center">
+                      {profilePicUrl ? <ProfileImage src={profilePicUrl} /> : <Avatar id={userId} />}
+                      <span>{name}</span>
+                      <span className="p-1 ml-1 text-sm text-blue-500">{userGrade}</span>
+                    </div>
                   </div>
-                ))
-              ) : (
-                <p className="mt-5">No following users.</p>
-              )}
+                ))}
+              </div>
+              {followees?.length === 0 && <p className="mt-5">No following users.</p>}
             </li>
           </ul>
         </div>
       </div>
-
       <Modal isOpen={nickNameModal} onClose={closeModal}>
-        <NickNameChange searchData={searchData} onClose={closeModal} />
+        <NickNameChange onClose={closeModal} />
       </Modal>
     </>
   );
