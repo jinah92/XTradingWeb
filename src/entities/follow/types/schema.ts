@@ -5,20 +5,9 @@ export interface FollowerInfo extends Pick<UserInfo, 'userId' | 'userGrade' | 'p
 }
 
 export interface FollowersResponse {
-  message: string;
-  result: {
-    followers: FollowerInfo[];
-  };
+  followers: FollowerInfo[];
 }
 
 export interface FolloweesResponse {
-  message: string;
-  result: {
-    followings: FollowerInfo[];
-  };
-}
-
-export interface UpdateFollowerResponse {
-  message: string;
-  result: string;
+  followings: FollowerInfo[];
 }

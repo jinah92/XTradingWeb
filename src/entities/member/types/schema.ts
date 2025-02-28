@@ -20,19 +20,7 @@ export interface UserInfo {
 
 export interface UserBaseInfo extends Omit<UserInfo, 'userId' | 'followers' | 'followees'> {}
 
-export interface NicknameExistResponse {
+export interface NicknameExist {
+  isExist: boolean;
   message: string;
-  result: {
-    isExist: boolean;
-    message: string;
-  };
-}
-
-export interface NicknameUpdateResponse {
-  result: string;
-}
-
-export interface MemberBaseInfoResponse {
-  message: string;
-  result: UserBaseInfo;
 }
