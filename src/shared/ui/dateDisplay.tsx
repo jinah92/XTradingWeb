@@ -1,7 +1,7 @@
 import React from 'react';
 
 // 상대적 시간 계산 함수
-const timeAgo = (date: Date): string => {
+export const timeAgo = (date: Date): string => {
   const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 

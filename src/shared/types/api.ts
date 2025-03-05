@@ -16,3 +16,14 @@ export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
     [key: string]: string;
   };
 }
+
+export interface Pagination {
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface PaginationResponse {
+  last: boolean;
+  pageable: Pagination;
+  totalElements: number;
+}
