@@ -4,3 +4,4 @@ export * as TickerEntity from './ticker';
 export * as MemberEntity from './member';
 export * as FollowEntity from './follow';
 export * as PaginationEntity from './pagination';
+export * as AuthEntity from './auth';
