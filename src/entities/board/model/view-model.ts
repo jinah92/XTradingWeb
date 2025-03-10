@@ -29,6 +29,18 @@ export class IdeaViewModel implements BoardViewModelImpl<IdeaModel> {
     return this.model;
   }
 
+  get isBlock() {
+    return this.model.status.isBlock;
+  }
+
+  get isLike() {
+    return this.model.status.isLike;
+  }
+
+  get isFollowed() {
+    return this.model.status.isFollowed;
+  }
+
   toTimeAgoDate(): string {
     const date = new Date(this.model.createdDate);
     const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
@@ -46,9 +58,23 @@ export class FeedViewModel implements BoardViewModelImpl<FeedModel> {
   get id() {
     return this.model.id;
   }
+
   get data() {
     return this.model;
   }
+
+  get isBlock() {
+    return this.model.status.isBlock;
+  }
+
+  get isLike() {
+    return this.model.status.isLike;
+  }
+
+  get isFollowed() {
+    return this.model.status.isFollowed;
+  }
+
   toTimeAgoDate() {
     const date = new Date(this.model.createdDate);
     const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
