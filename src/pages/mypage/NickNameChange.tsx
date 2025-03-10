@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Input } from '@shared';
 
+import { MemberFeature } from '@/features';
 import { type nickNameReq, useNickNameChk, useNickNameModify } from '@/hooks/mypage/MyPageApi';
 import { toast } from '@/hooks/use-toast';
-import { useMemberNicknameMutation } from '@/queries';
 import { useAuth } from '@/router/AuthContext';
 
 interface ParentComponentProps {
@@ -16,7 +16,7 @@ const NickNameChange = ({ onClose }: ParentComponentProps) => {
   const { nickNameModifyApi } = useNickNameModify();
   const [nickName, setNickName] = useState('');
   const { userId } = useAuth();
-  const { mutate, isError, isSuccess, error } = useMemberNicknameMutation(userId!);
+  const { mutate, isError, isSuccess, error } = MemberFeature.useMemberNicknameMutation(userId!);
 
   /* 닉네임 중복 체크, 변경 */
   const nickNameChk = async () => {

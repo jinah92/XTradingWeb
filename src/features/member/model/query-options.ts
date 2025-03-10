@@ -1,9 +1,9 @@
-import { queryOptions, useMutation, useQuery, type UseMutationOptions } from '@tanstack/react-query';
+import { queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { MemberEntity } from '@/entities';
 import { queryClient } from '@/shared';
 
-const options = {
+export const options = {
   rootKey: 'member',
   getMemberBaseInfo: (userId: string) =>
     queryOptions({
@@ -21,8 +21,3 @@ const options = {
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [options.rootKey] }),
     }) as UseMutationOptions<any, Error, string>,
 };
-
-export const useSelectMemberQuery = (userId: string) => useQuery(options.getMemberBaseInfo(userId));
-export const useSelectMemberFollowersQuery = (userId: string) => useQuery(options.selectMemberFollowers(userId));
-export const useSelectMemberFolloweesQuery = (userId: string) => useQuery(options.selectMemberFollowees(userId));
-export const useMemberNicknameMutation = (userId: string) => useMutation(options.postMemberNickname(userId));

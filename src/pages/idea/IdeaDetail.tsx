@@ -13,6 +13,7 @@ import {
 } from '@shared';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { FollowFeature } from '@/features';
 import { useBoardCommentList } from '@/hooks/comment/CommentApi';
 import {
   useIdeaDetail,
@@ -24,7 +25,6 @@ import {
 import { useUserBlockToggle } from '@/hooks/member/MemberApi';
 import IdeaModify from '@/pages/idea/IdeaModify';
 import ReportForm from '@/pages/idea/ReportForm';
-import { useAddFollowerMutation, useRemoveFollowerMutation } from '@/queries/follow';
 
 import type { reportFormReq } from '@/hooks/report/ReportApi';
 
@@ -53,8 +53,8 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
 
   const [reportData, setReportData] = useState<reportFormReq>();
 
-  const { mutate: followMutate } = useAddFollowerMutation();
-  const { mutate: unfollowMutate } = useRemoveFollowerMutation();
+  const { mutate: followMutate } = FollowFeature.useAddFollowerMutation();
+  const { mutate: unfollowMutate } = FollowFeature.useRemoveFollowerMutation();
 
   /* 좋아요 토글 */
   const likeToggle = async () => {

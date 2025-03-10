@@ -4,22 +4,17 @@ import { useLocation } from 'react-router-dom';
 import { Avatar, Button, ProfileImage } from '@shared';
 
 import Modal from '@/components/modal/Modal';
+import { MemberFeature } from '@/features';
 import { useFollowerList, useFollowingList, useMemberInfo } from '@/hooks/mypage/MyPageApi';
 import NickNameChange from '@/pages/mypage/NickNameChange';
-import {
-  useMemberNicknameMutation,
-  useSelectMemberFolloweesQuery,
-  useSelectMemberFollowersQuery,
-  useSelectMemberQuery,
-} from '@/queries';
 import { useAuth } from '@/router/AuthContext';
 
 const MyInfo = () => {
   const { userId } = useAuth();
 
-  const { data: user } = useSelectMemberQuery(userId!);
-  const { data: followers } = useSelectMemberFollowersQuery(userId!);
-  const { data: followees } = useSelectMemberFolloweesQuery(userId!);
+  const { data: user } = MemberFeature.useSelectMemberQuery(userId!);
+  const { data: followers } = MemberFeature.useSelectMemberFollowersQuery(userId!);
+  const { data: followees } = MemberFeature.useSelectMemberFolloweesQuery(userId!);
 
   const location = useLocation();
   const { id } = location.state ?? { id: userId };

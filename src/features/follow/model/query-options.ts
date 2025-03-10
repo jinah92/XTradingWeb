@@ -1,8 +1,8 @@
-import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { type UseMutationOptions } from '@tanstack/react-query';
 
 import { FollowEntity } from '@/entities';
 
-const options = {
+export const options = {
   rootKey: 'follow',
   postFollower: () =>
     ({
@@ -15,6 +15,3 @@ const options = {
       mutationFn: (userId: string) => FollowEntity.followService.unfollow(userId),
     }) as UseMutationOptions<any, Error, string>,
 };
-
-export const useAddFollowerMutation = () => useMutation(options.postFollower());
-export const useRemoveFollowerMutation = () => useMutation(options.postUnfollower());

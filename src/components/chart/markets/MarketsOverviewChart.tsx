@@ -5,9 +5,10 @@ import { AgGridReact } from 'ag-grid-react';
 
 import { env } from '@shared';
 
+import { MarketFeature } from '@/features';
+
 import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
 import { useWebSocket } from '../../../hooks/websocket/use-websocket';
-import { useSelectMarketsQuery } from '../../../queries';
 
 import type { UpbitTicker } from '../../../apis/ticker';
 import type { MarketType } from '@shared';
@@ -15,7 +16,7 @@ import type { GridApi, GridReadyEvent } from 'ag-grid-community';
 
 export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) => {
   const gridApiRef = useRef<GridApi<UpbitTicker> | null>(null);
-  const { data } = useSelectMarketsQuery(type);
+  const { data } = MarketFeature.useSelectMarketsQuery(type);
 
   const onGridReady = (params: GridReadyEvent<UpbitTicker, any>) => {
     gridApiRef.current = params.api;

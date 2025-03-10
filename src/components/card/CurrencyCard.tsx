@@ -1,10 +1,11 @@
 import { currencyFormatter } from '@shared/lib';
 
-import { useMarketTickerQuery } from '../../queries/ticker';
+import { TickerFeature } from '@/features';
+
 import SignedNumberTypo from '../typography/SignedNumberTypo';
 
 export const CurrencyCard = ({ market }: { market: string }) => {
-  const { data } = useMarketTickerQuery(market);
+  const { data } = TickerFeature.useMarketTickerQuery(market);
 
   const prices = data?.ticker.price;
 

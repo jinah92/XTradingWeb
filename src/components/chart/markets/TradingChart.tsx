@@ -4,7 +4,7 @@ import { createChart, ColorType, CandlestickSeries, type IChartApi, type ISeries
 
 import { Button, type MarketCandleRange } from '@shared';
 
-import { useMarketCandlesMinuteQuery } from '../../../queries';
+import { MarketFeature } from '@/features';
 
 import type { ISODateString } from '@/app/const/common';
 
@@ -14,7 +14,7 @@ interface TradingChartProps {
 
 export const TradingChart = ({ market }: TradingChartProps) => {
   const [interval, setInterval] = useState<MarketCandleRange>('1D');
-  const { data: candles, isLoading } = useMarketCandlesMinuteQuery(market, interval);
+  const { data: candles, isLoading } = MarketFeature.useMarketCandlesMinuteQuery(market, interval);
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<ISODateString>('');
   const chartInstance = useRef<IChartApi | null>(null);

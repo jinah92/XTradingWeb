@@ -1,10 +1,10 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 
 import { MarketEntity } from '@/entities';
 
 import type { MarketType, MarketCandleRange } from '@shared';
 
-const options = {
+export const options = {
   rootKey: 'market',
   getMarkets: () =>
     queryOptions({
@@ -26,8 +26,3 @@ const options = {
       gcTime: 0,
     }),
 };
-
-export const useSelectMarketsQuery = (marketType: MarketType) => useQuery(options.selectFilteredMarkets(marketType));
-
-export const useMarketCandlesMinuteQuery = (market: string, range: MarketCandleRange) =>
-  useQuery(options.getMarketCandlesWithUnit({ market, range }));
