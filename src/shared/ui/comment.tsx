@@ -241,7 +241,7 @@ export const Comment = ({ comment, refresh = () => {} }: ParentComponentProps) =
                 ) : (
                   <CommentInput
                     targetId={reply.commentId}
-                    type="replytModify"
+                    type="modify"
                     beforeContent={reply.contents}
                     refresh={commentSearch}
                   ></CommentInput>

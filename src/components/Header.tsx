@@ -30,7 +30,7 @@ const Header = () => {
             <Link to="/interest" className="font-semibold text-slate-900 dark:text-white">
               관심종목
             </Link>
-            <Link to="/idea" className="font-semibold text-slate-900 dark:text-white">
+            <Link to="/board/idea" className="font-semibold text-slate-900 dark:text-white">
               아이디어
             </Link>
             <Link to="/news" className="font-semibold text-slate-900 dark:text-white">

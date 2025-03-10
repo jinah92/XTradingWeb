@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 export function splitValue(value: number, divisor: number) {
   const result = [];
 
@@ -9,3 +11,8 @@ export function splitValue(value: number, divisor: number) {
 
   return result;
 }
+
+export const hashFunction = (password: string) => {
+  const hash = CryptoJS.SHA256(password);
+  return hash.toString(CryptoJS.enc.Hex);
+};

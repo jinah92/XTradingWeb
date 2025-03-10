@@ -3,14 +3,15 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
+import MainLayout from '@/layout/MainLayout';
 
 import { useAuth } from './AuthContext';
 
 interface PrivateRouteProps {
-  element: React.ReactElement;
+  layout?: React.ReactNode;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
+const PrivateRoute = ({ layout }: PrivateRouteProps) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
@@ -25,7 +26,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     );
   }
 
-  return isAuthenticated ? element : <Navigate to="/login" state={{ from: location }} />;
+  return isAuthenticated ? (layout ?? <MainLayout />) : <Navigate to="/login" state={{ from: location }} />;
 };
 
 export default PrivateRoute;

@@ -1,14 +1,14 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 import Header from '@/components/Header';
-import Main from '@/components/Main';
 
 function MainLayout() {
   return (
-    <div className="dark:bg-darkMode h-screen flex flex-col">
+    <div className="dark:bg-darkMode min-h-screen flex flex-col h-screen">
       <Header></Header>
-      <div className="mt-[72px]">
-        <Main></Main>
+      <div className="mt-[72px] overflow-y-auto">
+        <Outlet />
       </div>
     </div>
   );
