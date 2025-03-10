@@ -1,6 +1,13 @@
-import { apiWithoutAuth, type ApiResponse, type Pagination } from '@/shared';
+import { apiWithAuth, apiWithoutAuth, type ApiResponse, type Pagination } from '@/shared';
 
-import type { FeedListResponse, IdeaListResponse } from '@/entities/board/types';
+import type {
+  CreateFeedRequest,
+  CreateBoardRequest,
+  CreatedBoardResponse,
+  FeedListResponse,
+  IdeaListResponse,
+  CreatedFeedResponse,
+} from '@/entities/board/types';
 
 export const findIdeas = async ({ pageNumber: page, pageSize }: Pagination) => {
   const { data } = await apiWithoutAuth.get<ApiResponse<IdeaListResponse>>(`/api/boards`, {
@@ -18,7 +25,7 @@ export const findFeeds = async ({
   code,
   pageNumber: page,
   pageSize,
-}: Pagination & { type: string; code: string }) => {
+}: Pagination & { type?: string; code?: string }) => {
   const { data } = await apiWithoutAuth.get<ApiResponse<FeedListResponse>>(`/api/feeds`, {
     params: {
       type,
@@ -27,6 +34,18 @@ export const findFeeds = async ({
       pageSize,
     },
   });
+
+  return data.result;
+};
+
+export const createIdea = async (newData: CreateBoardRequest) => {
+  const { data } = await apiWithAuth.post<ApiResponse<CreatedBoardResponse>>(`/api/boards`, newData);
+
+  return data.result;
+};
+
+export const createFeed = async (newData: CreateFeedRequest) => {
+  const { data } = await apiWithAuth.post<ApiResponse<CreatedFeedResponse>>(`/api/feeds`, newData);
 
   return data.result;
 };

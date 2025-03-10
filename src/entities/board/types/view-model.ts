@@ -1,12 +1,10 @@
-import { IdeaModel } from '@/entities/board/model';
-
-export interface IdeaViewModelImpl {
+export interface BoardViewModelImpl<T> {
   get id(): string;
-  get data(): IdeaModel;
+  get data(): T;
   toTimeAgoDate(): string;
 }
 
-export interface IdeaListViewModelImpl {
+export interface BoardListViewModelImpl {
   get currentPage(): number;
   get nextPage(): number | null;
 }

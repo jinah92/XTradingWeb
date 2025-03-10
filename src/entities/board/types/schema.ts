@@ -2,6 +2,8 @@ import type { UserGrade } from '../../member/types';
 import type { ISODateString } from '@/app/const/common';
 import type { PaginationResponse } from '@/shared';
 
+type DeletedStatus = 'Y' | 'N';
+
 export interface Board {
   commentCount: number;
   likeCount: number;
@@ -42,4 +44,31 @@ export interface IdeaListResponse extends PaginationResponse {
 
 export interface FeedListResponse extends PaginationResponse {
   feedList: Feed[];
+}
+
+export interface CreateBoardRequest {
+  subject: string;
+  contents: string;
+  tagList: string[];
+}
+
+export interface CreateFeedRequest extends CreateBoardRequest {
+  code: string;
+}
+
+export interface CreatedBoardResponse {
+  boardId: string;
+  heroImgUrl: string | null;
+  subject: string;
+  contents: string;
+  deleted: DeletedStatus;
+  createdBy: string;
+  cretDatetime: ISODateString;
+  updatedBy: string;
+  modDatetime: ISODateString;
+}
+
+export interface CreatedFeedResponse extends Omit<CreatedBoardResponse, 'boardId' | 'heroImgUrl'> {
+  feedId: string;
+  coinCode: string;
 }
