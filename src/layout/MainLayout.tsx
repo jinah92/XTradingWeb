@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 
 function MainLayout() {
   return (
-    <div className="dark:bg-darkMode min-h-screen flex flex-col h-screen">
+    <div className="dark:bg-darkMode bg-white min-h-screen flex flex-col h-screen">
       <Header></Header>
       <div className="mt-[72px] overflow-y-auto">
         <Outlet />

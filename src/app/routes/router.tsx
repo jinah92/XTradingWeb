@@ -17,11 +17,11 @@ export const router = createBrowserRouter([
         element: <BoardLayout />,
         children: [...ideaRoute],
       },
+      {
+        element: <NewsLayout />,
+        children: [...newsRoute],
+      },
     ],
-  },
-  {
-    element: <NewsLayout />,
-    children: [...newsRoute],
   },
   {
     element: <PrivateRoute />,

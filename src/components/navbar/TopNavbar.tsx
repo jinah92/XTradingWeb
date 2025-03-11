@@ -40,19 +40,17 @@ const TopNavbar: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="block w-full mt-5 mb-5">
-        <div className="flex justify-evenly">
-          {currentMenu.map(item => (
-            <button
-              key={item.value}
-              className={`font-semibold ${isActive(item.value) ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}
-              onClick={() => menuMove(item.value)}
-            >
-              {item.name}
-            </button>
-          ))}
-        </div>
+    <div className="block w-full mt-5 mb-5 max-w-screen-xl">
+      <div className="flex justify-evenly">
+        {currentMenu.map(item => (
+          <button
+            key={item.value}
+            className={`font-semibold ${isActive(item.value) ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}
+            onClick={() => menuMove(item.value)}
+          >
+            {item.name}
+          </button>
+        ))}
       </div>
     </div>
   );
