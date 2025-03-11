@@ -1,9 +1,9 @@
-import { CurrencyUnit, CurrencyUnitType } from '../../app/const/currency';
-import { cn } from '../../lib/utils';
+import { CurrencyUnit } from '@shared';
+import { cn } from '@shared/lib';
 
 interface SignedNumberTypoProps {
   data: number;
-  unit?: CurrencyUnitType;
+  unit?: keyof typeof CurrencyUnit;
   formatter?: (data: number) => string;
 }
 

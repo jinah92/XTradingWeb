@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from 'react';
-/* hook */
-import { useIdeaDetail, useIdeaLikeToggle, useIdeaDelete, BoardDetail, useIdeaBlockToggle } from '@/hooks/idea/IdeaApi';
-import { useUserBlockToggle } from '@/hooks/member/MemberApi';
-import { useBoardCommentList } from '@/hooks/comment/CommentApi';
-import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
-/* component */
-import ProfileImage from '@/components/ui/profileImg';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import DateDisplay from '@/components/ui/dateDisplay';
+
 import {
+  Avatar,
+  Comment,
+  CommentInput,
+  DateDisplay,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import CommentInput from '@/components/ui/commentInput';
-import Comment from '@/components/ui/comment';
-import Avatar from '@/components/ui/avartar';
-/* page */
-import ReportForm from '@/pages/idea/ReportForm';
+  ProfileImage,
+} from '@shared';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { FollowFeature } from '@/features';
+import { useBoardCommentList } from '@/hooks/comment/CommentApi';
+import {
+  useIdeaDetail,
+  useIdeaLikeToggle,
+  useIdeaDelete,
+  type BoardDetail,
+  useIdeaBlockToggle,
+} from '@/hooks/idea/IdeaApi';
+import { useUserBlockToggle } from '@/hooks/member/MemberApi';
 import IdeaModify from '@/pages/idea/IdeaModify';
-import { reportFormReq } from '@/hooks/report/ReportApi';
+import ReportForm from '@/pages/idea/ReportForm';
+
+import type { reportFormReq } from '@/hooks/report/ReportApi';
 
 interface ParentComponentProps {
   boardId: string;
@@ -34,8 +40,6 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
   const { detailData, ideaDetailApi } = useIdeaDetail();
   const { ideaLikeToggleApi } = useIdeaLikeToggle();
   const { ideaDeleteApi } = useIdeaDelete();
-  const { followApi } = useFollow();
-  const { unfollowApi } = useUnfollow();
   const { commentList, commentListApi } = useBoardCommentList();
   const { ideaBlockToggleApi } = useIdeaBlockToggle();
   const { userBlockToggle } = useUserBlockToggle();
@@ -48,6 +52,9 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
   const [viewType, setViewType] = useState('search');
 
   const [reportData, setReportData] = useState<reportFormReq>();
+
+  const { mutate: followMutate } = FollowFeature.useAddFollowerMutation();
+  const { mutate: unfollowMutate } = FollowFeature.useRemoveFollowerMutation();
 
   /* 좋아요 토글 */
   const likeToggle = async () => {
@@ -64,27 +71,25 @@ const IdeaDetail = ({ boardId, onClose, onViewTF, onLikeToggle, onIssueData }: P
 
   // 팔로우
   const followAction = async () => {
-    if (detailData) {
-      const param: FollowReq = {
-        targetId: detailData.cretInfo.userId,
-      };
-      const result = await followApi(param);
-      if (result) {
+    try {
+      if (detailData) {
+        await followMutate(detailData.cretInfo.userId);
         setFollowTF(true);
       }
+    } catch (error) {
+      setFollowTF(false);
     }
   };
 
   // 언팔로우
   const unfollowAction = async () => {
-    if (detailData) {
-      const param: FollowReq = {
-        targetId: detailData.cretInfo.userId,
-      };
-      const result = await unfollowApi(param);
-      if (result) {
+    try {
+      if (detailData) {
+        await unfollowMutate(detailData.cretInfo.userId);
         setFollowTF(false);
       }
+    } catch (error) {
+      setFollowTF(true);
     }
   };
 

@@ -1,10 +1,15 @@
-import axiosInstance from '@/configs/axios/axiosConfig';
-import { useAuth } from '@/router/AuthContext';
-import { ListReq } from '@/hooks/idea/IdeaApi';
-import { useNavigate } from 'react-router-dom';
-import { useToast } from '../use-toast';
-import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+
+import { apiWithAuth, apiWithoutAuth } from '@shared';
+
+import { useAuth } from '@/router/AuthContext';
+
+import { useToast } from '../use-toast';
+
+import type { ListReq } from '@/hooks/idea/IdeaApi';
 
 export interface FeedData {
   feedId: string;
@@ -74,7 +79,7 @@ export type FeedDetail = {
 export const useFeedList = () => {
   const feedListApi = async (param: ListReq) => {
     try {
-      const response = await axiosInstance.get('/api/feeds', { params: param });
+      const response = await apiWithoutAuth.get('/api/feeds', { params: param });
       return response.data.result.feedList;
     } catch (error) {
       console.error('데이터 요청 오류:', error);
@@ -111,7 +116,7 @@ export const useFeedAdd = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.post(`/api/feeds`, param);
+      await apiWithAuth.post(`/api/feeds`, param);
 
       toast({
         description: '피드 등록되었습니다.',
@@ -154,7 +159,7 @@ export const useFeedLikeToggle = () => {
         navigate('/login');
         return;
       }
-      await axiosInstance.post(`/api/feeds/toggle-like`, { feedId: feedId });
+      await apiWithAuth.post(`/api/feeds/toggle-like`, { feedId: feedId });
       return true;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -185,7 +190,7 @@ export const useFeedDetail = () => {
   const [detailData, setDetailData] = useState<FeedDetail>();
   const feedDetailApi = async (feedId: string) => {
     try {
-      const response = await axiosInstance.get(`/api/feeds/` + feedId);
+      const response = await apiWithAuth.get(`/api/feeds/` + feedId);
       setDetailData(response.data.result);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -216,7 +221,7 @@ export const useFeedDelete = () => {
   const { toast } = useToast();
   const feedDeleteApi = async (feedId: string) => {
     try {
-      await axiosInstance.delete(`/api/feeds/` + feedId);
+      await apiWithAuth.delete(`/api/feeds/` + feedId);
       toast({
         description: '삭제되었습니다.',
         duration: 2000,
@@ -257,7 +262,7 @@ export const useFeedModify = () => {
       }
       /* 태그는 validation 체크 안함 */
 
-      await axiosInstance.put(`/api/feeds`, param);
+      await apiWithAuth.put(`/api/feeds`, param);
 
       toast({
         description: '피드 수정되었습니다.',
@@ -293,7 +298,7 @@ export const useIdeaBlockToggle = () => {
   const { toast } = useToast();
   const ideaBlockToggleApi = async (boardId: string) => {
     try {
-      await axiosInstance.post(`/api/boards/toggle-block`, { boardId: boardId });
+      await apiWithAuth.post(`/api/boards/toggle-block`, { boardId: boardId });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage = error.response.data?.result?.message || '차단 작업 중 오류가 발생했습니다.';
@@ -322,7 +327,7 @@ export const useFeedBlockToggle = () => {
   const { toast } = useToast();
   const feedBlockToggleApi = async (feedId: string) => {
     try {
-      await axiosInstance.post(`/api/feeds/toggle-block`, { feedId: feedId });
+      await apiWithAuth.post(`/api/feeds/toggle-block`, { feedId: feedId });
 
       toast({
         description: '게시글 차단 되었습니다.',

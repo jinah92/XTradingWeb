@@ -1,22 +1,24 @@
-import CommonRouter from '@/router/CommonRouter';
-import './App.css';
-import { Toaster } from '@/components/ui/toaster';
-import { ThemeProvider } from './ThemeProvider';
 import { CookiesProvider } from 'react-cookie';
-import { AuthProvider } from './router/AuthContext';
+
+import { Toaster } from '@shared';
+
+import { AuthProvider } from '@/router/AuthContext';
+import CommonRouter from '@/router/CommonRouter';
+
+import { ThemeProvider } from './ThemeProvider';
+
+import './App.css';
 
 function App() {
   return (
-    <>
-      <AuthProvider>
-        <CookiesProvider>
-          <ThemeProvider>
-            <Toaster />
-            <CommonRouter />
-          </ThemeProvider>
-        </CookiesProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <CookiesProvider>
+        <ThemeProvider>
+          <Toaster />
+          <CommonRouter />
+        </ThemeProvider>
+      </CookiesProvider>
+    </AuthProvider>
   );
 }
 

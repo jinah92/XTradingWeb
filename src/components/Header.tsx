@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'; // heroicons에서 아이콘 가져오기
-import { useTheme } from '@/ThemeProvider';
-import { useAuth } from '@/router/AuthContext';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+} from '@shared';
+
+import { useAuth } from '@/router/AuthContext';
+import { useTheme } from '@/ThemeProvider';
 
 const Header = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -27,7 +30,7 @@ const Header = () => {
             <Link to="/interest" className="font-semibold text-slate-900 dark:text-white">
               관심종목
             </Link>
-            <Link to="/idea" className="font-semibold text-slate-900 dark:text-white">
+            <Link to="/board/idea" className="font-semibold text-slate-900 dark:text-white">
               아이디어
             </Link>
             <Link to="/news" className="font-semibold text-slate-900 dark:text-white">

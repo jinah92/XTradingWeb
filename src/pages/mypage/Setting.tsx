@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
-/* hook */
+import { useLocation } from 'react-router-dom';
+
 import {
   useNickNameChk,
   useNickNameModify,
-  nickNameReq,
+  type nickNameReq,
   useFollowerList,
   useFollowingList,
   useMemberInfo,
 } from '@/hooks/mypage/MyPageApi';
+
 /* component */
-import { useLocation } from 'react-router-dom';
-import { useAuth } from '../../router/AuthContext';
-import ProfileImage from '../../components/ui/profileImg';
 import Avatar from '../../components/ui/avartar';
+import ProfileImage from '../../components/ui/profileImg';
+import { useAuth } from '../../router/AuthContext';
 
 const Setting = () => {
   const [nickName, setNickName] = useState('');

@@ -18,11 +18,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
 
     /* alias */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"],
+      "@shared": ["src/shared/index.ts"],
+      "@shared/types": ["src/shared/types/index.ts"],
+      "@shared/lib": ["src/shared/lib/index.ts"]
     },
 
     "types": ["node"]

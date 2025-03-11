@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '@/configs/axios/axiosConfig';
-import { useAuth } from '@/router/AuthContext';
+
 import axios from 'axios';
+
+import { apiWithAuth } from '@shared';
+
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/router/AuthContext';
 
 export type FollowReq = {
   targetId: string;
@@ -40,7 +43,7 @@ export const useMemberInfo = () => {
   const [memberInfo, setMemberInfo] = useState<memberInfoRes>();
   const memberInfoApi = async (userId: string) => {
     try {
-      const response = await axiosInstance.get(`/api/members/${userId}/base-info`);
+      const response = await apiWithAuth.get(`/api/members/${userId}/base-info`);
       setMemberInfo(response.data.result);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -78,7 +81,7 @@ export const useFollow = () => {
         navigate('/login');
         return;
       }
-      await axiosInstance.post(`/api/my-page/follow`, param);
+      await apiWithAuth.post(`/api/my-page/follow`, param);
       // toast({
       //   description: "팔로우 하였습니다.",
       //   duration: 2000,
@@ -112,7 +115,7 @@ export const useUnfollow = () => {
   const { toast } = useToast();
   const unfollowApi = async (param: FollowReq) => {
     try {
-      await axiosInstance.post(`/api/my-page/unfollow`, param);
+      await apiWithAuth.post(`/api/my-page/unfollow`, param);
       // toast({
       //   description: "언팔로우 하였습니다.",
       //   duration: 2000,
@@ -147,7 +150,7 @@ export const useFollowingList = () => {
   const [followingList, setFollowingList] = useState<FollowingRes[]>([]);
   const followingListApi = async () => {
     try {
-      const response = await axiosInstance.get(`/api/my-page/followings`);
+      const response = await apiWithAuth.get(`/api/my-page/followings`);
       setFollowingList(response.data.result.followings);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -178,7 +181,7 @@ export const useFollowerList = () => {
   const [followerList, setFollowerList] = useState<FollowingRes>();
   const followerListApi = async () => {
     try {
-      const response = await axiosInstance.get(`/api/my-page/followers`);
+      const response = await apiWithAuth.get(`/api/my-page/followers`);
       setFollowerList(response.data.result.followers);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -208,7 +211,7 @@ export const useNickNameChk = () => {
   const { toast } = useToast();
   const nickNameChkApi = async (param: string) => {
     try {
-      const response = await axiosInstance.get(`/api/my-page/nick-name/exist?nickName=` + param);
+      const response = await apiWithAuth.get(`/api/my-page/nick-name/exist?nickName=` + param);
       if (!response.data.result.isExist) {
         return true;
       } else {
@@ -245,7 +248,7 @@ export const useNickNameModify = () => {
   const { toast } = useToast();
   const nickNameModifyApi = async (param: nickNameReq) => {
     try {
-      const response = await axiosInstance.post(`/api/my-page/nick-name?nickName`, param);
+      const response = await apiWithAuth.post(`/api/my-page/nick-name?nickName`, param);
       if (response.data.result === 'updated') {
         toast({
           description: '변경되었습니다.',

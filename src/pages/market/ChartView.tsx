@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useUpbitChart, ChartParam } from '@/hooks/upbit/UpbitApi';
+
 import Chart from '@/components/chart/Chart';
-import '@/App.css';
+import { useUpbitChart, type ChartParam } from '@/hooks/upbit/UpbitApi';
+
+import '../../App.css';
 
 type SeriesType = {
   x: Date;

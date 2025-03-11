@@ -1,5 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { cn } from '@/shared';
 import { useTheme } from '@/ThemeProvider';
 
 interface MenuData {
@@ -17,7 +19,7 @@ const menuData: MenuData = {
   idea: [
     {
       name: '아이디어',
-      value: '',
+      value: '/idea',
       svg: (
         <path d="M3 3h18v16H11l-4 4v-4H3V3zm5.222 4.67c4.143 0 7.501 3.358 7.501 7.5h2a9.5 9.5 0 00-9.5-9.5v2zm3.5 7.5a3.5 3.5 0 00-3.5-3.5v-2a5.5 5.5 0 015.5 5.5h-2zm-3.5 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
       ),
@@ -33,7 +35,11 @@ const menuData: MenuData = {
   home: [{ name: 'home', value: '', svg: '' }],
 };
 
-const LeftNavbar: React.FC = () => {
+interface LeftNavbarProps {
+  className?: string;
+}
+
+const LeftNavbar = ({ className }: LeftNavbarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { darkMode } = useTheme();
@@ -45,7 +51,7 @@ const LeftNavbar: React.FC = () => {
 
   // 현재 경로에 따라 표시할 메뉴 항목 결정
   const currentMenu = React.useMemo(() => {
-    if (basePath === 'idea') {
+    if (basePath === 'board') {
       return menuData.idea;
     }
     return menuData.home; // 기본 메뉴 항목
@@ -64,7 +70,7 @@ const LeftNavbar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-none w-48">
+    <div className={cn('flex flex-col flex-none w-48', className)}>
       {currentMenu.map(item => (
         <a
           key={item.value}

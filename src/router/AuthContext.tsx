@@ -1,6 +1,10 @@
 // AuthContext.tsx
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { getCookie, setCookie } from '@/common/Cookie';
+import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+
+import { getCookie, setCookie } from '@shared/lib';
+
+import type { UserState } from '@/entities/auth/types';
+import type { UserGrade } from '@/entities/member/types';
 
 interface AuthContextType {
   isAuthenticated: boolean | null;
@@ -8,7 +12,9 @@ interface AuthContextType {
   refreshToken: string | null;
   email: string | null;
   userId: string | null;
-  login: (email: string, userId: string, accessToken: string, refreshToken: string) => void;
+  userName: string;
+  userGrade: UserGrade;
+  login: (loginParams: UserState) => void;
   loginRefresh: (accessToken: string) => void;
   logout: () => void;
 }
@@ -19,6 +25,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userName, setUserName] = useState('');
+  const [userGrade, setUserGrade] = useState<UserGrade>('BEGINNER');
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
@@ -39,12 +47,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     checkAuth();
   }, []);
 
-  const login = (email: string, userId: string, accessToken: string, refreshToken: string) => {
+  const login = ({ email, userId, userName, userGrade, accessToken, refreshToken }: UserState) => {
     setEmail(email);
     setUserId(userId);
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setIsAuthenticated(true);
+    setUserName(userName);
+    setUserGrade(userGrade);
+
     setCookie('email', email, {
       path: '/',
       secure: '/',
@@ -96,6 +107,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         refreshToken,
         userId,
         email,
+        userName,
+        userGrade,
         login,
         loginRefresh,
         logout,

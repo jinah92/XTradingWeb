@@ -1,5 +1,6 @@
-import axiosInstance from '@/configs/axios/axiosConfig';
 import { useEffect, useState } from 'react';
+
+import { apiWithoutAuth } from '@shared';
 
 export interface ItemData {
   market: string;
@@ -44,7 +45,7 @@ export const useUpbitMarket = () => {
 
   const upbitMarketApi = async () => {
     try {
-      const response = await axiosInstance.get('/upbit-api/v1/market/all');
+      const response = await apiWithoutAuth.get('/upbit-api/v1/market/all');
       const data: ItemData[] = response.data;
       const KRW: ItemData[] = [];
       const BTC: ItemData[] = [];
@@ -95,7 +96,7 @@ export const useUpbitChart = () => {
       if (param.type === 'minutes') {
         CHART_PATH += '/' + param.unit;
       }
-      const response = await axiosInstance.get(CHART_PATH, { params: param });
+      const response = await apiWithoutAuth.get(CHART_PATH, { params: param });
       setDataList(response.data);
     } catch (error) {
       console.error('오류:', error);

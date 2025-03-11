@@ -1,17 +1,22 @@
-import { GridApi, GridReadyEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 import { useRef, useMemo } from 'react';
-import { MarketType } from '../../../apis/market';
-import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
-import { UPBIT_URL } from '../../../configs/ws-upbit/config';
-import { useWebSocket } from '../../../hooks/websocket/use-websocket';
-import { useSelectMarketsQuery } from '../../../queries';
 import React from 'react';
-import { UpbitTicker } from '../../../apis/ticker';
+
+import { AgGridReact } from 'ag-grid-react';
+
+import { env } from '@shared';
+
+import { MarketFeature } from '@/features';
+
+import { realtimeCurrencyOptions } from '../../../configs/chart/upbit-ticker';
+import { useWebSocket } from '../../../hooks/websocket/use-websocket';
+
+import type { UpbitTicker } from '../../../apis/ticker';
+import type { MarketType } from '@shared';
+import type { GridApi, GridReadyEvent } from 'ag-grid-community';
 
 export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) => {
   const gridApiRef = useRef<GridApi<UpbitTicker> | null>(null);
-  const { data } = useSelectMarketsQuery(type);
+  const { data } = MarketFeature.useSelectMarketsQuery(type);
 
   const onGridReady = (params: GridReadyEvent<UpbitTicker, any>) => {
     gridApiRef.current = params.api;
@@ -38,7 +43,7 @@ export const MarketsOverviewChart = React.memo(({ type }: { type: MarketType }) 
     }
   }
 
-  const { isConnect } = useWebSocket(UPBIT_URL, tickerMessage, onMessage);
+  const { isConnect } = useWebSocket(env.upbitWebsocketUrl, tickerMessage, onMessage);
 
   const handleMarketRow = (event: { data: UpbitTicker }) => {
     const path = `/market/${event.data.code}`;

@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { GoogleLogin } from '@react-oauth/google';
-import { Link } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { LoginData, useLogin, useCheckAuthEmail, useMailSend, useMailAuth, MailAuthData } from '@/hooks/auth/AuthApi';
-import { useToast } from '@/hooks/use-toast';
-import PasswordInput from '@/components/ui/passwordInput';
 import CryptoJS from 'crypto-js';
 
+import { Button, Input, PasswordInput } from '@shared';
+
+import { useLoginByEmailMutation } from '@/features/auth';
+import {
+  useLogin,
+  useCheckAuthEmail,
+  useMailSend,
+  useMailAuth,
+  type LoginData,
+  type MailAuthData,
+} from '@/hooks/auth/AuthApi';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/router/AuthContext';
+
+import type { LoginParamsByEmail } from '@/entities/auth/types';
+
 const Login = () => {
+  const navigate = useNavigate();
+
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const { mutateAsync } = useLoginByEmailMutation();
+  const { login: setLoginState } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // 계정 상태 값
@@ -107,14 +127,31 @@ const Login = () => {
 
   // 로그인 API 호출
   const login = async () => {
-    const hashedPassword = await hashFunction(password);
-
-    const param: LoginData = {
-      email: email,
-      password: hashedPassword,
-      authLogin: 'Y',
+    const param: LoginParamsByEmail = {
+      email: emailRef.current?.value!,
+      password: hashFunction(passwordRef.current?.value!),
+      autoLogin: 'Y',
     };
-    loginApi(param);
+    try {
+      // loginApi(param);
+      const response = await mutateAsync(param);
+
+      toast({
+        title: '로그인 되었습니다.',
+        description: response.model.summary,
+        duration: 2000,
+      });
+
+      const userState = response.toUserStateParams();
+      setLoginState(userState);
+
+      navigate('/');
+    } catch (error) {
+      toast({
+        description: error as string,
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -128,10 +165,12 @@ const Login = () => {
             placeholder="이메일"
             onKeyDown={handleEnterPress}
             disabled={userStatus === 'a'}
+            ref={emailRef}
           />
           {userStatus === 'a' ? (
             <div className="text-xs text-slate-400 mt-3">
-              <PasswordInput value={password} onChange={passwordChange} onKeyDown={handleEnterPress} />
+              <Input type="password" ref={passwordRef} />
+              {/* <PasswordInput value={password} onChange={passwordChange} onKeyDown={handleEnterPress} /> */}
               <Button className="mt-5 w-full" onClick={login}>
                 로그인
               </Button>

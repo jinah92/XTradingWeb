@@ -11,6 +11,11 @@
   font-style: normal;
 }
 
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
 body {
   font-family:
     'Geist Sans',
@@ -18,6 +23,7 @@ body {
     sans-serif;
   width: 100%;
   height: 100%;
+  /* overflow: hidden; */
   margin: 0;
 }
 
@@ -78,9 +84,9 @@ body {
   }
 }
 
-body {
-  overflow-y: overlay; /* 반드시 overlay 처리 */
-}
+/* body {
+  overflow-y: overlay;
+} */
 
 ::-webkit-scrollbar {
   width: 14px;

@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
-/* hook */
-import { FeedData } from '@/hooks/feed/FeedApi';
-import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
-/* component */
-import { Card } from '@/components/ui/card';
-import ProfileImage from '@/components/ui/profileImg';
-import EllipsisText from '@/components/ui/ellipsisText';
-import DateDisplay from '@/components/ui/dateDisplay';
+
+import { Avatar, Card, DateDisplay, EllipsisText, ProfileImage } from '@shared';
+import { openModal, closeModal } from '@shared/lib';
+
 import Modal from '@/components/modal/Modal';
-import Avatar from '@/components/ui/avartar';
-/* common */
-import { openModal, closeModal } from '@/common/Utils';
-/* page */
+import { useFeedLikeToggle } from '@/hooks/feed/FeedApi';
 import FeedDetail from '@/pages/idea/FeedDetail';
 
+import type { FeedViewModel } from '@/entities/board';
+
 interface CardItemProps {
-  item: FeedData;
+  item: FeedViewModel;
 }
 
 const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
+  const feed = item?.data;
+  const coin = feed.coin;
+
   const { feedLikeToggleApi } = useFeedLikeToggle();
-  const [liked, setLiked] = useState(item.youLike);
-  const [likeCount, setLikeCount] = useState(item.likeCount);
+  const [liked, setLiked] = useState(item.isLike);
+  const [likeCount, setLikeCount] = useState(item.data.likeCount);
   const [viewTF, setViewTF] = useState(true);
 
   const likeToggle = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    const result = await feedLikeToggleApi(item.feedId);
+    const result = await feedLikeToggleApi(item.id);
 
     if (result) {
       setLiked(prevLiked => {
@@ -63,7 +61,7 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
 
   return (
     <>
-      {viewTF && !item.youBlock ? (
+      {viewTF && !item.isBlock && (
         <Card
           className="dark:border-slate-300 rounded-none border-t-0 border-l-0 border-r-0 shadow-none bg-transparent"
           onClick={openDetail}
@@ -73,48 +71,48 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
               <div className="mb-5 font-semibold flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="cursor-pointer flex items-center">
-                    {item.createdByProfilePicUrl ? (
+                    {/* {item.createdByProfilePicUrl ? (
                       <ProfileImage src={item.createdByProfilePicUrl} />
                     ) : (
                       <Avatar id={item.cretId} />
-                    )}
-                    <span className="ml-3">{item.createdByName}</span>
+                    )} */}
+                    <span className="ml-3">{feed.userName}</span>
                   </div>
-                  <span className="p-1 ml-1 text-sm text-blue-500">{item.createdByUserGrade}</span>
+                  <span className="p-1 ml-1 text-sm text-blue-500">{feed.userGrade}</span>
                   <span className="text-xs ml-1 text-slate-400 font-medium">
-                    <DateDisplay isoString={item.createdDatetime}></DateDisplay>
+                    {item.toTimeAgoDate()}
+                    {/* <DateDisplay isoString={item.createdDatetime}></DateDisplay> */}
                   </span>
                 </div>
               </div>
               <div className="cursor-pointer sm:mr-10 sm:ml-10">
-                <div className="font-semibold mb-7 tracking-wide">{item.subject}</div>
+                <div className="font-semibold mb-7 tracking-wide">{feed.title}</div>
                 <div className="mb-7 text-slate-500 dark:text-slate-300">
-                  <EllipsisText text={item.contents} maxLines={10}></EllipsisText>
+                  <EllipsisText text={feed.content} maxLines={10}></EllipsisText>
                 </div>
               </div>
               <div className="mb-7">
                 <div className="cursor-pointer flex items-center">
                   <span className="sm:ml-10 font-semibold text-sm border rounded-lg p-1 border-slate-900">
-                    {item.coinCode}
+                    {coin.code}
                   </span>
                 </div>
               </div>
               <div className="text-yellow-500 font-semibold flex">
-                {item.tagList.length > 0 &&
-                  item.tagList.map((tag, index) => (
-                    <div className="rounded-lg p-1 mr-3 text-sm" key={index}>
-                      #{tag}
-                    </div>
-                  ))}
+                {feed.tags?.map(({ tagId, tagName }) => (
+                  <div className="rounded-lg p-1 mr-3 text-sm" key={tagId}>
+                    {tagName}
+                  </div>
+                ))}
               </div>
               <div className="flex mt-3 text-xs text-slate-400 font-semibold">
                 <div className="mr-3 flex items-center">
                   <img src="/images/icons8-view.png" alt="viewCount" className="w-5 mr-1" />
-                  <span>{item.viewCount}</span>
+                  <span>{feed.viewCount}</span>
                 </div>
                 <div className="mr-3 flex items-center">
                   <img src="/images/icons8-comment.png" alt="commentCount" className="w-5 mr-1" />
-                  <span>{item.commentCount}</span>
+                  <span>{feed.commentCount}</span>
                 </div>
                 <div className="flex items-center">
                   {liked ? (
@@ -138,10 +136,10 @@ const IdeaCard: React.FC<CardItemProps> = ({ item }) => {
             </div>
           </div>
         </Card>
-      ) : null}
+      )}
 
       <Modal isOpen={detailModal} onClose={closeDetail}>
-        <FeedDetail feedId={item.feedId} onClose={closeDetail} onViewTF={feedViewTF} onLikeToggle={detailLikeToggle} />
+        <FeedDetail feedId={item.id} onClose={closeDetail} onViewTF={feedViewTF} onLikeToggle={detailLikeToggle} />
       </Modal>
     </>
   );

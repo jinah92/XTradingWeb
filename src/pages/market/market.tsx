@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
-import { useUpbitMarket } from '@/hooks/upbit/UpbitApi';
-import { Button } from '@/components/ui/button';
-import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
+
+import { Button } from '@shared';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { useUpbitMarket } from '@/hooks/upbit/UpbitApi';
+
+import 'react-data-grid/lib/styles.css';
 
 const Market = () => {
   const { upbitMarketApi, dataList } = useUpbitMarket();

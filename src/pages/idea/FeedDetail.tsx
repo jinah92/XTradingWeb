@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
+
 /* hook */
-import { useFeedDetail, useFeedDelete, useFeedLikeToggle, useFeedBlockToggle } from '@/hooks/feed/FeedApi';
-import { useFeedCommentList } from '@/hooks/comment/CommentApi';
-import { FollowReq, useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
-import { useUserBlockToggle } from '@/hooks/member/MemberApi';
-import { reportFormReq } from '@/hooks/report/ReportApi';
-/* component */
-import ProfileImage from '@/components/ui/profileImg';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import DateDisplay from '@/components/ui/dateDisplay';
 import {
+  Avatar,
+  Comment,
+  CommentInput,
+  DateDisplay,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import CommentInput from '@/components/ui/commentInput';
-import Comment from '@/components/ui/comment';
-import Avatar from '@/components/ui/avartar';
-/* page */
-import ReportForm from '@/pages/idea/ReportForm';
+  ProfileImage,
+} from '@shared';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { useFeedCommentList } from '@/hooks/comment/CommentApi';
+import { useFeedDetail, useFeedDelete, useFeedLikeToggle, useFeedBlockToggle } from '@/hooks/feed/FeedApi';
+import { useUserBlockToggle } from '@/hooks/member/MemberApi';
+import { useFollow, useUnfollow } from '@/hooks/mypage/MyPageApi';
 import FeedModify from '@/pages/idea/FeedModify';
+import ReportForm from '@/pages/idea/ReportForm';
+
+import type { FollowReq } from '@/hooks/mypage/MyPageApi';
+import type { reportFormReq } from '@/hooks/report/ReportApi';
 
 interface ParentComponentProps {
   feedId: string;
