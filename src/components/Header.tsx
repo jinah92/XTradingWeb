@@ -69,7 +69,7 @@ const Header = () => {
         <div className="hidden sm:flex items-center space-x-8 text-sm sm:text-base">
           {isAuthenticated ? (
             <div>
-              <Link to="/mypage" className="font-semibold text-slate-900 dark:text-white mr-8">
+              <Link to="/my-page" className="font-semibold text-slate-900 dark:text-white mr-8">
                 마이페이지
               </Link>
               <span onClick={logout} className="font-semibold text-slate-900 dark:text-white cursor-pointer">

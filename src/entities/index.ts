@@ -5,3 +5,4 @@ export * as MemberEntity from './member';
 export * as FollowEntity from './follow';
 export * as PaginationEntity from './pagination';
 export * as AuthEntity from './auth';
+export * as NewsEntity from './news';

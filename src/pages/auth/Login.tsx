@@ -220,7 +220,7 @@ const Login = () => {
         ) : (
           <div>
             <span className="text-xs text-slate-400">계정 생성하시겠습니까?</span>
-            <Link to="/signUp" className="text-xs font-semibold ml-2 cursor-pointer hover:underline">
+            <Link to="/sign-up" className="text-xs font-semibold ml-2 cursor-pointer hover:underline">
               회원가입
             </Link>
           </div>
