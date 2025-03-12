@@ -19,8 +19,3 @@ export interface UserInfo {
 }
 
 export interface UserBaseInfo extends Omit<UserInfo, 'userId' | 'followers' | 'followees'> {}
-
-export interface NicknameExist {
-  isExist: boolean;
-  message: string;
-}

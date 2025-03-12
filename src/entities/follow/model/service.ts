@@ -23,6 +23,15 @@ class FollowService {
       throw new Error(e as string);
     }
   }
+
+  async updateMemberNickname(userId: string, nickname: string) {
+    const { result } = await this.followRepository.findMemberNicknameExists(nickname);
+    if (!result.isExist) {
+      const result = await this.followRepository.putMemberNickname(userId, nickname);
+      return result;
+    }
+    throw new Error(result.message);
+  }
 }
 
 export default new FollowService(FollowRepository);

@@ -21,15 +21,6 @@ class MemberService {
 
     return new MemberViewModel({ ...userBaseInfo, followers, followees } as UserInfo);
   }
-
-  async updateMemberNickname(userId: string, nickname: string) {
-    const { result } = await this.memberRepository.findMemberNicknameExists(nickname);
-    if (!result.isExist) {
-      const result = await this.memberRepository.putMemberNickname(userId, nickname);
-      return result;
-    }
-    throw new Error(result.message);
-  }
 }
 
 export default new MemberService(MemberRepository, FollowRepository);

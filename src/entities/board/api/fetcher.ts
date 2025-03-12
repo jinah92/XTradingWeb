@@ -1,5 +1,7 @@
 import { apiWithAuth, apiWithoutAuth, type ApiResponse, type Pagination } from '@/shared';
 
+import { boardPaths } from './paths';
+
 import type {
   CreateFeedRequest,
   CreateBoardRequest,
@@ -10,7 +12,7 @@ import type {
 } from '@/entities/board/types';
 
 export const findIdeas = async ({ pageNumber: page, pageSize }: Pagination) => {
-  const { data } = await apiWithoutAuth.get<ApiResponse<IdeaListResponse>>(`/api/boards`, {
+  const { data } = await apiWithoutAuth.get<ApiResponse<IdeaListResponse>>(boardPaths.ideas, {
     params: {
       page,
       pageSize,
@@ -26,7 +28,7 @@ export const findFeeds = async ({
   pageNumber: page,
   pageSize,
 }: Pagination & { type?: string; code?: string }) => {
-  const { data } = await apiWithoutAuth.get<ApiResponse<FeedListResponse>>(`/api/feeds`, {
+  const { data } = await apiWithoutAuth.get<ApiResponse<FeedListResponse>>(boardPaths.feeds, {
     params: {
       type,
       code,
@@ -39,13 +41,13 @@ export const findFeeds = async ({
 };
 
 export const createIdea = async (newData: CreateBoardRequest) => {
-  const { data } = await apiWithAuth.post<ApiResponse<CreatedBoardResponse>>(`/api/boards`, newData);
+  const { data } = await apiWithAuth.post<ApiResponse<CreatedBoardResponse>>(boardPaths.ideas, newData);
 
   return data.result;
 };
 
 export const createFeed = async (newData: CreateFeedRequest) => {
-  const { data } = await apiWithAuth.post<ApiResponse<CreatedFeedResponse>>(`/api/feeds`, newData);
+  const { data } = await apiWithAuth.post<ApiResponse<CreatedFeedResponse>>(boardPaths.feeds, newData);
 
   return data.result;
 };

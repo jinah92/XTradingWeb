@@ -11,3 +11,8 @@ export interface FollowersResponse {
 export interface FolloweesResponse {
   followings: FollowerInfo[];
 }
+
+export interface NicknameExist {
+  isExist: boolean;
+  message: string;
+}
