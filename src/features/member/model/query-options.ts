@@ -1,6 +1,6 @@
 import { queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
-import { FollowEntity, MemberEntity } from '@/entities';
+import { MyPageEntity, MemberEntity } from '@/entities';
 import { queryClient } from '@/shared';
 
 export const options = {
@@ -17,7 +17,7 @@ export const options = {
   postMemberNickname: (userId: string) =>
     ({
       mutationKey: ['update', 'nickname', userId],
-      mutationFn: (nickname: string) => FollowEntity.followService.updateMemberNickname(userId, nickname),
+      mutationFn: (nickname: string) => MyPageEntity.nicknameService.updateMemberNickname(userId, nickname),
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [options.rootKey] }),
     }) as UseMutationOptions<any, Error, string>,
 };

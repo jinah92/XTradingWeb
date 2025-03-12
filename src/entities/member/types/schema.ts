@@ -1,4 +1,4 @@
-import type { FollowerInfo } from '@/entities/follow/types';
+import type { FollowerInfo } from '@/entities/my-page/types';
 
 export type UserGrade = 'BEGINNER' | 'NOVICE' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT' | 'MASTER' | 'MAESTRO';
 

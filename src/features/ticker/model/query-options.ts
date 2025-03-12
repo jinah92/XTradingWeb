@@ -1,12 +1,12 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { TickerEntity } from '@/entities';
+import { MarketEntity } from '@/entities';
 
 export const options = {
   rootKey: 'ticker',
   getMarketTicker: (market: string) =>
     queryOptions({
       queryKey: [options.rootKey, market],
-      queryFn: () => TickerEntity.tickerService.getMarketTicker(market),
+      queryFn: () => MarketEntity.marketService.getMarketTicker(market),
     }),
 };

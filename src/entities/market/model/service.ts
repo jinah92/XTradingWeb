@@ -2,7 +2,7 @@ import { splitValue } from '@/shared/lib';
 
 import { MarketRepository } from '../api';
 import { CandleUnitsByRange, MaxCandleCount, TotalCandleCountByMinutes } from '../const';
-import { MarketViewModel } from '../model';
+import { MarketViewModel, TickerViewModel } from '../model';
 
 import type { MarketCandle, UpbitMarketCandleResponse } from '../types';
 
@@ -42,6 +42,12 @@ class MarketService {
     }
 
     return totalCandles;
+  }
+
+  async getMarketTicker(market: string) {
+    const data = await this.repository.findMarketTicker(market);
+
+    return new TickerViewModel(data?.[0]);
   }
 }
 

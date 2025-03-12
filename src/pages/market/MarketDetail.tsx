@@ -8,11 +8,11 @@ const MarketDetail = () => {
 
   return (
     <>
-      <h1>{params?.marketId}</h1>
+      <h1>{params?.marketName}</h1>
       <div className="p-10">
-        <TradingChart market={params?.marketId!} />
+        <TradingChart market={params?.marketName!} />
       </div>
-      <CurrencyCard market={params?.marketId!} />
+      <CurrencyCard market={params?.marketName!} />
     </>
   );
 };

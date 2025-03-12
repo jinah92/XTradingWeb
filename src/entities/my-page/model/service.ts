@@ -1,4 +1,4 @@
-import { FollowRepository } from '../api';
+import { FollowRepository, NicknameRepository } from '@/entities/my-page';
 
 class FollowService {
   constructor(private followRepository: typeof FollowRepository) {
@@ -23,15 +23,22 @@ class FollowService {
       throw new Error(e as string);
     }
   }
+}
+
+class NicknameService {
+  constructor(private repository: typeof NicknameRepository) {
+    this.repository = repository;
+  }
 
   async updateMemberNickname(userId: string, nickname: string) {
-    const { result } = await this.followRepository.findMemberNicknameExists(nickname);
+    const { result } = await this.repository.findMemberNicknameExists(nickname);
     if (!result.isExist) {
-      const result = await this.followRepository.putMemberNickname(userId, nickname);
+      const result = await this.repository.putMemberNickname(userId, nickname);
       return result;
     }
     throw new Error(result.message);
   }
 }
 
-export default new FollowService(FollowRepository);
+export const followService = new FollowService(FollowRepository);
+export const nicknameService = new NicknameService(NicknameRepository);

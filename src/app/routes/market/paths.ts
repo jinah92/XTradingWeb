@@ -8,7 +8,7 @@ export const marketRoutePaths = {
     fullPath: '/market',
   },
   marketDetail: {
-    path: `market/${marketSegments.marketId}`,
-    fullPath: `market/${marketSegments.marketId}`,
+    path: `market/${marketSegments.marketName}`,
+    fullPath: `market/${marketSegments.marketName}`,
   },
 };

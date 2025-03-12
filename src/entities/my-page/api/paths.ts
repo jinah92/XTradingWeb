@@ -2,7 +2,7 @@ const prefix = {
   v1: '/api/my-page',
 } as const;
 
-export const followPaths = {
+export const myPagePaths = {
   followers: `${prefix.v1}/followers`,
   followees: `${prefix.v1}/followings`,
   follow: `${prefix.v1}/follow`,

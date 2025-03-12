@@ -1,4 +1,4 @@
-import { FollowRepository } from '@/entities/follow';
+import { FollowRepository } from '@/entities/my-page';
 
 import { MemberRepository } from '../api';
 import { MemberViewModel } from '../model';

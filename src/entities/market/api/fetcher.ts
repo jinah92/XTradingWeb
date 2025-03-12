@@ -1,8 +1,8 @@
-import { apiWithoutAuth } from '@shared';
+import { apiWithoutAuth, urlReplace } from '@shared';
 
-import { upbitPaths } from './paths';
+import { marketSegments, upbitPaths } from './paths';
 
-import type { MarketCandle, UpbitMarketCandleResponse, UpbitTicker } from '../types';
+import type { MarketCandle, UpbitMarketCandleResponse, UpbitTicker, UpbitTickerResponse } from '../types';
 import type { AxiosResponse } from 'axios';
 
 export const findMarkets = async () => {
@@ -42,4 +42,12 @@ export const findMarketCandlesWithUnit = async ({ market, to, count, unit }: Omi
     data,
     initTime: new Date(data[data.length - 1].candle_date_time_kst).toISOString(),
   };
+};
+
+export const findMarketTicker = async (marketName: string) => {
+  const { data }: AxiosResponse<UpbitTickerResponse[]> = await apiWithoutAuth.get(
+    urlReplace(upbitPaths.ticker, [[marketSegments.marketName, marketName]]),
+  );
+
+  return data;
 };
