@@ -1,4 +1,4 @@
-import { FollowRepository } from '@/entities/follow';
+import { FollowRepository } from '@/entities/my-page';
 
 import { MemberRepository } from '../api';
 import { MemberViewModel } from '../model';
@@ -20,15 +20,6 @@ class MemberService {
     const followees = await this.followRepository.findFollowees();
 
     return new MemberViewModel({ ...userBaseInfo, followers, followees } as UserInfo);
-  }
-
-  async updateMemberNickname(userId: string, nickname: string) {
-    const { result } = await this.memberRepository.findMemberNicknameExists(nickname);
-    if (!result.isExist) {
-      const result = await this.memberRepository.putMemberNickname(userId, nickname);
-      return result;
-    }
-    throw new Error(result.message);
   }
 }
 

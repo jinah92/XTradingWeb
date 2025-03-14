@@ -25,4 +25,9 @@ export const options = {
       queryFn: () => MarketEntity.marketService.getMarketCandlesWithUnit(props),
       gcTime: 0,
     }),
+  getMarketTicker: (market: string) =>
+    queryOptions({
+      queryKey: [options.rootKey, market],
+      queryFn: () => MarketEntity.marketService.getMarketTicker(market),
+    }),
 };

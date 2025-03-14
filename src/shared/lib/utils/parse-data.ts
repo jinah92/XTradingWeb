@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import { XMLParser } from 'fast-xml-parser';
 
 export function splitValue(value: number, divisor: number) {
   const result = [];
@@ -15,4 +16,13 @@ export function splitValue(value: number, divisor: number) {
 export const hashFunction = (password: string) => {
   const hash = CryptoJS.SHA256(password);
   return hash.toString(CryptoJS.enc.Hex);
+};
+
+export const xmlParser = new XMLParser({
+  ignoreAttributes: false, // 네임스페이스 포함
+  attributeNamePrefix: '@_',
+});
+
+export const truncateText = (text: string, maxLength = 300, ellipsis = '...') => {
+  return text.slice(0, maxLength) + ellipsis;
 };

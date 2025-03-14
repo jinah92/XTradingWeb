@@ -8,3 +8,5 @@ export const useSelectMarketsQuery = (marketType: MarketType) => useQuery(option
 
 export const useMarketCandlesMinuteQuery = (market: string, range: MarketCandleRange) =>
   useQuery(options.getMarketCandlesWithUnit({ market, range }));
+
+export const useMarketTickerQuery = (market: string) => useQuery(options.getMarketTicker(market));

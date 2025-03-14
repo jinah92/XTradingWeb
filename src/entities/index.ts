@@ -1,7 +1,7 @@
 export * as BoardEntity from './board';
 export * as MarketEntity from './market';
-export * as TickerEntity from './ticker';
 export * as MemberEntity from './member';
-export * as FollowEntity from './follow';
+export * as MyPageEntity from './my-page';
 export * as PaginationEntity from './pagination';
 export * as AuthEntity from './auth';
+export * as NewsEntity from './news';

@@ -1,32 +1,19 @@
-import { apiWithAuth, type ApiResponse } from '@shared';
+import { apiWithAuth, urlReplace, type ApiResponse } from '@shared';
 
-import type { NicknameExist, UserBaseInfo } from '../types';
+import { membersPaths, membersSegments } from './paths';
+
+import type { UserBaseInfo } from '../types';
 
 export const findMemberInfo = async (userId: string) => {
-  const { data } = await apiWithAuth.get<ApiResponse<UserBaseInfo>>(`/api/members/${userId}/base-info`);
+  const { data } = await apiWithAuth.get<ApiResponse<UserBaseInfo>>(
+    urlReplace(membersPaths.memberById, [[membersSegments.memberId, userId]]),
+  );
 
   return data.result;
 };
 
 export const createMemberBlock = async (userId: string) => {
-  await apiWithAuth.post(`/api/members/toggle-block`, { userId: userId });
+  await apiWithAuth.post(membersPaths.userBlockToggle, { userId: userId });
 
   return true;
-};
-
-export const findMemberNicknameExists = async (nickname: string) => {
-  const { data } = await apiWithAuth.get<ApiResponse<NicknameExist>>(
-    `/api/my-page/nick-name/exist?nickName=${nickname}`,
-  );
-
-  return data;
-};
-
-export const putMemberNickname = async (userId: string, nickName: string) => {
-  const { data } = await apiWithAuth.post<ApiResponse<string>>(`/api/my-page/nick-name?nickName`, {
-    userId,
-    nickName,
-  });
-
-  return data;
 };

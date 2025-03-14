@@ -4,3 +4,4 @@ export * from './modal';
 export * from './parse-data';
 export * from './tw';
 export * from './cookie';
+export * from './replace';

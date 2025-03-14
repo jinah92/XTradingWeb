@@ -1,4 +1,4 @@
-import type { FollowerInfo } from '@/entities/follow/types';
+import type { FollowerInfo } from '@/entities/my-page/types';
 
 export type UserGrade = 'BEGINNER' | 'NOVICE' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT' | 'MASTER' | 'MAESTRO';
 
@@ -19,8 +19,3 @@ export interface UserInfo {
 }
 
 export interface UserBaseInfo extends Omit<UserInfo, 'userId' | 'followers' | 'followees'> {}
-
-export interface NicknameExist {
-  isExist: boolean;
-  message: string;
-}

@@ -1,4 +1,4 @@
-import type { FollowerInfo } from '@/entities/follow/types';
+import type { FollowerInfo } from '@/entities/my-page/types';
 
 export interface MemberViewModelImpl {
   getFollowers(): FollowerInfo[];

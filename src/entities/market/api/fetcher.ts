@@ -1,17 +1,19 @@
-import { apiWithoutAuth } from '@shared';
+import { apiWithoutAuth, urlReplace } from '@shared';
 
-import type { MarketCandle, UpbitMarketCandleResponse, UpbitTicker } from '../types';
+import { marketSegments, upbitPaths } from './paths';
+
+import type { MarketCandle, UpbitMarketCandleResponse, UpbitTicker, UpbitTickerResponse } from '../types';
 import type { AxiosResponse } from 'axios';
 
 export const findMarkets = async () => {
-  const { data }: AxiosResponse<UpbitTicker[]> = await apiWithoutAuth.get(`upbit-api/v1/market/all`);
+  const { data }: AxiosResponse<UpbitTicker[]> = await apiWithoutAuth.get(upbitPaths.markets);
 
   return data;
 };
 
 export const findMarketCandles = async ({ market, to, count, interval }: MarketCandle) => {
   const { data }: AxiosResponse<UpbitMarketCandleResponse[]> = await apiWithoutAuth.get(
-    `/upbit-api/v1/candles/${interval}`,
+    `${upbitPaths.candles}/${interval}`,
     {
       params: {
         market,
@@ -26,7 +28,7 @@ export const findMarketCandles = async ({ market, to, count, interval }: MarketC
 
 export const findMarketCandlesWithUnit = async ({ market, to, count, unit }: Omit<MarketCandle, 'interval'>) => {
   const { data }: AxiosResponse<UpbitMarketCandleResponse[]> = await apiWithoutAuth.get(
-    `/upbit-api/v1/candles/minutes/${unit}`,
+    `${upbitPaths.candlesByMinute}/${unit}`,
     {
       params: {
         market,
@@ -40,4 +42,12 @@ export const findMarketCandlesWithUnit = async ({ market, to, count, unit }: Omi
     data,
     initTime: new Date(data[data.length - 1].candle_date_time_kst).toISOString(),
   };
+};
+
+export const findMarketTicker = async (marketName: string) => {
+  const { data }: AxiosResponse<UpbitTickerResponse[]> = await apiWithoutAuth.get(
+    urlReplace(upbitPaths.ticker, [[marketSegments.marketName, marketName]]),
+  );
+
+  return data;
 };

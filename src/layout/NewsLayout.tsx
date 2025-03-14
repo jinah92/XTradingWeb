@@ -1,18 +1,16 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
-import Header from '@/components/Header';
-import Main from '@/components/Main';
 import TopNavbar from '@/components/navbar/TopNavbar';
 
 const NewsLayout: React.FC = () => {
   return (
-    <div className="dark:bg-darkMode min-h-screen flex flex-col">
-      <Header />
-      <div className="flex justify-evenly flex-auto mt-[72px]">
-        <main className="flex flex-col container w-screen md:w-10/12">
-          <TopNavbar />
-          <Main />
-        </main>
+    <div className="mx-2">
+      <div className="h-fit sticky top-0 py-2 z-10 bg-white w-auto flex justify-center">
+        <TopNavbar />
+      </div>
+      <div className="flex flex-col gap-1 justify-center w-full max-w-screen-xl m-auto">
+        <Outlet />
       </div>
     </div>
   );
