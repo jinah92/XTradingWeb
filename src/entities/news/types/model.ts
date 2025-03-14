@@ -5,4 +5,5 @@ export interface NewsModelImpl {
   get description(): NewsItem['description'];
   get publishedDate(): NewsItem['pubDate'];
   get link(): NewsItem['link'];
+  get media(): NewsItem['media:content'];
 }

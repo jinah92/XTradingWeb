@@ -2,7 +2,6 @@ import type { CointelgraphItem, MkItem, NewsModelImpl } from '@/entities/news/ty
 
 export class NewsModel implements NewsModelImpl {
   constructor(private readonly rawdata: MkItem | CointelgraphItem) {}
-
   get title() {
     return this.rawdata.title;
   }
@@ -14,5 +13,8 @@ export class NewsModel implements NewsModelImpl {
   }
   get link() {
     return this.rawdata.link;
+  }
+  get media(): { '@_medium': string; '@_url': string; '@_type'?: string } {
+    return this.rawdata['media:content'];
   }
 }
