@@ -1,3 +1,5 @@
+import { truncateText } from '@/shared';
+
 import { NewsModel } from './model';
 
 import type { CointelgraphItem, MkItem, NewsViewModelImpl } from '@/entities/news/types';
@@ -22,7 +24,7 @@ class NewsViewModel implements NewsViewModelImpl {
   }
 
   get description() {
-    return this.rss.description;
+    return truncateText(this.rss.description);
   }
 
   get link() {
@@ -34,7 +36,7 @@ export class MkNewsViewModel extends NewsViewModel {}
 
 export class CointelegrpahNewsViewModel extends NewsViewModel {
   get description() {
-    return this.parseDescription(this.rss.description);
+    return truncateText(this.parseDescription(this.rss.description));
   }
 
   parseDescription(data: string) {

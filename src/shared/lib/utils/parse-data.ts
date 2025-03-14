@@ -22,3 +22,7 @@ export const xmlParser = new XMLParser({
   ignoreAttributes: false, // 네임스페이스 포함
   attributeNamePrefix: '@_',
 });
+
+export const truncateText = (text: string, maxLength = 300, ellipsis = '...') => {
+  return text.slice(0, maxLength) + ellipsis;
+};

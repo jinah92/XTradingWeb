@@ -13,7 +13,7 @@ const NewsCard = ({ item: { title, sumbnail, description, link } }: NewsCardProp
 
   return (
     <Card
-      className="mb-5 transition-transform duration-300 hover:scale-101 dark:border-slate-300 cursor-pointer h-32 overflow-hidden text-ellipsis"
+      className="mb-5 transition-transform duration-300 hover:scale-101 dark:border-slate-300 cursor-pointer text-ellipsis"
       onClick={() => window.open(link)}
     >
       <div className="flex flex-col sm:flex-row dark:bg-darkMode dark:text-white rounded-xl">
